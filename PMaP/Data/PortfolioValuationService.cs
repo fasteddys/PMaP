@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -128,7 +129,27 @@ namespace PMaP.Data
             }
 
             model.Contracts.ForEach(x => x.Portfolio = null);
-            model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
+            if (viewModel.AddedInPortfolio == "1")
+            {
+                model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
+            }
+            else if (string.IsNullOrEmpty(viewModel.AddedInPortfolio))
+            {
+                foreach (var item in model.Contracts)
+                {
+                    string portfolio = "";
+                    portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
+                    if (string.IsNullOrEmpty(portfolio))
+                    {
+                        portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
+                    }
+                    item.Portfolio = portfolio;
+                }
+            }
+            else
+            {
+                model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
+            }
             model.ViewModel = viewModel;
             model.Summary = summary;
             return model;

@@ -12,126 +12,132 @@
 @inject NavigationManager NavigationManager
 @inject ISessionStorageService sessionStorage
 
-<ul class="page-breadcrumb breadcrumb">
-    <li>
-        <p style="color:#336699;">Portfolios</p>
-    </li>
-</ul>
+<div class="col-md-12">
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <p style="color:#336699;">Portfolios</p>
+        </li>
+    </ul>
+</div>
 
 <EditForm Model=@portfolioModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
     <DataAnnotationsValidator />
     <div class="row">
 	    <div class="col">
-            <div class="card card-primary">
-		        <div class="card-header" style="background-color:#0066ff">
-                    <div class="caption"><font color="white">Portfolio</font></div>
-                </div>
-                <div class="card-body" style="background-color:#e6f0ff">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <label>Portfolio</label>
-                            @if (@isAdd == "1")
-                            {
-                                <InputText type="text" class="form-control" @bind-Value="@portfolioModel.Portfolio" />
-                                <ValidationMessage For=@(() => portfolioModel.Portfolio) />
-                            }
-                            else
-                            {
-                                <select class="form-control" value="@portfolioModel.ViewModel.Portfolio" @onchange="GetSubportfolios">
-                                    @foreach (var item in portfolioModel.ViewModel.PortfolioList)
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
-                                    }
-                                </select>
-                            }
-                        </div>
-                        <div class="col-md-2">
-                            <label>Subporfolio</label>
-                            @if (@isAdd == "1")
-                            {
-                                <input type="text" class="form-control" @bind="@portfolioModel.ViewModel.Subportfolio">
-                            }
-                            else
-                            {
-                                <select class="form-control" @bind="portfolioModel.ViewModel.Subportfolio">
-                                    @foreach (var item in portfolioModel.ViewModel.SubportfolioList)
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
-                                    }
-                                </select>
-                            }
-                        </div>
-                        <div class="col-md-2">
-                            <label>Date added / update</label>
-						    <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                        </div>
-                        <div class="col-md-2">
-						    <label>F. Cut off</label>
-                            <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-					    </div>
-					    <div class="col-md-2">
-						    <label>F. Singning</label>
-                            <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-					    </div>
-					    <div class="col-md-2">
-						    <label>F. Closing</label>
-                            <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-					    </div>
+            <div class="col-md-12">
+                <div class="card card-primary">
+		            <div class="card-header" style="background-color:#0066ff">
+                        <div class="caption"><font color="white">Portfolio</font></div>
                     </div>
-                    <br><br>
-                    <p align="right">
-                        <button type="button" class="btn @(GetSearchAddStyle())" @onclick="Search" disabled="@isSearchAddButtonDisabled">
-                            <i class="fa fa-search"></i>&nbsp;&nbsp;Search
-                        </button>
-                        <button type="button" class="btn @(GetSearchAddStyle())" @onclick="Add" disabled="@isSearchAddButtonDisabled">
-                            <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Add
-                        </button>
-                    </p>
-				    <br><br>
+                    <div class="card-body" style="background-color:#e6f0ff">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Portfolio</label>
+                                @if (@isAdd == "1")
+                                {
+                                    <InputText type="text" class="form-control" @bind-Value="@portfolioModel.Portfolio" />
+                                    <ValidationMessage For=@(() => portfolioModel.Portfolio) />
+                                }
+                                else
+                                {
+                                    <select class="form-control" value="@portfolioModel.ViewModel.Portfolio" @onchange="GetSubportfolios">
+                                        @foreach (var item in portfolioModel.ViewModel.PortfolioList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
+                            <div class="col-md-2">
+                                <label>Subporfolio</label>
+                                @if (@isAdd == "1")
+                                {
+                                    <input type="text" class="form-control" @bind="@portfolioModel.ViewModel.Subportfolio">
+                                }
+                                else
+                                {
+                                    <select class="form-control" @bind="portfolioModel.ViewModel.Subportfolio">
+                                        @foreach (var item in portfolioModel.ViewModel.SubportfolioList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
+                            <div class="col-md-2">
+                                <label>Date added / update</label>
+						        <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                            </div>
+                            <div class="col-md-2">
+						        <label>F. Cut off</label>
+                                <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+					        </div>
+					        <div class="col-md-2">
+						        <label>F. Singning</label>
+                                <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+					        </div>
+					        <div class="col-md-2">
+						        <label>F. Closing</label>
+                                <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+					        </div>
+                        </div>
+                        <br><br>
+                        <p align="right">
+                            <button type="button" class="btn @(GetSearchAddStyle())" @onclick="Search" disabled="@isSearchAddButtonDisabled">
+                                <i class="fa fa-search"></i>&nbsp;&nbsp;Search
+                            </button>
+                            <button type="button" class="btn @(GetSearchAddStyle())" @onclick="Add" disabled="@isSearchAddButtonDisabled">
+                                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Add
+                            </button>
+                        </p>
+				        <br><br>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <br /><br />
     <div class="row"> 
-	    <div class="col">  
-            <div class="card card-primary">
-			    <div class="card-header" style="background-color:#0066ff">
-				    <div class="caption"><font color="white">Characteristics</font></div>
-			    </div>
-		    </div>
-		    <div class="card-body" style="background-color:#e6f0ff">
-                <div class="row">  
-				    <div class="col-md-1">          
-					    <label>Operation type</label>
-					    <input placeholder="" type="text" readonly="readonly" class="form-control" @bind="@portfolioModel.ViewModel.OperationType">
-				    </div>
-				    <div class="col-md-1">
-					    <label>Situation</label>
-					    <input placeholder="" type="text" class="form-control" readonly="readonly" @bind="@portfolioModel.ViewModel.Situation">
-				    </div>
-				    <div class="col-md-2">          
-					    <label>OB Cut off</label>
-                        <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBCutOff">
-				    </div>
-				    <div class="col-md-2">          
-					    <label>OB Singning</label>
-                        <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBSingning">
-				    </div>
-				    <div class="col-md-2">          
-					    <label>OB Closing</label>
-                        <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBClosing">
-				    </div>
-				    <div class="col-md-2"> 
-					    <label>Contract &nbsp;</label><i class="fa fa-search"></i> 
-					    <InputNumber id="Contract" class="form-control form-control-sm" placeholder="" disabled="@isDisabled" @bind-Value="@portfolioModel.ViewModel.Contract" @onkeyup="SearchContract" />
-				    </div>
-				    <div class="col-md-2"> 
-					    <label>Holder&nbsp;</label><i class="fa fa-search"></i> 
-					    <input id="Holder" type="search" class="form-control form-control-sm" placeholder="" disabled="@isDisabled">
-				    </div>
-			    </div>
-		    </div>
+	    <div class="col">
+            <div class="col-md-12">
+                <div class="card card-primary">
+			        <div class="card-header" style="background-color:#0066ff">
+				        <div class="caption"><font color="white">Characteristics</font></div>
+			        </div>
+		        </div>
+		        <div class="card-body" style="background-color:#e6f0ff">
+                    <div class="row">  
+				        <div class="col-md-1">          
+					        <label>Operation type</label>
+					        <input placeholder="" type="text" readonly="readonly" class="form-control" @bind="@portfolioModel.ViewModel.OperationType">
+				        </div>
+				        <div class="col-md-1">
+					        <label>Situation</label>
+					        <input placeholder="" type="text" class="form-control" readonly="readonly" @bind="@portfolioModel.ViewModel.Situation">
+				        </div>
+				        <div class="col-md-2">          
+					        <label>OB Cut off</label>
+                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBCutOff">
+				        </div>
+				        <div class="col-md-2">          
+					        <label>OB Singning</label>
+                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBSingning">
+				        </div>
+				        <div class="col-md-2">          
+					        <label>OB Closing</label>
+                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBClosing">
+				        </div>
+				        <div class="col-md-2"> 
+					        <label>Contract &nbsp;</label><i class="fa fa-search"></i> 
+					        <InputNumber id="Contract" class="form-control form-control-sm" placeholder="" disabled="@isDisabled" @bind-Value="@portfolioModel.ViewModel.Contract" @onkeyup="SearchContract" />
+				        </div>
+				        <div class="col-md-2"> 
+					        <label>Holder&nbsp;</label><i class="fa fa-search"></i> 
+					        <input id="Holder" type="search" class="form-control form-control-sm" placeholder="" disabled="@isDisabled">
+				        </div>
+			        </div>
+		        </div>
+            </div>
         </div>
     </div>
     @if (@displayAssessment || isAdd == "1")
@@ -139,464 +145,480 @@
         <br /><br />
         <div class="row">
             <div class="col">
-		        <div class="card-header" style="background-color:#0066ff">
-                    <div class="caption">
-                        <font color="white">Assessment</font>
+                <div class="col-md-12">
+		            <div class="card-header" style="background-color:#0066ff">
+                        <div class="caption">
+                            <font color="white">Assessment</font>
+                        </div>
                     </div>
+                    <table class="table table-striped table-bordered" style="background-color:#e6e6e6" >
+                        <thead>
+                            <tr class="heading" style="color:#336699;">
+                                <th>Contracts</th>
+                                <th class="sorting_desc">Total OB</th>
+					            <th class="sorting_desc">Secured OB</th>
+					            <th class="sorting_desc">Unsecured OB</th>
+					            <th class="sorting_desc">Secured Price</th>
+					            <th class="sorting_desc">Unsecured Price</th>
+                                <th>Debtors</th>
+                                <th>Guarantors</th>   
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@portfolioModel.Summary.Contracts</td>
+                                <td>@portfolioModel.Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                                <td>@portfolioModel.Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                                <td>@portfolioModel.Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                                <td>@portfolioModel.Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                                <td>@portfolioModel.Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                                <td>@portfolioModel.Summary.Debtors</td>
+                                <td>@portfolioModel.Summary.Guarantors</td>
+                            </tr>
+			            </tbody>
+		            </table>
                 </div>
-                <table class="table table-striped table-bordered" style="background-color:#e6e6e6" >
-                    <thead>
-                        <tr class="heading" style="color:#336699;">
-                            <th>Contracts</th>
-                            <th class="sorting_desc">Total OB</th>
-					        <th class="sorting_desc">Secured OB</th>
-					        <th class="sorting_desc">Unsecured OB</th>
-					        <th class="sorting_desc">Secured Price</th>
-					        <th class="sorting_desc">Unsecured Price</th>
-                            <th>Debtors</th>
-                            <th>Guarantors</th>   
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@portfolioModel.Summary.Contracts</td>
-                            <td>@portfolioModel.Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                            <td>@portfolioModel.Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                            <td>@portfolioModel.Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                            <td>@portfolioModel.Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                            <td>@portfolioModel.Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                            <td>@portfolioModel.Summary.Debtors</td>
-                            <td>@portfolioModel.Summary.Guarantors</td>
-                        </tr>
-			        </tbody>
-		        </table>
             </div>
         </div>
     }
 
     @if (@displayEntityList || isAdd == "1")
     {
-        <hr style="height:1px; color:#0066ff;background-color:#0066ff;">
-	    <div class="Tabs" style="display: block;">
-		    <ul class="nav nav-tabs">
-                @if (isAdd == "1")
-                {
-                    <li class="@classSummary">
-			            <a href="" @onclick="@GetSummary" @onclick:preventDefault>Summary</a>
-		            </li>
-                }
-		        <li class="@classContracts">
-			        <a href="" @onclick="@GetContracts" @onclick:preventDefault>Contracts</a>
-		        </li>
-		        <li class="@classParticipants">
-			        <a href="" @onclick="@GetParticipants" @onclick:preventDefault>Participants</a>
-		        </li>
-		        <li class="@classCollaterals">
-			        <a href="" @onclick="@GetCollaterals" @onclick:preventDefault>Collaterals</a>
-		        </li>
-			        <li class="@classProcedure">
-			        <a href="" @onclick="@GetProcedures" @onclick:preventDefault>Procedures</a>
-		        </li>
-		        <li class="@classInsolvencies">
-			        <a href="" @onclick="@GetInsolvencies" @onclick:preventDefault>Insolvencies</a>
-		        </li>
-		        <li class="@classLiens">
-			        <a href="" @onclick="@GetLiens" @onclick:preventDefault>Liens</a>
-		        </li>
-		        <li class="@classNovations">
-			        <a href="" @onclick="@GetNovations" @onclick:preventDefault>Novations</a>
-		        </li>
-		        <li class="@classInvestor">
-			        <a href="" @onclick="@GetInvestors" @onclick:preventDefault>Investor</a>
-		        </li>
-		    </ul>
-	    </div>
+        <div class="row">
+            <div class="col">
+                <div class="col-md-12">
+                    <hr style="height:1px; color:#0066ff;background-color:#0066ff;">
+	                <div class="Tabs" style="display: block;">
+		                <ul class="nav nav-tabs">
+                            @if (isAdd == "1")
+                            {
+                                <li class="@classSummary">
+			                        <a href="" @onclick="@GetSummary" @onclick:preventDefault>Summary</a>
+		                        </li>
+                            }
+		                    <li class="@classContracts">
+			                    <a href="" @onclick="@GetContracts" @onclick:preventDefault>Contracts</a>
+		                    </li>
+		                    <li class="@classParticipants">
+			                    <a href="" @onclick="@GetParticipants" @onclick:preventDefault>Participants</a>
+		                    </li>
+		                    <li class="@classCollaterals">
+			                    <a href="" @onclick="@GetCollaterals" @onclick:preventDefault>Collaterals</a>
+		                    </li>
+			                    <li class="@classProcedure">
+			                    <a href="" @onclick="@GetProcedures" @onclick:preventDefault>Procedures</a>
+		                    </li>
+		                    <li class="@classInsolvencies">
+			                    <a href="" @onclick="@GetInsolvencies" @onclick:preventDefault>Insolvencies</a>
+		                    </li>
+		                    <li class="@classLiens">
+			                    <a href="" @onclick="@GetLiens" @onclick:preventDefault>Liens</a>
+		                    </li>
+		                    <li class="@classNovations">
+			                    <a href="" @onclick="@GetNovations" @onclick:preventDefault>Novations</a>
+		                    </li>
+		                    <li class="@classInvestor">
+			                    <a href="" @onclick="@GetInvestors" @onclick:preventDefault>Investor</a>
+		                    </li>
+		                </ul>
+	                </div>
 
-        @if (@portfolioModel.ActiveTab == "summary")
-        {
-            <div class="row">
-                <div class="col-md-12 mts">
-                    <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
-                        <thead>
-                            <tr class="heading" style="color:#336699">
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">Contract</span>
-                                    <span class="fa @(GetContractsSortStyle("Id"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Participant</span>
-                                    <span class="fa @(GetContractsSortStyle("MainParticipantId"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">No. guarantors</span>
-                                    <span class="fa @(GetContractsSortStyle("NumParticipants"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Balance (OB)</span>
-                                    <span class="fa @(GetContractsSortStyle("TotalAmountOb"))"></span>
-                                </th>
-							    <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityPrincipalBalance"))">Maturity principal balance</span>
-                                    <span class="fa @(GetContractsSortStyle("MaturityPrincipalBalance"))"></span>
-                                </th>
-							    <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingPrincipalBalance"))">Outstanding principal balance</span>
-                                    <span class="fa @(GetContractsSortStyle("OutstandingPrincipalBalance"))"></span>
-                                </th>
-							    <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">Origination date</span>
-                                    <span class="fa @(GetContractsSortStyle("OriginationDate"))"></span>
-                                </th>
-							    <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">Maturity Date</span>
-                                    <span class="fa @(GetContractsSortStyle("MaturityDate"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("FirstUnpaidInstalmentDate"))">First unpaid installment date</span>
-                                    <span class="fa @(GetContractsSortStyle("FirstUnpaidInstalmentDate"))"></span>
-                                </th>
-							    <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("JudicialProcess"))">Judicial process</span>
-                                    <span class="fa @(GetContractsSortStyle("JudicialProcess"))"></span>
-                                </th>
-							    <th>
-                                    <span class="sort-link">Type of judicial procedure</span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Assignment entity</span>
-                                    <span class="fa @(GetContractsSortStyle("OriginalEntity"))"></span>
-                                </th>
-							    <th>
-                                    <span class="sort-link">Origin</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (portfolioModel.Contracts != null && portfolioModel.Contracts.Count() > 0)
-                            {
-                                foreach (var item in portfolioModel.Contracts)
-                                {
-                                    <tr>
-                                        <td>@item.Id</td>
-                                        <td>@item.MainParticipantId</td>
-                                        <td>@item.NumParticipants</td>
-                                        <td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.OutstandingPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@item.OriginationDate</td>
-                                        <td>@item.MaturityDate</td>
-                                        <td>@item.FirstUnpaidInstalmentDate</td>
-                                        <td>@(item.JudicialProcess != null && (sbyte)item.JudicialProcess == 1 ? "Yes" : "No")</td>
-                                        <td></td>
-                                        <td>@item.OriginalEntity</td>
-                                        <td></td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        }
-        @if (@portfolioModel.ActiveTab == "contracts")
-        {
-            <div class="row">
-                <div class="col-md-12 mts">
-                    <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
-                        <thead>
-                            <tr class="heading" style="color:#336699;">
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">Contract ID</span>
-                                    <span class="fa @(GetContractsSortStyle("Id"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("ContractType"))">Typology</span>
-                                    <span class="fa @(GetContractsSortStyle("ContractType"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("PerformingStatus"))">Performing status</span>
-                                    <span class="fa @(GetContractsSortStyle("PerformingStatus"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("DebtType"))">Debt type</span>
-                                    <span class="fa @(GetContractsSortStyle("DebtType"))"></span>
-                                </th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Main Holder ID</span>
-                                    <span class="fa @(GetContractsSortStyle("MainParticipantId"))"></span>
-                                </th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">No. participants</span>
-                                    <span class="fa @(GetContractsSortStyle("NumParticipants"))"></span>
-                                </th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("NumGuarantors"))">No. guarantors</span>
-                                    <span class="fa @(GetContractsSortStyle("NumGuarantors"))"></span>
-                                </th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Bank of origin</span>
-                                    <span class="fa @(GetContractsSortStyle("OriginalEntity"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Total OB</span>
-                                    <span class="fa @(GetContractsSortStyle("TotalAmountOb"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("Currency"))">Currency</span>
-                                    <span class="fa @(GetContractsSortStyle("Currency"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityPrincipalBalance"))">Maturity principal balance</span>
-                                    <span class="fa @(GetContractsSortStyle("MaturityPrincipalBalance"))"></span>
-                                </th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingPrincipalBalance"))">Outstanding principal balance</span>
-                                    <span class="fa @(GetContractsSortStyle("OutstandingPrincipalBalance"))"></span>
-                                </th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("OrdinaryInterests"))">Ordinary interests</span>
-                                    <span class="fa @(GetContractsSortStyle("OrdinaryInterests"))"></span>
-                                </th>
-						        <th><span class="sort-link">Interest on late payment</span></th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">Origination date</span>
-                                    <span class="fa @(GetContractsSortStyle("OriginationDate"))"></span>
-                                </th>
-						        <th>
-                                    <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">Maturity Date</span>
-                                    <span class="fa @(GetContractsSortStyle("MaturityDate"))"></span>
-                                </th>
-                                @if (isAdd == "0")
-                                {
-                                    <th></th>
-						            <th><input type="checkbox" disabled></th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (portfolioModel.Contracts != null && portfolioModel.Contracts.Count() > 0)
-                            {
-                                foreach (var item in portfolioModel.Contracts)
-                                {
-                                    <tr>
-                                        <td>@item.Id</td>
-                                        <td>@item.ContractType</td>
-                                        <td>@item.PerformingStatus</td>
-                                        <td>@item.DebtType</td>
-                                        <td>@item.MainParticipantId</td>
-                                        <td>@item.NumParticipants</td>
-                                        <td>@item.NumGuarantors</td>
-                                        <td>@item.OriginalEntity</td>
-                                        <td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@item.Currency</td>
-                                        <td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.OutstandingPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.OrdinaryInterests?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td></td>
-                                        <td>@(item.OriginationDate?.ToString("yyyy-MM-dd"))</td>
-                                        <td>@(item.MaturityDate?.ToString("yyyy-MM-dd"))</td>
-                                        @if (isAdd == "0")
+                    @if (@portfolioModel.ActiveTab == "summary")
+                    {
+                        <div class="row">
+                            <div class="col-md-12 mts">
+                                <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
+                                    <thead>
+                                        <tr class="heading" style="color:#336699">
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">Contract</span>
+                                                <span class="fa @(GetContractsSortStyle("Id"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Participant</span>
+                                                <span class="fa @(GetContractsSortStyle("MainParticipantId"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">No. guarantors</span>
+                                                <span class="fa @(GetContractsSortStyle("NumParticipants"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Balance (OB)</span>
+                                                <span class="fa @(GetContractsSortStyle("TotalAmountOb"))"></span>
+                                            </th>
+							                <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityPrincipalBalance"))">Maturity principal balance</span>
+                                                <span class="fa @(GetContractsSortStyle("MaturityPrincipalBalance"))"></span>
+                                            </th>
+							                <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingPrincipalBalance"))">Outstanding principal balance</span>
+                                                <span class="fa @(GetContractsSortStyle("OutstandingPrincipalBalance"))"></span>
+                                            </th>
+							                <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">Origination date</span>
+                                                <span class="fa @(GetContractsSortStyle("OriginationDate"))"></span>
+                                            </th>
+							                <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">Maturity Date</span>
+                                                <span class="fa @(GetContractsSortStyle("MaturityDate"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("FirstUnpaidInstalmentDate"))">First unpaid installment date</span>
+                                                <span class="fa @(GetContractsSortStyle("FirstUnpaidInstalmentDate"))"></span>
+                                            </th>
+							                <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("JudicialProcess"))">Judicial process</span>
+                                                <span class="fa @(GetContractsSortStyle("JudicialProcess"))"></span>
+                                            </th>
+							                <th>
+                                                <span class="sort-link">Type of judicial procedure</span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Assignment entity</span>
+                                                <span class="fa @(GetContractsSortStyle("OriginalEntity"))"></span>
+                                            </th>
+							                <th>
+                                                <span class="sort-link">Origin</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (portfolioModel.Contracts != null && portfolioModel.Contracts.Count() > 0)
                                         {
-                                            <td>
-										        <button class="btn btn-xs btn-danger" @onclick="() => { Remove(item); }"><i class="fa fa-trash-o"></i></button>
-									        </td> 
-									        <td>
-										        <input type="checkbox" disabled>
-									        </td>
+                                            foreach (var item in portfolioModel.Contracts)
+                                            {
+                                                <tr>
+                                                    <td>@item.Id</td>
+                                                    <td>@item.MainParticipantId</td>
+                                                    <td>@item.NumParticipants</td>
+                                                    <td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                    <td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                    <td>@(item.OutstandingPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                    <td>@item.OriginationDate</td>
+                                                    <td>@item.MaturityDate</td>
+                                                    <td>@item.FirstUnpaidInstalmentDate</td>
+                                                    <td>@(item.JudicialProcess != null && (sbyte)item.JudicialProcess == 1 ? "Yes" : "No")</td>
+                                                    <td></td>
+                                                    <td>@item.OriginalEntity</td>
+                                                    <td></td>
+                                                </tr>
+                                            }
                                         }
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-		            </table>
-                </div>		
-            </div>
-        }
-        @if (@portfolioModel.ActiveTab == "participants")
-        {
-            <div class="row">
-                <div class="col-md-12 mts">
-                    <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
-                        <thead>
-                            <tr class="heading" style="color:#336699;">
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("ContractId"))">Contract</span>
-                                    <span class="fa @(GetParticipantsSortStyle("ContractId"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Name"))">Holder</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Name"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Identification"))">Identification</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Identification"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("PersonType"))">Person type</span>
-                                    <span class="fa @(GetParticipantsSortStyle("PersonType"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("DebtorType"))">Debtor type</span>
-                                    <span class="fa @(GetParticipantsSortStyle("DebtorType"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("BirthdayDate"))">Birthdate</span>
-                                    <span class="fa @(GetParticipantsSortStyle("BirthdayDate"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Cno"))">C.N.O.</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Cno"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Cnae"))">C.N.A.E.</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Cnae"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("CnaeDescription"))">C.N.A.E. Description</span>
-                                    <span class="fa @(GetParticipantsSortStyle("CnaeDescription"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Address"))">Address</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Address"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("City"))">City</span>
-                                    <span class="fa @(GetParticipantsSortStyle("City"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Province"))">Province</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Province"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Region"))">Region</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Region"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("ZipCode"))">Zip code</span>
-                                    <span class="fa @(GetParticipantsSortStyle("ZipCode"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Country"))">Country</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Country"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Nationality"))">Nationality</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Nationality"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Resident"))">Resident</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Resident"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Telephone1"))">Telephone 1</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Telephone1"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Telephone2"))">Telephone 2</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Telephone2"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortParticipantsTable("Email"))">Email</span>
-                                    <span class="fa @(GetParticipantsSortStyle("Email"))"></span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (portfolioModel.Participants != null && portfolioModel.Participants.Count() > 0)
-                            {
-                                foreach (var item in portfolioModel.Participants)
-                                {
-                                    <tr>
-                                        <td>@item.ContractId</td>
-                                        <td>@item.Name</td>
-                                        <td>@item.Identification</td>
-                                        <td>@item.PersonType</td>
-                                        <td>@item.DebtorType</td>
-                                        <td>@(item.BirthdayDate?.ToString("yyyy-MM-dd"))</td>
-                                        <td>@item.Cno</td>
-                                        <td>@item.Cnae</td>
-                                        <td>@item.CnaeDescription</td>
-                                        <td>@item.Address</td>
-                                        <td>@item.City</td>
-                                        <td>@item.Province</td>
-                                        <td>@item.Region</td>
-                                        <td>@item.ZipCode</td>
-                                        <td>@item.Country</td>
-                                        <td>@item.Nationality</td>
-                                        <td>@item.Resident</td>
-                                        <td>@item.Telephone1</td>
-                                        <td>@item.Telephone2</td>
-                                        <td>@item.Email</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        }
-        @if (@portfolioModel.ActiveTab == "investor")
-        {
-            <div class="row">
-                <div class="col-md-12 mts">
-                    <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
-                        <thead>
-                            <tr class="heading" style="color:#336699;">
-                                <th>Investor name</th>
-                                <th>Social address</th>
-                                <th>Tax Identification</th>
-                                <th>Mail</th>
-                                <th>Telephone 1</th>
-                                <th>Telephone 2</th>
-                                <th>IBAN</th>
-                                <th>Bank</th>
-                                @if (isAdd == "0")
-                                {
-                                    <th></th>
-                                    <th><input type="checkbox" disabled></th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (portfolioModel.Investors != null && portfolioModel.Investors.Count() > 0)
-                            {
-                                foreach (var item in portfolioModel.Investors)
-                                {
-                                    <tr>
-                                        <td>@item.InvestorName</td>
-                                        <td>@item.SocialAddress</td>
-                                        <td>@item.TaxIdentification</td>
-                                        <td>@item.Mail</td>
-                                        <td>@item.Telephone1</td>
-                                        <td>@item.Telephone2</td>
-                                        <td>@item.Iban</td>
-                                        <td>@item.Bank</td>
-                                        @if (isAdd == "0")
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                    @if (@portfolioModel.ActiveTab == "contracts")
+                    {
+                        <div class="row">
+                            <div class="col-md-12 mts">
+                                <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
+                                    <thead>
+                                        <tr class="heading" style="color:#336699;">
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">Contract ID</span>
+                                                <span class="fa @(GetContractsSortStyle("Id"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("ContractType"))">Typology</span>
+                                                <span class="fa @(GetContractsSortStyle("ContractType"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("PerformingStatus"))">Performing status</span>
+                                                <span class="fa @(GetContractsSortStyle("PerformingStatus"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("DebtType"))">Debt type</span>
+                                                <span class="fa @(GetContractsSortStyle("DebtType"))"></span>
+                                            </th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Main Holder ID</span>
+                                                <span class="fa @(GetContractsSortStyle("MainParticipantId"))"></span>
+                                            </th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">No. participants</span>
+                                                <span class="fa @(GetContractsSortStyle("NumParticipants"))"></span>
+                                            </th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("NumGuarantors"))">No. guarantors</span>
+                                                <span class="fa @(GetContractsSortStyle("NumGuarantors"))"></span>
+                                            </th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Bank of origin</span>
+                                                <span class="fa @(GetContractsSortStyle("OriginalEntity"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Total OB</span>
+                                                <span class="fa @(GetContractsSortStyle("TotalAmountOb"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("Currency"))">Currency</span>
+                                                <span class="fa @(GetContractsSortStyle("Currency"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityPrincipalBalance"))">Maturity principal balance</span>
+                                                <span class="fa @(GetContractsSortStyle("MaturityPrincipalBalance"))"></span>
+                                            </th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingPrincipalBalance"))">Outstanding principal balance</span>
+                                                <span class="fa @(GetContractsSortStyle("OutstandingPrincipalBalance"))"></span>
+                                            </th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("OrdinaryInterests"))">Ordinary interests</span>
+                                                <span class="fa @(GetContractsSortStyle("OrdinaryInterests"))"></span>
+                                            </th>
+						                    <th><span class="sort-link">Interest on late payment</span></th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">Origination date</span>
+                                                <span class="fa @(GetContractsSortStyle("OriginationDate"))"></span>
+                                            </th>
+						                    <th>
+                                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">Maturity Date</span>
+                                                <span class="fa @(GetContractsSortStyle("MaturityDate"))"></span>
+                                            </th>
+                                            @if (isAdd == "0")
+                                            {
+                                                <th></th>
+						                        <th><input type="checkbox" disabled></th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (portfolioModel.Contracts != null && portfolioModel.Contracts.Count() > 0)
                                         {
-                                            <td>
-                                                <a class="btn btn-xs btn-primary" href="" @onclick:preventDefault>
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-                                            </td>
-                                            <td><input type="checkbox" disabled></td>
+                                            foreach (var item in portfolioModel.Contracts)
+                                            {
+                                                <tr>
+                                                    <td>@item.Id</td>
+                                                    <td>@item.ContractType</td>
+                                                    <td>@item.PerformingStatus</td>
+                                                    <td>@item.DebtType</td>
+                                                    <td>@item.MainParticipantId</td>
+                                                    <td>@item.NumParticipants</td>
+                                                    <td>@item.NumGuarantors</td>
+                                                    <td>@item.OriginalEntity</td>
+                                                    <td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                    <td>@item.Currency</td>
+                                                    <td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                    <td>@(item.OutstandingPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                    <td>@(item.OrdinaryInterests?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                    <td></td>
+                                                    <td>@(item.OriginationDate?.ToString("yyyy-MM-dd"))</td>
+                                                    <td>@(item.MaturityDate?.ToString("yyyy-MM-dd"))</td>
+                                                    @if (isAdd == "0")
+                                                    {
+                                                        <td>
+										                    <button class="btn btn-xs btn-danger" @onclick="() => { Remove(item); }"><i class="fa fa-trash-o"></i></button>
+									                    </td> 
+									                    <td>
+										                    <input type="checkbox" disabled>
+									                    </td>
+                                                    }
+                                                </tr>
+                                            }
                                         }
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        }
+                                    </tbody>
+		                        </table>
+                            </div>		
+                        </div>
+                    }
+                    @if (@portfolioModel.ActiveTab == "participants")
+                    {
+                        <div class="row">
+                            <div class="col-md-12 mts">
+                                <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
+                                    <thead>
+                                        <tr class="heading" style="color:#336699;">
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("ContractId"))">Contract</span>
+                                                <span class="fa @(GetParticipantsSortStyle("ContractId"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Name"))">Holder</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Name"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Identification"))">Identification</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Identification"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("PersonType"))">Person type</span>
+                                                <span class="fa @(GetParticipantsSortStyle("PersonType"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("DebtorType"))">Debtor type</span>
+                                                <span class="fa @(GetParticipantsSortStyle("DebtorType"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("BirthdayDate"))">Birthdate</span>
+                                                <span class="fa @(GetParticipantsSortStyle("BirthdayDate"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Cno"))">C.N.O.</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Cno"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Cnae"))">C.N.A.E.</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Cnae"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("CnaeDescription"))">C.N.A.E. Description</span>
+                                                <span class="fa @(GetParticipantsSortStyle("CnaeDescription"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Address"))">Address</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Address"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("City"))">City</span>
+                                                <span class="fa @(GetParticipantsSortStyle("City"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Province"))">Province</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Province"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Region"))">Region</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Region"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("ZipCode"))">Zip code</span>
+                                                <span class="fa @(GetParticipantsSortStyle("ZipCode"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Country"))">Country</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Country"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Nationality"))">Nationality</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Nationality"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Resident"))">Resident</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Resident"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Telephone1"))">Telephone 1</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Telephone1"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Telephone2"))">Telephone 2</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Telephone2"))"></span>
+                                            </th>
+                                            <th>
+                                                <span class="sort-link" @onclick="@(() => SortParticipantsTable("Email"))">Email</span>
+                                                <span class="fa @(GetParticipantsSortStyle("Email"))"></span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (portfolioModel.Participants != null && portfolioModel.Participants.Count() > 0)
+                                        {
+                                            foreach (var item in portfolioModel.Participants)
+                                            {
+                                                <tr>
+                                                    <td>@item.ContractId</td>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.Identification</td>
+                                                    <td>@item.PersonType</td>
+                                                    <td>@item.DebtorType</td>
+                                                    <td>@(item.BirthdayDate?.ToString("yyyy-MM-dd"))</td>
+                                                    <td>@item.Cno</td>
+                                                    <td>@item.Cnae</td>
+                                                    <td>@item.CnaeDescription</td>
+                                                    <td>@item.Address</td>
+                                                    <td>@item.City</td>
+                                                    <td>@item.Province</td>
+                                                    <td>@item.Region</td>
+                                                    <td>@item.ZipCode</td>
+                                                    <td>@item.Country</td>
+                                                    <td>@item.Nationality</td>
+                                                    <td>@item.Resident</td>
+                                                    <td>@item.Telephone1</td>
+                                                    <td>@item.Telephone2</td>
+                                                    <td>@item.Email</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                    @if (@portfolioModel.ActiveTab == "investor")
+                    {
+                        <div class="row">
+                            <div class="col-md-12 mts">
+                                <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
+                                    <thead>
+                                        <tr class="heading" style="color:#336699;">
+                                            <th>Investor name</th>
+                                            <th>Social address</th>
+                                            <th>Tax Identification</th>
+                                            <th>Mail</th>
+                                            <th>Telephone 1</th>
+                                            <th>Telephone 2</th>
+                                            <th>IBAN</th>
+                                            <th>Bank</th>
+                                            @if (isAdd == "0")
+                                            {
+                                                <th></th>
+                                                <th><input type="checkbox" disabled></th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (portfolioModel.Investors != null && portfolioModel.Investors.Count() > 0)
+                                        {
+                                            foreach (var item in portfolioModel.Investors)
+                                            {
+                                                <tr>
+                                                    <td>@item.InvestorName</td>
+                                                    <td>@item.SocialAddress</td>
+                                                    <td>@item.TaxIdentification</td>
+                                                    <td>@item.Mail</td>
+                                                    <td>@item.Telephone1</td>
+                                                    <td>@item.Telephone2</td>
+                                                    <td>@item.Iban</td>
+                                                    <td>@item.Bank</td>
+                                                    @if (isAdd == "0")
+                                                    {
+                                                        <td>
+                                                            <a class="btn btn-xs btn-primary" href="" @onclick:preventDefault>
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td><input type="checkbox" disabled></td>
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
 
-        @if (isAdd == "1")
-        {
-            <p align="right">
-                <button type="submit" class="btn btn-primary" @*@onclick="AddPortfolio"*@>
-		            <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
-                </button>
-            </p>
-        }
+                    @if (isAdd == "1")
+                    {
+                        <p align="right">
+                            <button type="submit" class="btn btn-primary" @*@onclick="AddPortfolio"*@>
+		                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
+                            </button>
+                        </p>
+                    }
+                    else
+                    {
+                        <p align="right">
+                            <button type="submit" class="btn btn-danger" @onclick="DiscardPortfolio">
+		                        <i class="fa fa-trash"></i>&nbsp;&nbsp;Discard
+                            </button>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
     }
 </EditForm>
 
@@ -814,6 +836,15 @@
     private void InvalidFormSubmitted(EditContext editContext)
     {
         
+    }
+
+    private async void DiscardPortfolio()
+    {
+        var portfolioToDiscard = portfolioModel.Documents.FirstOrDefault();
+        if (portfolioToDiscard != null)
+        {
+            await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
+        }
     }
 
     private async void SearchContract(KeyboardEventArgs e)

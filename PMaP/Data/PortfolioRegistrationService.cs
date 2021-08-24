@@ -100,8 +100,32 @@ namespace PMaP.Data
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                //HTTP POST
+                //HTTP PUT
                 var responseTask = await client.PutAsync("portfolioValuation/portfolio", content);
+
+                var result = responseTask;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = await result.Content.ReadAsStringAsync();
+                    portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
+                }
+            }
+
+            return portfolioValuation;
+        }
+
+        public async Task<PortfolioValuationModel> DiscardPortfolio(Portfolio portfolio)
+        {
+            PortfolioValuationModel portfolioValuation = new PortfolioValuationModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //HTTP DELETE
+                var responseTask = await client.DeleteAsync("portfolioValuation/portfolio/" + portfolio.Id);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
