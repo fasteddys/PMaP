@@ -1,19 +1,5 @@
 ﻿@inherits LayoutComponentBase
 
-@*<div class="sidebar">
-    <NavMenu />
-</div>
-
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
-
-    <div class="content px-4">
-        @Body
-    </div>
-</div>*@
-
 <style>
     body {
 	    background-color: #000000 ;
@@ -157,7 +143,7 @@
     }
 </style>
 
-<body class="page-header-fixed page-sidebar-closed-hide-logo" style="background-color: white !important;">
+@*<body class="page-header-fixed" style="background-color: white !important;">
     <Header />
     <div class="page-container">
         <NavMenu />
@@ -167,4 +153,23 @@
             </div>
         </div>
     </div>
-</body>
+</body>*@
+
+<div class="sidebar" style="height: 100%; width: 216px; position: fixed; z-index: 1; top: 0; left: 0; overflow-x: hidden;">
+    <div class="page-header navbar">
+        <div class="container clearfix et_menu_container">
+            <span style="font-size: 15px; font-weight: bold; text-align: center;">
+                Portfolio Management Platform - PMaP
+            </span>
+        </div>
+    </div>
+    <NavMenu />
+</div>
+
+<div class="main" style="margin-left: 200px; padding-left: 20px;">
+    <Header />
+    <br />
+    <div class="content">
+        @Body
+    </div>
+</div>

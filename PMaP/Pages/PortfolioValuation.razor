@@ -22,33 +22,31 @@
 {
 	<div class="row"> 
 		<div class="col">  
-			<div class="col-md-12">
-				  <div class="card card-primary">
-						<div class="card-header" style="background-color:#0066ff">
-						</div>
-				  </div>
-				  <div class="card-body" style="background-color:#e6f0ff">
-					<div class="row">
-						<div class="col-md-1">
-							<label>Portfolio</label>
-							<input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Portfolio1">
-						</div>
-						<div class="col-md-1">
-							<label>Subportfolio</label>
-							<input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Subportfolio">
-						</div>
-						<div class="col-md-1">
-							<label>Situation</label>
-							<input type="text" class="form-control" readonly="readonly" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Situation">
-						</div>
-						<div class="col-md-2">
-							<label>OB</label>
-							<input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.CutOffOb">
-						</div>
-						<div class="col-md-2">
-							<label>No. Contracts</label>
-							<input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.NoContracts">
-						</div>
+			<div class="card card-primary">
+				<div class="card-header" style="background-color:#0066ff">
+				</div>
+			</div>
+			<div class="card-body" style="background-color:#e6f0ff">
+				<div class="row">
+					<div class="col-md-1">
+						<label>Portfolio</label>
+						<input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Portfolio1">
+					</div>
+					<div class="col-md-1">
+						<label>Subportfolio</label>
+						<input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Subportfolio">
+					</div>
+					<div class="col-md-1">
+						<label>Situation</label>
+						<input type="text" class="form-control" readonly="readonly" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Situation">
+					</div>
+					<div class="col-md-2">
+						<label>OB</label>
+						<input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.CutOffOb">
+					</div>
+					<div class="col-md-2">
+						<label>No. Contracts</label>
+						<input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.NoContracts">
 					</div>
 				</div>
 			</div>
@@ -57,134 +55,132 @@
 }
 <div class="row">
     <div class="col">
-		<div class="col-md-12">
-            <div class="card card-primary" style="">
-                <div class="card-header" style="background-color:#0066ff">
-                    <div class="caption">
-                        <font color="white">Characteristics selection</font>
-                    </div>
+        <div class="card card-primary" style="">
+            <div class="card-header" style="background-color:#0066ff">
+                <div class="caption">
+                    <font color="white">Characteristics selection</font>
                 </div>
-                <div class="card-body" style="background-color:#e6f0ff">
-                    <div class="row">
-						<div class="col-md-3">          
-							<label>From</label>
-							<input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.From" @bind:format="yyyy-MM-dd">
-						</div>
-						<div class="col-md-3">          
-							<label>To</label>
-							<input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.To" @bind:format="yyyy-MM-dd">
-						</div>
-						<div class="col-md-2">  
-							<label>Debt type</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtType">
-								@foreach (var item in portfolioValuationModel.ViewModel.DebtTypeList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>
-						</div> 
-							<div class="col-md-2">          
-							<label>Judicialized</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.Judicialized">
-								@foreach (var item in portfolioValuationModel.ViewModel.JudicializedList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>         
-						</div>
-						<div class="col-md-2">          
-							<label>Insolvency</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.Insolvency">
-								@foreach (var item in portfolioValuationModel.ViewModel.InsolvencyList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>     						
-						</div>
+            </div>
+            <div class="card-body" style="background-color:#e6f0ff">
+                <div class="row">
+					<div class="col-md-3">          
+						<label>From</label>
+						<input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.From" @bind:format="yyyy-MM-dd">
 					</div>
-					<div class="row">
-						<div class="col-md-2">
-							<label>Performing status</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.PerformingStatus">
-								@foreach (var item in portfolioValuationModel.ViewModel.PerformingStatusList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>
-						</div>  
-						<div class="col-md-2">          
-							<label>Debt (OB)</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtOB">
-								@foreach (var item in portfolioValuationModel.ViewModel.DebtOBList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>     
-						  </div>
-						<div class="col-md-2">
-							<label>Debtor name</label>
-							<input type="text" class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorName">
-						</div> 
-						<div class="col-md-2">  	
-							<label>Debtor type</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorType">
-								@foreach (var item in portfolioValuationModel.ViewModel.DebtorTypeList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>
-						</div> 
-						<div class="col-md-2">          
-							<label>Region</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.Region">
-								@foreach (var item in portfolioValuationModel.ViewModel.RegionList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>     
-						</div>
-						<div class="col-md-2">          
-							<label>Added in portfolio</label>
-							<select class="form-control" @bind="portfolioValuationModel.ViewModel.AddedInPortfolio">
-								@foreach (var item in portfolioValuationModel.ViewModel.AddedInPortfolioList)
-								{
-									<option value="@item.Value">@item.Text</option>
-								}
-							</select>     
-						</div>
+					<div class="col-md-3">          
+						<label>To</label>
+						<input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.To" @bind:format="yyyy-MM-dd">
 					</div>
-					<hr style="height:0.5px; color:#e6e6e6;background-color:#cccccc;">
-					<div class="row">
-						<div class="col-md-12"> 
-							<h5>Contract type:</h5>
-							@foreach (var item in portfolioValuationModel.ViewModel.ContractTypes)
+					<div class="col-md-2">  
+						<label>Debt type</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtType">
+							@foreach (var item in portfolioValuationModel.ViewModel.DebtTypeList)
 							{
-								bool Checked = false;
-								if (SelectedValues.Contains(item.Id))  
-								{
-									Checked = true;
-								}
-								<div class="checkbox" Height="15" Width="15">
-									<div class="col-md-3">
-										<label>
-											<input type="checkbox"
-												Height="15"
-												Width="15"
-												checked="@Checked"
-												@onchange="e => { CheckboxClicked(item.Id, e.Value); }" />
-											@item.Name
-										</label>
-									</div>
-								</div>
+								<option value="@item.Value">@item.Text</option>
 							}
-						</div>
+						</select>
+					</div> 
+						<div class="col-md-2">          
+						<label>Judicialized</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.Judicialized">
+							@foreach (var item in portfolioValuationModel.ViewModel.JudicializedList)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>         
 					</div>
-					<button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary">
-						<i class="fa fa-cog"></i>&nbsp;&nbsp;Calculate
-					</button>
-                </div>
-			</div>
-        </div>
+					<div class="col-md-2">          
+						<label>Insolvency</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.Insolvency">
+							@foreach (var item in portfolioValuationModel.ViewModel.InsolvencyList)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>     						
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<label>Performing status</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.PerformingStatus">
+							@foreach (var item in portfolioValuationModel.ViewModel.PerformingStatusList)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>
+					</div>  
+					<div class="col-md-2">          
+						<label>Debt (OB)</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtOB">
+							@foreach (var item in portfolioValuationModel.ViewModel.DebtOBList)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>     
+						</div>
+					<div class="col-md-2">
+						<label>Debtor name</label>
+						<input type="text" class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorName">
+					</div> 
+					<div class="col-md-2">  	
+						<label>Debtor type</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorType">
+							@foreach (var item in portfolioValuationModel.ViewModel.DebtorTypeList)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>
+					</div> 
+					<div class="col-md-2">          
+						<label>Region</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.Region">
+							@foreach (var item in portfolioValuationModel.ViewModel.RegionList)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>     
+					</div>
+					<div class="col-md-2">          
+						<label>Added in portfolio</label>
+						<select class="form-control" @bind="portfolioValuationModel.ViewModel.AddedInPortfolio">
+							@foreach (var item in portfolioValuationModel.ViewModel.AddedInPortfolioList)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>     
+					</div>
+				</div>
+				<hr style="height:0.5px; color:#e6e6e6;background-color:#cccccc;">
+				<div class="row">
+					<div class="col-md-12"> 
+						<h5>Contract type:</h5>
+						@foreach (var item in portfolioValuationModel.ViewModel.ContractTypes)
+						{
+							bool Checked = false;
+							if (SelectedValues.Contains(item.Id))  
+							{
+								Checked = true;
+							}
+							<div class="checkbox" Height="15" Width="15">
+								<div class="col-md-3">
+									<label>
+										<input type="checkbox"
+											Height="15"
+											Width="15"
+											checked="@Checked"
+											@onchange="e => { CheckboxClicked(item.Id, e.Value); }" />
+										@item.Name
+									</label>
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+				<button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary">
+					<i class="fa fa-cog"></i>&nbsp;&nbsp;Calculate
+				</button>
+            </div>
+		</div>
     </div>
 </div>
 @if (@showSummary)
