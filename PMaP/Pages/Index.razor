@@ -1,0 +1,152 @@
+﻿@page "/"
+
+@using PMaP.Data
+@using PMaP.Models
+@using System.Globalization
+@inject HomeService HomeService
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <p style="color:#336699;">Home</p>
+    </li>
+</ul>
+
+<div class="Tabs" style="display: block;">       
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#">General characteristics</a>
+		</li>
+		<li class="">
+			<a href="#">Portfolio Composition</a>
+		</li>
+	</ul>
+</div>
+
+<div class="row">
+    <div class="col mts">
+        <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
+            <thead>
+                <tr class="heading" style="color:#336699;">
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("portfolio"))">Portfolio</span>
+                        <span class="fa @(GetSortStyle("portfolio"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("subportfolio"))">Subportfolio</span>
+                        <span class="fa @(GetSortStyle("subportfolio"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("nominalValue"))">Nominal value</span>
+                        <span class="fa @(GetSortStyle("nominalValue"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("secured"))">Secured</span>
+                        <span class="fa @(GetSortStyle("secured"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("unsecured"))">Unsecured</span>
+                        <span class="fa @(GetSortStyle("unsecured"))"></span>
+                    </th>
+				    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("debtType"))">Debt type</span>
+                        <span class="fa @(GetSortStyle("debtType"))"></span>
+                    </th> 
+				    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("priceSecured"))">Price secured</span>
+                        <span class="fa @(GetSortStyle("priceSecured"))"></span>
+                    </th>
+				    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("unsecuredPrice"))">Unsecured price</span>
+                        <span class="fa @(GetSortStyle("unsecuredPrice"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("assignmentEntity"))">Assignment entity</span>
+                        <span class="fa @(GetSortStyle("assignmentEntity"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("acquisitionYear"))">Acquisition Year</span>
+                        <span class="fa @(GetSortStyle("acquisitionYear"))"></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (model != null && model.Documents != null && model.Documents.Count() > 0)
+                {
+                    foreach (var item in model.Documents)
+                    {
+                        <tr>
+                            <td>@item.portfolio</td>
+                            <td>@item.subportfolio</td>
+                            <td>@(item.nominalValue.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                            <td>@(item.secured.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                            <td>@(item.unsecured.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                            <td>@item.debtType</td>
+                            <td>@(item.priceSecured.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                            <td>@(item.unsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                            <td>@item.assignmentEntity</td>
+                            <td>@item.acquisitionYear</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+	    </table>                       
+	</div>
+</div>
+
+@code {
+    private HomeModel model;
+
+    private bool isSortedAscending;
+    private string currentSortColumn;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await HomeService.PortfolioComposition();
+    }
+
+    private string GetSortStyle(string columnName)
+    {
+        if (currentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+
+    private void SortTable(string columnName)
+    {
+        var items = model.Documents;
+
+        if (columnName != currentSortColumn)
+        {
+            //We need to force order by descending on the new column
+            items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            currentSortColumn = columnName;
+            isSortedAscending = true;
+        }
+        else //Sorting against same column but in different direction
+        {
+            if (isSortedAscending)
+            {
+                items = items.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+
+            isSortedAscending = !isSortedAscending;
+        }
+
+        model.Documents = items;
+
+        StateHasChanged();
+    }
+}

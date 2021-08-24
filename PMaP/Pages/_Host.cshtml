@@ -1,0 +1,173 @@
+﻿@page "/"
+@namespace PMaP.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PMaP</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    @*<link href="css/site.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="Composicion_files/CSS-Checkbox-Library-master/src/scss">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/css">
+
+    <link rel="stylesheet" type="text/css" href="Composicion_files/simple-line-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="Composicion_files/loading.min.css">
+
+    <link rel="stylesheet" type="text/css" href="Composicion_files/jquery.tagsinput.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/jquery.fancybox.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/jquery-ui-autocomplete.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/style.min.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/bootstrap-fileinput.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/dataTables.scroller.min.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/select2.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/chosen.min.css">
+
+    <link rel="stylesheet" type="text/css" href="Composicion_files/error.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/components-rounded.css" id="style_components">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/plugins.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/layout.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/light.css" id="style_color">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/custom.css">
+    <link rel="stylesheet" type="text/css" href="Composicion_files/timeline.css">
+
+    
+    <link rel="stylesheet" type="text/css" href="Composicion_files/stylesapp.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
+
+    <link href="_content/Syncfusion.Blazor.Themes/bootstrap4.css" rel="stylesheet" />
+    <script src="https://github.com/Daddoon/Blazor.Polyfill/releases/download/3.0.1/blazor.polyfill.min.js"></script>
+    <script src="https://cdn.syncfusion.com/blazor/19.2.46/syncfusion-blazor.min.js"></script>
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+
+    @*<div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>*@
+
+    <script src="_framework/blazor.server.js"></script>
+    <script src="_content/NEvaldas.Blazor.Select2/select2.blazor.js"></script>
+
+    <script type="text/javascript">
+        var rootJS = '//' + window.location.host + '/';
+        var txtBtnOk = 'Aceptar';
+        var txtBtnCancel = 'Cancelar';
+        var txtDaysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Mi&#233;rcoles', 'Jueves', 'Viernes', 'S&#225;bado'];
+        var txtDaysOfWeekMin = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
+        var txtMonths = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        var txtMonthsMin = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        var txtCollapseExpand = 'Ocultar/Mostrar';
+        var txtToday = 'Hoy';
+        var txtClear = 'Limpiar';
+        var txtRequiredField = 'No puede quedar vac&#237;o';
+        var sessionIsActive = rootJS + 'Account/SessionIsActive/';
+        var txtSelected = 'Seleccione';
+        var txtEmptyTable = 'No hay datos para mostrar';
+        var txtSearchTable = 'Buscar';
+    </script>
+
+    
+    <script type="text/javascript">
+        var txtNotFoundResults = 'No se encontraron resultados';
+        var txtFormatInputTooShort = 'N&#250;mero de caracteres que falta:';
+        var txtFormatInputTooLong = 'N&#250;mero de caracteres que sobran:';
+        var txtFormatSelectionTooBig = 'S&#243;lo puede seleccionar';
+        var txtFormatLoadMore = 'Cargando m&#225;s resultados…';
+        var txtFormatSearching = 'Buscando…';
+        var txtLanguage = 'es';
+    </script>
+
+    
+
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/Assets/js/plugins/respond.min.js"></script>
+    <script type="text/javascript" src="/Assets/js/plugins/excanvas.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="Composicion_files/jquery.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.blockui.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.cokie.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/loading.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script type="text/javascript" src="Composicion_files/bootstrap-hover-dropdown.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/bootstrap-fileinput.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.tagsinput.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.fancybox.js"></script>
+    <script type="text/javascript" src="Composicion_files/bootbox.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.form.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="Composicion_files/dataTables.scroller.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/tableload.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/select2.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/select2language.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/metronic.js"></script>
+    <script type="text/javascript" src="Composicion_files/layout.js"></script>
+    <script type="text/javascript" src="Composicion_files/demo.js"></script>
+    <script type="text/javascript" src="Composicion_files/jquery.signalR-2.4.1.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="Composicion_files/chosen.proto.min.js"></script>
+
+    <script>
+        window.addEventListener("beforeunload", function (e) {
+            $.ajax({
+                url: "/Logout",
+                data: {},
+                type: 'POST',
+                success: function (data) {
+                }
+            });
+        });
+
+        window.validationError = (message) => {
+            $('#message').text(message);
+            $('#myModal').modal('show');
+        };
+    </script>
+</body>
+</html>

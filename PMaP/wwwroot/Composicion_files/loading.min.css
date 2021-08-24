@@ -1,0 +1,1 @@
+.box-loader{position:absolute;left:0;top:0;width:100%;height:100%;z-index:99999999;/*background-image:url('../../img/ajax-loading.gif');*/background-position:center;background-repeat:no-repeat;background-color:transparent}#box-loading.box-loader{position:fixed;background-color:rgba(0,0,0,0.5)}

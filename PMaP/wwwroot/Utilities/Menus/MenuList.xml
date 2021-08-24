@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- El elemento global se llama Menu.
+  Esta formado por uno o varios nodos Item que a su vez pueden tener dentro un nodo Submenu compuesto por uno o más nodos SubItem.
+  Cada nodo Item y SubItem es una opción del menu y tiene los siguientes atributos:
+    - Text: Es el texto que aparecerá en el menú. Se pone el nombre de la variable en el fichero de recursos de internacionalización.
+    - Icon: Imagen representativa.
+    - Area: Nombre del módulo del proyecto a la que pertenece, como por ejemplo admin.
+    - Controller: Nombre del controlador que contiene la acción. Si no se pone ese elemnto del menú no será enlazado.
+    - Action: Nombre de la acción dentro del controlador.
+    - Section: Nombre de la sección dentro de la acción.
+    - Roles: Lista de los perfiles de usuario (separados por comas) que tiene acceso a la opción del menú. Si todos los perfiles tiene acceso será suficiente con poner All.
+    - WithLink: Valor para indicar si el elemento se puede enlazar (tomará el valor true) o no se puede enlazar (tomará el valor false). Por ejemplo, en las migas de pan.
+
+NOTA:
+Además, para todos aquellos usuarios que tengan subordinados, independientemente del rol que tengan serán considerados como manager.
+De esta forma, en este listado de permisos se ha de poner 'Manager' para dar permisos a estos usuarios.
+
+-->
+<Menu>
+  <Items>
+    <Item Text="itemHome" Icon="fa fa-home" Area="" Controller="Home" Action="Index" Roles="all" />
+    <Item Text="itemDataTapes" Icon="fa fa-upload" Area="" Controller="" Action="" Roles="all">
+      <Submenu>
+        <SubItem Text="itemDataTapesContracts" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemDataTapesParticipants" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemDataTapesColaterals" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemDataTapesProcedures" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemDataTapesInsolvencies" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemDataTapesLiens" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemDataTapesNovations" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemDataTapesPrices" Icon="" Controller="" Action="" Roles="all" />
+      </Submenu>
+    </Item>
+    <Item Text="itemPortfolios" Icon="fa fa-suitcase" Area="" Controller="Portfolios" Action="Index" Roles="all" />
+    <Item Text="itemPortfolioEvolution" Icon="fa fa-tasks" Area="" Controller="" Action="" Roles="all" />
+    <Item Text="itemActualizaciones" Icon="fa fa-handshake-o" Area="" Controller="" Action="" Roles="all">
+      <Submenu>
+        <SubItem Text="itemActualizacionesRecuperacionesDeuda" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemActualizacionesProcedimientosJudiciales" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemActualizacionesConcursosAdjudicaciones" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemActualizacionesParticipantes" Icon="" Controller="" Action="" Roles="all" />
+      </Submenu>
+    </Item>
+    <Item Text="itemPortfolioValuation" Icon="fa fa-cog" Area="" Controller="PortfolioValuation" Action="Index" Roles="all" />
+    <Item Text="itemAltaDeCarteras" Icon="fa fa-upload" Area="" Controller="" Action="" Roles="all" />
+    <Item Text="itemGeneracionDeDatatapes" Icon="fa fa-download" Area="" Controller="" Action="" Roles="all" />
+    <Item Text="itemCertificados" Icon="fa fa-file-pdf-o" Area="" Controller="" Action="" Roles="all">
+      <Submenu>
+        <SubItem Text="itemCertificadosAltaPlantillas" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemCertificadosGeneracionDeFormularios" Icon="" Controller="" Action="" Roles="all" />
+        <SubItem Text="itemCertificadosGeneracionDeCertificados" Icon="" Controller="" Action="" Roles="all" />
+      </Submenu>
+    </Item>
+    <Item Text="itemComunicados" Icon="fa fa-envelope-o" Area="" Controller="" Action="" Roles="all" />
+  </Items>
+</Menu>

@@ -1,0 +1,170 @@
+﻿@inherits LayoutComponentBase
+
+@*<div class="sidebar">
+    <NavMenu />
+</div>
+
+<div class="main">
+    <div class="top-row px-4">
+        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>*@
+
+<style>
+    body {
+	    background-color: #000000 ;
+	    font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .navbar {
+	    color: #fff;
+	    background: #0066ff !important;
+	    padding: 5px 16px;
+	    border-radius: 0;
+	    border: none;
+	    box-shadow: 0 0 3px rgba(0,0,0,.1);
+    }
+
+    .dropbtn {
+        color: #485a6a;
+        background: #ffffff !important;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: 400;
+        border: none;
+        margin-left: 5px;
+    }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: sticky;
+        background-color: #99dff;
+        min-width: 160px;
+
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        text-align: left;
+        display: block;
+        cursor: pointer;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        filter: alpha(opacity=100);
+        opacity: 1
+    }
+
+    /* Active/current link */
+    .navbar a.active {
+        background-color: #666;
+        color: white;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+  
+    }
+
+    <!-- Estilo para las pestañas -->
+
+    <!-- Estilo para las pestañas -->
+    .Tabs {
+        float:left;
+        width:100%;
+        line-height:120%;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .Tabs ul {
+        margin:0;
+        padding:0;
+        list-style:none;
+    }
+
+    .Tabs li {
+        float:left;
+        margin:0 0 0 3px;
+        padding:0;
+        @*background:url("p-der.gif") no-repeat right top;*@
+    }
+
+    .Tabs a {
+        padding:3px 10px 3px 10px;
+        display:block;
+        @*background:url("p-izq.gif") no-repeat left top;*@
+        color: #000000;
+        text-decoration: none;
+        background-color:#ccddff;
+    }
+
+    .Tabs .activa a {
+        background-image:url("p-izq-activo.gif");
+    }
+    .Tabs .activa {
+        background-image:url("p-der-activo.gif");
+    }
+
+    .button_add {
+        background-color: #ffffff;
+        border: none;
+        color: black;
+        padding: 8px 16px;
+        text-align: center;
+        font-size: 11px;
+        margin: 1px 1px;
+        opacity: 0.7;
+        transition: 0.3s;
+        display: inline-block;
+        text-decoration: none;
+        cursor: pointer;
+        position: relative; left: 100px;
+    }
+
+    .button_add:hover {
+        opacity: 1
+    }
+
+    .validation-message {
+        color: red;
+    }
+
+    .sort-link {
+        cursor:pointer;
+        text-decoration:underline;
+    }
+
+    .btn-disabled {
+        background-color: #D5D8DC;
+    }
+</style>
+
+<body class="page-header-fixed page-sidebar-closed-hide-logo" style="background-color: white !important;">
+    <Header />
+    <div class="page-container">
+        <NavMenu />
+        <div class="page-content-wrapper">
+            <div class="page-content ptn">
+                @Body
+            </div>
+        </div>
+    </div>
+</body>

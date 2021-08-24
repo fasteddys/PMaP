@@ -1,0 +1,702 @@
+﻿@page "/portfolioValuation/{isAdd}/{portfolio}/{subportfolio}"
+
+@using Blazored.SessionStorage
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using PMaP.Data
+@using PMaP.Models
+@using PMaP.Models.ViewModels.PortfolioValuation
+@using ProtectedLocalStore
+@using System.Globalization
+@inject PortfolioRegistrationService PortfolioRegistrationService
+@inject PortfolioValuationService PortfolioValuationService
+@inject NavigationManager NavigationManager
+@inject ISessionStorageService sessionStorage
+@inject IJSRuntime JSRuntime
+
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a style="color:#336699;">@pageBreadcrumb</a>
+    </li>
+</ul>
+@if (@showPortfolioDetail)
+{
+	<div class="row"> 
+		<div class="col">  
+			<div class="col-md-12">
+				  <div class="card card-primary">
+						<div class="card-header" style="background-color:#0066ff">
+						</div>
+				  </div>
+				  <div class="card-body" style="background-color:#e6f0ff">
+					<div class="row">
+						<div class="col-md-1">
+							<label>Portfolio</label>
+							<input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Portfolio1">
+						</div>
+						<div class="col-md-1">
+							<label>Subportfolio</label>
+							<input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Subportfolio">
+						</div>
+						<div class="col-md-1">
+							<label>Situation</label>
+							<input type="text" class="form-control" readonly="readonly" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Situation">
+						</div>
+						<div class="col-md-2">
+							<label>OB</label>
+							<input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.CutOffOb">
+						</div>
+						<div class="col-md-2">
+							<label>No. Contracts</label>
+							<input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.NoContracts">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+<div class="row">
+    <div class="col">
+		<div class="col-md-12">
+            <div class="card card-primary" style="">
+                <div class="card-header" style="background-color:#0066ff">
+                    <div class="caption">
+                        <font color="white">Characteristics selection</font>
+                    </div>
+                </div>
+                <div class="card-body" style="background-color:#e6f0ff">
+                    <div class="row">
+						<div class="col-md-3">          
+							<label>From</label>
+							<input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.From" @bind:format="yyyy-MM-dd">
+						</div>
+						<div class="col-md-3">          
+							<label>To</label>
+							<input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.To" @bind:format="yyyy-MM-dd">
+						</div>
+						<div class="col-md-2">  
+							<label>Debt type</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtType">
+								@foreach (var item in portfolioValuationModel.ViewModel.DebtTypeList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>
+						</div> 
+							<div class="col-md-2">          
+							<label>Judicialized</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.Judicialized">
+								@foreach (var item in portfolioValuationModel.ViewModel.JudicializedList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>         
+						</div>
+						<div class="col-md-2">          
+							<label>Insolvency</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.Insolvency">
+								@foreach (var item in portfolioValuationModel.ViewModel.InsolvencyList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>     						
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+							<label>Performing status</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.PerformingStatus">
+								@foreach (var item in portfolioValuationModel.ViewModel.PerformingStatusList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>
+						</div>  
+						<div class="col-md-2">          
+							<label>Debt (OB)</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtOB">
+								@foreach (var item in portfolioValuationModel.ViewModel.DebtOBList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>     
+						  </div>
+						<div class="col-md-2">
+							<label>Debtor name</label>
+							<input type="text" class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorName">
+						</div> 
+						<div class="col-md-2">  	
+							<label>Debtor type</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorType">
+								@foreach (var item in portfolioValuationModel.ViewModel.DebtorTypeList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>
+						</div> 
+						<div class="col-md-2">          
+							<label>Region</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.Region">
+								@foreach (var item in portfolioValuationModel.ViewModel.RegionList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>     
+						</div>
+						<div class="col-md-2">          
+							<label>Added in portfolio</label>
+							<select class="form-control" @bind="portfolioValuationModel.ViewModel.AddedInPortfolio">
+								@foreach (var item in portfolioValuationModel.ViewModel.AddedInPortfolioList)
+								{
+									<option value="@item.Value">@item.Text</option>
+								}
+							</select>     
+						</div>
+					</div>
+					<hr style="height:0.5px; color:#e6e6e6;background-color:#cccccc;">
+					<div class="row">
+						<div class="col-md-12"> 
+							<h5>Contract type:</h5>
+							@foreach (var item in portfolioValuationModel.ViewModel.ContractTypes)
+							{
+								bool Checked = false;
+								if (SelectedValues.Contains(item.Id))  
+								{
+									Checked = true;
+								}
+								<div class="checkbox" Height="15" Width="15">
+									<div class="col-md-3">
+										<label>
+											<input type="checkbox"
+												Height="15"
+												Width="15"
+												checked="@Checked"
+												@onchange="e => { CheckboxClicked(item.Id, e.Value); }" />
+											@item.Name
+										</label>
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+					<button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary">
+						<i class="fa fa-cog"></i>&nbsp;&nbsp;Calculate
+					</button>
+                </div>
+			</div>
+        </div>
+    </div>
+</div>
+@if (@showSummary)
+{
+	<hr style="height:1px; color:#0066ff;background-color:#0066ff;">
+	<div class="row mb-2">
+		<div class="col">					
+			<div class="card-header" style="background-color:#0066ff">
+                <div class="caption">
+                    <font color="white">Summary</font>
+					<button class="button_add" @onclick="Details">
+					    <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Detail
+					</button>
+                </div>
+            </div>
+            <table class="table table-striped table-bordered" style="background-color:#e6e6e6" >
+                <thead>
+                    <tr class="heading" style="color:#336699;">
+                        <th>Contracts</th>
+                        <th class="sorting_desc">Total OB </th>
+						<th class="sorting_desc">Secured OB </th>
+						<th class="sorting_desc">Unsecured OB </th>
+						<th class="sorting_desc">Secured Price</th>
+						<th class="sorting_desc">Unsecured Price</th>
+                        <th>Debtors</th>
+                        <th>Guarantors</th>   
+                    </tr>
+                </thead>
+                <tbody>
+					@if (portfolioValuationModel.Summary != null)
+                    {
+                        <tr>
+                            <td>@portfolioValuationModel.Summary.Contracts</td>
+                            <td>@portfolioValuationModel.Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                            <td>@portfolioValuationModel.Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                            <td>@portfolioValuationModel.Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                            <td>@portfolioValuationModel.Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                            <td>@portfolioValuationModel.Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                            <td>@portfolioValuationModel.Summary.Debtors</td>
+                            <td>@portfolioValuationModel.Summary.Guarantors</td>
+                        </tr>
+                    }
+				</tbody>
+			</table>
+        </div>
+    </div>
+}
+@if (@showDetails)
+{
+	<div class="row">
+        <div class="col">
+			<div style="overflow-y:scroll;">
+                <table class="table table-striped table-bordered" style="background-color:#e6e6e6; ">
+                    <thead>
+                        <tr class="heading" style="color:#336699">
+                            <th>
+								<span class="sort-link" @onclick="@(() => SortTable("Id"))">Contract</span>
+                                <span class="fa @(GetSortStyle("Id"))"></span>
+							</th>
+                            <th>
+								<span class="sort-link" @onclick="@(() => SortTable("MainParticipantId"))">Participant</span>
+                                <span class="fa @(GetSortStyle("MainParticipantId"))"></span>
+							</th>
+                            <th>
+								<span class="sort-link" @onclick="@(() => SortTable("NumParticipants"))">No. guarantors</span>
+                                <span class="fa @(GetSortStyle("NumParticipants"))"></span>
+							</th>
+                            <th>
+								<span class="sort-link" @onclick="@(() => SortTable("TotalAmountOb"))">Balance (OB)</span>
+                                <span class="fa @(GetSortStyle("TotalAmountOb"))"></span>
+							</th>
+							<th>
+								<span class="sort-link" @onclick="@(() => SortTable("MaturityPrincipalBalance"))">Maturity principal balance</span>
+                                <span class="fa @(GetSortStyle("MaturityPrincipalBalance"))"></span>
+							</th>
+							<th>
+								<span class="sort-link" @onclick="@(() => SortTable("OutstandingPrincipalBalance"))">Outstanding principal balance</span>
+                                <span class="fa @(GetSortStyle("OutstandingPrincipalBalance"))"></span>
+							</th>
+							<th>
+								<span class="sort-link" @onclick="@(() => SortTable("OriginationDate"))">Origination date</span>
+                                <span class="fa @(GetSortStyle("OriginationDate"))"></span>
+							</th>
+							<th>
+								<span class="sort-link" @onclick="@(() => SortTable("MaturityDate"))">Maturity Date</span>
+                                <span class="fa @(GetSortStyle("MaturityDate"))"></span>
+							</th>
+                            <th>
+								<span class="sort-link" @onclick="@(() => SortTable("FirstUnpaidInstalmentDate"))">First unpaid installment date</span>
+                                <span class="fa @(GetSortStyle("FirstUnpaidInstalmentDate"))"></span>
+							</th>
+							<th>
+								<span class="sort-link" @onclick="@(() => SortTable("JudicialProcess"))">Judicial process</span>
+                                <span class="fa @(GetSortStyle("JudicialProcess"))"></span>
+							</th>
+							<th>
+								<span class="sort-link" @onclick="@(() => SortTable("Portfolio"))">Portfolio</span>
+                                <span class="fa @(GetSortStyle("Portfolio"))"></span>
+							</th>
+							<th>
+								<span class="sort-link">Type of judicial procedure</span>
+							</th>
+                            <th>
+								<span class="sort-link" @onclick="@(() => SortTable("OriginalEntity"))">Assignment entity</span>
+                                <span class="fa @(GetSortStyle("OriginalEntity"))"></span>
+							</th>
+							<th><span class="sort-link">Origin</span></th>
+							<th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<tr>
+							<td>
+								<input @onchange="OnIdChanged" />
+							</td>
+							<td>
+								<input @onchange="OnMainParticipantIdChanged" />
+							</td>
+							<td>
+								<input @onchange="OnNumParticipantsChanged" />
+							</td>
+							<td>
+								<input @onchange="OnTotalAmountObChanged" />
+							</td>
+							<td>
+								<input @onchange="OnMaturityPrincipalBalanceChanged" />
+							</td>
+							<td>
+								<input @onchange="OnOutstandingPrincipalBalanceChanged" />
+							</td>
+							<td>
+								<input @onchange="OnOriginationDateChanged" />
+							</td>
+							<td>
+								<input @onchange="OnMaturityDateChanged" />
+							</td>
+							<td>
+								<input @onchange="OnFirstUnpaidInstalmentDateChanged" />
+							</td>
+							<td>
+								<input @onchange="OnJudicialProcessChanged" />
+							</td>
+							<td>
+								<input @onchange="OnPortfolioChanged" />
+							</td>
+							<td>
+								<input />
+							</td>
+							<td>
+								<input @onchange="OnOriginalEntityChanged" />
+							</td>
+						</tr>
+						@if (FilteredContractList != null && FilteredContractList.Count() > 0)
+						{
+							foreach (var item in FilteredContractList)
+							{
+								<tr>
+									<td>@item.Id</td>
+									<td>@item.MainParticipantId</td>
+									<td>@item.NumParticipants</td>
+									<td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+									<td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+									<td>@(item.OutstandingPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+									<td>@item.OriginationDate</td>
+									<td>@item.MaturityDate</td>
+									<td>@item.FirstUnpaidInstalmentDate</td>
+									<td>@(item.JudicialProcess != null && (sbyte)item.JudicialProcess == 1 ? "Yes" : "No")</td>
+									<td>@item.Portfolio</td>
+									<td></td>
+									<td>@item.OriginalEntity</td>
+									<td></td>
+									<td>
+										<button class="btn btn-xs btn-primary" @onclick="() => { View(item); }"><i class="fa fa-eye"></i></button>
+										<button class="btn btn-xs btn-danger" @onclick="() => { Remove(item); }"><i class="fa fa-trash-o"></i></button>
+									</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+			</div>
+			<br />
+			@if (isAdd == "1")
+			{
+				<p align="right">
+					<button class="btn  btn-primary" @onclick="UpdatePortfolio">
+						<i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
+					</button>
+					<button class="btn  btn-danger" >
+						<i class="fa fa-close"></i>&nbsp;&nbsp;Cancel
+					</button>
+				</p>
+			}
+			else
+			{
+				<p align="right">
+					<button class="btn btn-success" @onclick="AddPortfolio">
+						<i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Add Portfolio
+					</button>
+					<button class="btn  btn-primary" >
+						<i class="fa fa-download"></i>&nbsp;&nbsp;Perimeter
+					</button>
+				</p>
+			}
+		</div>
+	</div>
+}
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Validation error</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+ 
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span id="message"></span>
+            </div>
+ 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+	[Parameter]
+	public string portfolio { get; set; }
+	[Parameter]
+	public string subportfolio { get; set; }
+	[Parameter]
+	public string isAdd {get; set;}
+
+	private PortfolioValuationModel portfolioValuationModel { get; set; } = new PortfolioValuationModel
+	{
+		ViewModel = new ViewModel
+		{
+			DebtOBList = new List<SelectListItem>(),
+			DebtorTypeList = new List<SelectListItem>(),
+			DebtTypeList = new List<SelectListItem>(),
+			InsolvencyList = new List<SelectListItem>(),
+			JudicializedList = new List<SelectListItem>(),
+			PerformingStatusList = new List<SelectListItem>(),
+			RegionList = new List<SelectListItem>(),
+			ContractTypes = new List<ContractType>(),
+			AddedInPortfolioList = new List<SelectListItem>()
+		}
+	};
+
+	private List<int> SelectedValues { get; set; } = new List<int>();
+
+	private bool showSummary { get; set; }
+	private bool showDetails { get; set; }
+	private bool showPortfolioDetail { get; set; }
+	private string pageBreadcrumb { get; set; }
+
+	private bool isSortedAscending;
+    private string currentSortColumn;
+
+	private List<Contract> ContractList = new List<Contract>();
+	private List<Contract> FilteredContractList = new List<Contract>();
+	private string id, mainParticipantId, numParticipants, totalAmountOb, maturityPrincipalBalance, outstandingPrincipalBalance, originationDate, maturityDate,
+		firstUnpaidInstalmentDate, judicialProcess, portfolioFilter, originalEntity;
+
+	protected override async Task OnInitializedAsync()
+	{
+		portfolio = portfolio.Replace("+", "");
+		subportfolio = subportfolio.Replace("+", "");
+
+		portfolioValuationModel = await PortfolioValuationService.Index(portfolio, subportfolio, isAdd);
+
+		showSummary = false;
+		showDetails = false;
+		showPortfolioDetail = isAdd == "1" ? true : false;
+		pageBreadcrumb = isAdd == "1" ? "Portfolio valuation » Add contracts" : "Portfolio valuation";
+	}
+
+	private void CheckboxClicked(int aSelectedId, object aChecked)
+    {
+        if ((bool)aChecked)
+        {
+            if (!SelectedValues.Contains(aSelectedId))
+            {
+                SelectedValues.Add(aSelectedId);
+            }
+        }
+        else
+        {
+            if (SelectedValues.Contains(aSelectedId))
+            {
+                SelectedValues.Remove(aSelectedId);
+            }
+        }
+        StateHasChanged();
+    }
+
+	private async void Summary()
+	{
+		portfolioValuationModel.ViewModel.ContractTypes.ForEach(x => x.IsSelected = false);
+		portfolioValuationModel.ViewModel.ContractTypes.Where(x => SelectedValues.Contains(x.Id)).ToList().ForEach(x => x.IsSelected = true);
+		portfolioValuationModel = await PortfolioValuationService.Summary(portfolioValuationModel);
+		showSummary = true;
+		showDetails = false;
+		StateHasChanged();
+	}
+
+	private async void Details()
+	{
+		portfolioValuationModel = await PortfolioValuationService.Details(portfolioValuationModel);
+		ContractList = FilteredContractList = portfolioValuationModel.Contracts;
+		showDetails = true;
+		StateHasChanged();
+	}
+
+	private async void AddPortfolio()
+	{
+		var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
+		if (inPortfolio != null)
+        {
+			await JSRuntime.InvokeVoidAsync("validationError", "Contract/s already added to a portfolio.");
+			return;
+		}
+		await sessionStorage.SetItemAsync("Summary", portfolioValuationModel.Summary);
+		await sessionStorage.SetItemAsync("portfolioValuationViewModel", portfolioValuationModel.ViewModel);
+		NavigationManager.NavigateTo("/portfolios/1");
+	}
+
+	private void View(Contract contract)
+	{
+
+	}
+
+	private void Remove(Contract contract)
+	{
+		portfolioValuationModel.Contracts.Remove(contract);
+		portfolioValuationModel.ViewModel.ExcludedContractIds.Add(contract.Id);
+		StateHasChanged();
+	}
+
+	private async void UpdatePortfolio()
+	{
+		var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
+		if (inPortfolio != null)
+        {
+			await JSRuntime.InvokeVoidAsync("validationError", "Contract/s already added to a portfolio.");
+			return;
+		}
+		await PortfolioRegistrationService.UpdatePortfolio(portfolioValuationModel);
+	}
+
+	private string GetSortStyle(string columnName)
+    {
+        if (currentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+
+    private void SortTable(string columnName)
+    {
+        var items = portfolioValuationModel.Contracts;
+
+        if (columnName != currentSortColumn)
+        {
+            //We need to force order by descending on the new column
+            items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            currentSortColumn = columnName;
+            isSortedAscending = true;
+        }
+        else //Sorting against same column but in different direction
+        {
+            if (isSortedAscending)
+            {
+                items = items.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+
+            isSortedAscending = !isSortedAscending;
+        }
+
+        portfolioValuationModel.Contracts = items;
+
+        StateHasChanged();
+    }
+
+	private void OnIdChanged(ChangeEventArgs e)
+	{
+		id = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+
+	private void OnMainParticipantIdChanged(ChangeEventArgs e)
+	{
+		mainParticipantId = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnNumParticipantsChanged(ChangeEventArgs e)
+	{
+		numParticipants = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnTotalAmountObChanged(ChangeEventArgs e)
+	{
+		totalAmountOb = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnMaturityPrincipalBalanceChanged(ChangeEventArgs e)
+	{
+		maturityPrincipalBalance = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnOutstandingPrincipalBalanceChanged(ChangeEventArgs e)
+	{
+		outstandingPrincipalBalance = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnOriginationDateChanged(ChangeEventArgs e)
+	{
+		originationDate = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnMaturityDateChanged(ChangeEventArgs e)
+	{
+		maturityDate = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnFirstUnpaidInstalmentDateChanged(ChangeEventArgs e)
+	{
+		firstUnpaidInstalmentDate = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnJudicialProcessChanged(ChangeEventArgs e)
+	{
+		judicialProcess = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnPortfolioChanged(ChangeEventArgs e)
+	{
+		portfolioFilter = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+	
+	private void OnOriginalEntityChanged(ChangeEventArgs e)
+	{
+		originalEntity = e.Value.ToString();
+		ContractFilteringList();
+		StateHasChanged();
+	}
+
+	private void ContractFilteringList()
+	{
+		FilteredContractList = ContractList;
+		if (!string.IsNullOrEmpty(id))
+			FilteredContractList = ContractList.Where(x => x.Id.ToString().ToLower().Contains(id.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(mainParticipantId))
+			FilteredContractList = ContractList.Where(x => x.MainParticipantId.ToLower().Contains(mainParticipantId.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(numParticipants))
+			FilteredContractList = ContractList.Where(x => x.NumParticipants.ToString().ToLower().Contains(numParticipants.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(totalAmountOb))
+			FilteredContractList = ContractList.Where(x => x.TotalAmountOb.ToString().ToLower().Contains(totalAmountOb.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(maturityPrincipalBalance))
+			FilteredContractList = ContractList.Where(x => x.MaturityPrincipalBalance.ToString().ToLower().Contains(maturityPrincipalBalance.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(outstandingPrincipalBalance))
+			FilteredContractList = ContractList.Where(x => x.OutstandingPrincipalBalance.ToString().ToLower().Contains(outstandingPrincipalBalance.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(originationDate))
+			FilteredContractList = ContractList.Where(x => x.OriginationDate.ToString().ToLower().Contains(originationDate.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(maturityDate))
+			FilteredContractList = ContractList.Where(x => x.MaturityDate.ToString().ToLower().Contains(maturityDate.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(firstUnpaidInstalmentDate))
+			FilteredContractList = ContractList.Where(x => x.FirstUnpaidInstalmentDate.ToString().ToLower().Contains(firstUnpaidInstalmentDate.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(judicialProcess))
+			FilteredContractList = ContractList.Where(x => x.JudicialProcess.ToString().ToLower().Contains(judicialProcess.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(portfolioFilter))
+			FilteredContractList = ContractList.Where(x => x.Portfolio.ToLower().Contains(portfolioFilter.ToLower())).ToList();
+		if (!string.IsNullOrEmpty(originalEntity))
+			FilteredContractList = ContractList.Where(x => x.OriginalEntity.ToLower().Contains(originalEntity.ToLower())).ToList();
+	}
+}

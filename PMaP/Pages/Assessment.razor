@@ -1,0 +1,46 @@
+﻿@using PMaP.Models
+@using System.Globalization
+
+<br /><br />
+<div class="row">
+    <div class="col">
+		<div class="card-header" style="background-color:#0066ff">
+            <div class="caption">
+                <font color="white">Assessment</font>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered" style="background-color:#e6e6e6" >
+            <thead>
+                <tr class="heading" style="color:#336699;">
+                    <th>Contracts</th>
+                    <th class="sorting_desc">Total OB</th>
+					<th class="sorting_desc">Secured OB</th>
+					<th class="sorting_desc">Unsecured OB</th>
+					<th class="sorting_desc">Secured Price</th>
+					<th class="sorting_desc">Unsecured Price</th>
+                    <th>Debtors</th>
+                    <th>Guarantors</th>   
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@contractsModel.Summary.Contracts</td>
+                    <td>@contractsModel.Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                    <td>@contractsModel.Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                    <td>@contractsModel.Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                    <td>@contractsModel.Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                    <td>@contractsModel.Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                    <td>@contractsModel.Summary.Debtors</td>
+                    <td>@contractsModel.Summary.Guarantors</td>
+                </tr>
+			</tbody>
+		</table>
+    </div>
+</div>
+
+@code {
+    private ContractsModel contractsModel { get; set; } = new ContractsModel
+    {
+        Summary = new Summary()
+    };
+}

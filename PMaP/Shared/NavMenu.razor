@@ -1,0 +1,152 @@
+﻿@using Blazored.SessionStorage
+@inject NavigationManager NavigationManager
+@inject ISessionStorageService sessionStorage
+
+<div class="page-sidebar-wrapper" >
+    <div class="page-sidebar navbar-collapse collapse" style="background-color:#e6f0ff">
+        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            @*<li class="">
+				<div>
+                    <span class="caption-subject font-r-sharp bold uppercase" style="position: absolute; left: 16px;" >MODULO PSI</span>
+					<br>
+                </div>  
+            </li>*@
+			<li class="@(GetMenuStyle(""))">
+                <a href="" title="Home">
+                    <i class="fa fa-home" aria-hidden="true" style="color:#336699;"></i>
+                    <span class="title">Home</span>
+                </a>
+            </li>
+			<li class="dropdown">
+				<a href="" tille="DataTapes">
+				    <i class="fa fa-upload" style="color:#336699;"></i>
+				    <span class="title">DataTapes</span><span class="caret"></span>
+                </a>
+				<div class="dropdown-content">
+				    <a href="#">Contracts</a>
+				    <a href="#">Participants</a>
+				    <a href="#">Colaterals</a>
+				    <a href="#">Procedures</a>
+				    <a href="#">Insolvencies</a>
+				    <a href="#">Liens</a>
+				    <a href="#">Novations</a>
+				    <a href="#">Prices</a>
+				</div>
+            </li>
+            <li class="@(GetMenuStyle("portfolioMarket"))">
+                <a href="portfolioMarket" title="Portfolio market">
+                    <i class="fa fa-bar-chart" aria-hidden="true" style="color:#336699;"></i>
+                    <span class="title">Portfolio market</span>
+                </a>
+            </li>
+			<li class="@(GetMenuStyle("portfolios"))">
+                <a href="portfolios/0" title="Portfolios">
+                    <i class="fa fa-suitcase" aria-hidden="true" style="color:#336699;"></i>
+                    <span class="title">Portfolios</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="" title="Portfolio evolution">
+                    <i class="fa fa-tasks" style="color:#336699;"></i>
+                    <span class="title">Portfolio evolution</span>
+				</a>                     
+            </li>
+            <li class="dropdown">
+                <a href="" title="Actualization">
+                    <i class="fa fa-handshake-o" style="color:#336699;"></i>
+                    <span class="title">Actualization</span><span class="caret"></span>
+                </a>
+				<div class="dropdown-content">
+					<a href="">Debt recoveries</a>
+					<a href="">Judicial proceedings</a>
+					<a href="">Concursos / Adjudication</a>
+					<a href="">Participantes</a>
+				</div>
+            </li>
+			<li class="@(GetMenuStyle("portfolioValuation"))">
+                <a href="portfolioValuation/0/+/+" title="Portfolio evaluation">
+                    <i class="fa fa-cog" style="color:#336699;"></i>
+                    <span class="title">Portfolio evaluation</span>
+				</a>                     
+            </li>
+			<li class="">
+                <a href="" title="Portfolio registration">
+                    <i class="fa fa-upload" style="color:#336699;"></i>
+                    <span class="title">Portfolio registration</span>
+				</a>                     
+            </li>
+			<li class="">
+                <a href="" title="Generation of datatapes">
+                    <i class="fa fa-download" style="color:#336699;"></i>
+                    <span class="title">Generation of datatapes</span>
+				</a>
+            </li>
+			<li class="dropdown">
+				<a href="" title="Certificates">
+                    <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
+					<span class="title">Certificates</span>
+					<span class="caret"></span>
+				</a>
+				<div class="dropdown-content">
+					<a href="">Alta plantillas</a>
+					<a href="">Form generation</a>
+					<a href="">Certificate generation</a>
+				</div>  
+            </li>
+			<li class="">
+				<a href="" title="Releases">
+                    <i class="fa fa-envelope-open-o" style="color:#336699;"></i>
+                    <span class="title">Releases</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private string previousLocation = "";
+    private string currentLocation = "";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += LocationChanged;
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            currentLocation = await sessionStorage.GetItemAsync<string>("currentLocation");
+            StateHasChanged();
+        }
+    }
+
+    async void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        var locations = e.Location.Split("/");
+        currentLocation = locations[3];
+        await sessionStorage.SetItemAsync("currentLocation", currentLocation);
+        if (e.IsNavigationIntercepted && previousLocation == currentLocation)
+        {
+            NavigationManager.NavigateTo(e.Location, true);
+        }
+        previousLocation = locations[3];
+        StateHasChanged();
+    }
+
+    private string GetMenuStyle(string menu)
+    {
+        currentLocation = currentLocation == null ? "" : currentLocation;
+        return menu == currentLocation ? "active" : "";
+    }
+}
