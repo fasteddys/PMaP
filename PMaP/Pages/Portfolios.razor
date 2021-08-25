@@ -83,11 +83,11 @@
                         </div>
                         <br><br>
                         <p align="right">
-                            <button type="button" class="btn @(GetSearchAddStyle())" @onclick="Search" disabled="@isSearchAddButtonDisabled">
+                            <button type="button" class="btn @(GetSearchStyle())" @onclick="Search" disabled="@isSearchButtonDisabled">
                                 <i class="fa fa-search"></i>&nbsp;&nbsp;Search
                             </button>
-                            <button type="button" class="btn @(GetSearchAddStyle())" @onclick="Add" disabled="@isSearchAddButtonDisabled">
-                                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Add
+                            <button type="button" class="btn @(GetAddStyle())" @onclick="Add" disabled="@isAddButtonDisabled">
+                                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Add contracts
                             </button>
                         </p>
 				        <br><br>
@@ -611,7 +611,7 @@
                     else
                     {
                         <p align="right">
-                            <button type="submit" class="btn btn-danger" @onclick="DiscardPortfolio" disabled="@isDiscardPortfolioDisabled">
+                            <button type="submit" class="btn @(GetDiscardStyle())" @onclick="DiscardPortfolio" disabled="@isDiscardPortfolioDisabled">
 		                        <i class="fa fa-trash"></i>&nbsp;&nbsp;Discard
                             </button>
                         </p>
@@ -641,7 +641,8 @@
     
     private bool isDisabled { get; set; }
     private bool isDateInputDisabled { get; set; }
-    private bool isSearchAddButtonDisabled { get; set; }
+    private bool isSearchButtonDisabled { get; set; }
+    private bool isAddButtonDisabled { get; set; }
     private bool isDiscardPortfolioDisabled { get; set; }
     private bool displayAssessment { get; set; }
     private bool displayEntityList { get; set; }
@@ -667,7 +668,8 @@
     {
         isDisabled = true;
         isDateInputDisabled = true;
-        isSearchAddButtonDisabled = false;
+        isSearchButtonDisabled = false;
+        isAddButtonDisabled = true;
         displayAssessment = false;
         portfolioModel = await PortfolioService.Portfolios("");
         portfolios = portfolioModel.Documents;
@@ -675,7 +677,8 @@
         if (isAdd == "1")
         {
             isDateInputDisabled = false;
-            isSearchAddButtonDisabled = true;
+            isSearchButtonDisabled = true;
+            isAddButtonDisabled = true;
 
             var summary = await sessionStorage.GetItemAsync<Summary>("Summary");
             var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
@@ -705,10 +708,12 @@
         portfolioModel.ActiveTab = "contracts";
 
         isDiscardPortfolioDisabled = true;
+        isAddButtonDisabled = true;
         var portfolio = portfolioModel.Documents.FirstOrDefault();
         if (portfolio != null && portfolio.OperationType == "SALE")
         {
             isDiscardPortfolioDisabled = false;
+            isAddButtonDisabled = false;
         }
 
         StateHasChanged();
@@ -989,15 +994,38 @@
         portfolioModel.ViewModel.Subportfolio = "";
         portfolioModel.ViewModel.SubportfolioList = subportfolioList;
 
+        isAddButtonDisabled = true;
+        isDiscardPortfolioDisabled = true;
+
         StateHasChanged();
     }
 
-    private string GetSearchAddStyle()
+    private string GetSearchStyle()
     {
         string style = "btn-disabled";
-        if (!isSearchAddButtonDisabled)
+        if (!isSearchButtonDisabled)
         {
             style = "btn-primary";
+        }
+        return style;
+    }
+
+    private string GetAddStyle()
+    {
+        string style = "btn-disabled";
+        if (!isAddButtonDisabled)
+        {
+            style = "btn-primary";
+        }
+        return style;
+    }
+
+    private string GetDiscardStyle()
+    {
+        string style = "btn-disabled";
+        if (!isDiscardPortfolioDisabled)
+        {
+            style = "btn-danger";
         }
         return style;
     }
