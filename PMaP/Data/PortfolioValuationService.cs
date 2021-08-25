@@ -133,7 +133,7 @@ namespace PMaP.Data
             {
                 model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
             }
-            else if (string.IsNullOrEmpty(viewModel.AddedInPortfolio))
+            else if (string.IsNullOrEmpty(viewModel.AddedInPortfolio) || viewModel.AddedInPortfolio == "Select")
             {
                 foreach (var item in model.Contracts)
                 {

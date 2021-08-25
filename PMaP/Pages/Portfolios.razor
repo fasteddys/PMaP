@@ -824,8 +824,8 @@
 
     private void Add()
     {
-        string portfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Portfolio) ? portfolioModel.ViewModel.Portfolio : "+";
-        string subportfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Subportfolio) ? portfolioModel.ViewModel.Subportfolio : "+";
+        string portfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Portfolio) ? portfolioModel.ViewModel.Portfolio : "_";
+        string subportfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Subportfolio) ? portfolioModel.ViewModel.Subportfolio : "_";
         NavigationManager.NavigateTo("/portfolioValuation/1/" + portfolio + "/" + subportfolio);
     }
 
