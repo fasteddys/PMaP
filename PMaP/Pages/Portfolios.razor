@@ -615,7 +615,7 @@
                     else
                     {
                         <p align="right">
-                            <button type="submit" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?", true))" disabled="@isDiscardPortfolioDisabled">
+                            <button type="submit" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?"))" disabled="@isDiscardPortfolioDisabled">
 		                        <i class="fa fa-trash"></i>&nbsp;&nbsp;Discard
                             </button>
                         </p>
@@ -873,8 +873,7 @@
     {
         portfolioModel.ViewModel.Portfolio = portfolioModel.Portfolio;
         var addPortfolioResponse = await PortfolioRegistrationService.AddPortfolio(portfolioModel);
-        await ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message, true);
-        isDiscarded = true;
+        await ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message);
     }
 
     private void InvalidFormSubmitted(EditContext editContext)
@@ -893,21 +892,24 @@
         if (portfolioToDiscard != null)
         {
             var discardPortfolioResponse = await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
-            await ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message, true);
-            isDiscarded = true;
+            await ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message);
         }
     }
 
-    private async Task ShowMessage(int code, string message, bool isConfirm = false)
+    private async Task ShowMessage(int code, string message)
     {
         string title;
+        bool isConfirm = false;
         switch (code)
         {
             case 1:
                 title = "Confimation";
+                isConfirm = true;
                 break;
             case 200:
                 title = "Success";
+                isDiscarded = true;
+                isConfirm = true;
                 break;
             case 400:
                 title = "Warning!";
@@ -929,7 +931,7 @@
 
     private void Cancel()
 	{
-		NavigationManager.NavigateTo("/portfolioValuation/0/_/_", true);
+		NavigationManager.NavigateTo("/portfolioValuation/0/_/_");
 	}
 
     private async void SearchContract(KeyboardEventArgs e)
