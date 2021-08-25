@@ -45,6 +45,8 @@ namespace PMaP.Data
                 }
             }
 
+            model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd { Portfolio = new Portfolio() };
+
             if (portfolioModel.ResponseCode == 200 && portfolioModel.Documents != null && portfolioModel.Documents.Count() > 0)
             {
                 var portfolioContext = portfolioModel.Documents.First();
