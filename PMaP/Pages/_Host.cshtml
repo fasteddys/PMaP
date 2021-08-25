@@ -164,9 +164,16 @@
             });
         });
 
-        window.validationError = (message) => {
+        window.showDialog = (title, message, isConfirm) => {
+            $('#title').text(title);
             $('#message').text(message);
-            $('#myModal').modal('show');
+            $('#btnOK').show();
+            $('#btnOKConfirm').hide();
+            if (isConfirm) {
+                $('#btnOK').hide();
+                $('#btnOKConfirm').show();
+            }
+            $('#myModal').modal({backdrop: 'static', keyboard: false});
         };
     </script>
 </body>

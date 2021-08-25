@@ -399,14 +399,14 @@
 	</div>
 }
 
-<div class="modal" id="myModal">
+<div class="modal fade" id="myModal" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
  
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Validation error</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="title" class="modal-title"></h4>
+                <button type="button" data-dismiss="modal">x</button>
             </div>
  
             <!-- Modal body -->
@@ -416,7 +416,8 @@
  
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+                <button id="btnOK" type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+				<button id="btnOKConfirm" type="button" class="btn btn-light" data-dismiss="modal" @onclick="Cancel">OK</button>
             </div>
         </div>
     </div>
@@ -516,7 +517,7 @@
 		var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
 		if (inPortfolio != null)
         {
-			await JSRuntime.InvokeVoidAsync("validationError", "Contract/s already added to a portfolio.");
+			await JSRuntime.InvokeVoidAsync("showDialog", "Warning!", "Contract/s already added to a portfolio.");
 			return;
 		}
 		await sessionStorage.SetItemAsync("Summary", portfolioValuationModel.Summary);
@@ -541,10 +542,27 @@
 		var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
 		if (inPortfolio != null)
         {
-			await JSRuntime.InvokeVoidAsync("validationError", "Contract/s already added to a portfolio.");
+			await JSRuntime.InvokeVoidAsync("showDialog", "Warning!", "Contract/s already added to a portfolio.");
 			return;
 		}
-		await PortfolioRegistrationService.UpdatePortfolio(portfolioValuationModel);
+		var updatePortfolioResponse = await PortfolioRegistrationService.UpdatePortfolio(portfolioValuationModel);
+		string title;
+		switch (updatePortfolioResponse.ResponseCode)
+		{
+			case 200:
+				title = "Success";
+				break;
+			case 400:
+				title = "Warning!";
+				break;
+			case 500:
+				title = "Error!";
+				break;
+			default:
+				title = "";
+				break;
+		}
+		await JSRuntime.InvokeVoidAsync("showDialog", title, updatePortfolioResponse.Message, true);
 	}
 
 	private void Cancel()

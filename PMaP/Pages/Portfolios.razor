@@ -11,6 +11,7 @@
 @inject PortfolioRegistrationService PortfolioRegistrationService
 @inject NavigationManager NavigationManager
 @inject ISessionStorageService sessionStorage
+@inject IJSRuntime JSRuntime
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
@@ -606,12 +607,15 @@
                             <button type="submit" class="btn btn-primary" @*@onclick="AddPortfolio"*@>
 		                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
                             </button>
+                            <button class="btn btn-danger" @onclick="Cancel">
+							    <i class="fa fa-close"></i>&nbsp;&nbsp;Cancel
+						    </button>
                         </p>
                     }
                     else
                     {
                         <p align="right">
-                            <button type="submit" class="btn @(GetDiscardStyle())" @onclick="DiscardPortfolio" disabled="@isDiscardPortfolioDisabled">
+                            <button type="submit" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?", true))" disabled="@isDiscardPortfolioDisabled">
 		                        <i class="fa fa-trash"></i>&nbsp;&nbsp;Discard
                             </button>
                         </p>
@@ -621,6 +625,30 @@
         </div>
     }
 </EditForm>
+
+<div class="modal fade" id="myModal" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="title" class="modal-title"></h4>
+                <button type="button" data-dismiss="modal">x</button>
+            </div>
+ 
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span id="message"></span>
+            </div>
+ 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id="btnOK" type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+                <button id="btnOKConfirm" type="button" class="btn btn-light" data-dismiss="modal" @onclick="DiscardPortfolio">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     [Parameter]
@@ -843,7 +871,8 @@
     private async void ValidFormSubmitted(EditContext editContext)
     {
         portfolioModel.ViewModel.Portfolio = portfolioModel.Portfolio;
-        await PortfolioRegistrationService.AddPortfolio(portfolioModel);
+        var addPortfolioResponse = await PortfolioRegistrationService.AddPortfolio(portfolioModel);
+        ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message);
     }
 
     private void InvalidFormSubmitted(EditContext editContext)
@@ -856,9 +885,45 @@
         var portfolioToDiscard = portfolioModel.Documents.FirstOrDefault();
         if (portfolioToDiscard != null)
         {
-            await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
+            var discardPortfolioResponse = await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
+            ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message);
+            Search();
         }
     }
+
+    private void ShowMessage(int code, string message, bool isConfirm = false)
+    {
+        string title;
+        switch (code)
+        {
+            case 1:
+                title = "Confimation";
+                break;
+            case 200:
+                title = "Success";
+                break;
+            case 400:
+                title = "Warning!";
+                break;
+            case 500:
+                title = "Error!";
+                break;
+            default:
+                title = "";
+                break;
+        }
+        ShowDialog(title, message, isConfirm);
+    }
+
+    private async void ShowDialog(string title, string text, bool isConfirm = false)
+    {
+        await JSRuntime.InvokeVoidAsync("showDialog", title, text, isConfirm);
+    }
+
+    private void Cancel()
+	{
+		NavigationManager.NavigateTo("/portfolioValuation/0/_/_");
+	}
 
     private async void SearchContract(KeyboardEventArgs e)
     {
