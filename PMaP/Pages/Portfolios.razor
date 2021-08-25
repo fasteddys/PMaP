@@ -689,7 +689,7 @@
     private string currentContractsSortColumn;
     private bool isParticipantsSortedAscending;
     private string currentParticipantsSortColumn;
-    private bool isInvestorSortedAscending;
+    private bool isInvestorSortedAscending, isDiscarded;
     private string currentInvestorSortColumn;
 
     protected override async Task OnInitializedAsync()
@@ -699,6 +699,7 @@
         isSearchButtonDisabled = false;
         isAddButtonDisabled = true;
         displayAssessment = false;
+        isDiscarded = false;
         portfolioModel = await PortfolioService.Portfolios("");
         portfolios = portfolioModel.Documents;
 
@@ -872,7 +873,8 @@
     {
         portfolioModel.ViewModel.Portfolio = portfolioModel.Portfolio;
         var addPortfolioResponse = await PortfolioRegistrationService.AddPortfolio(portfolioModel);
-        ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message);
+        await ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message, true);
+        isDiscarded = true;
     }
 
     private void InvalidFormSubmitted(EditContext editContext)
@@ -880,18 +882,23 @@
         
     }
 
-    private async void DiscardPortfolio()
+    private async Task DiscardPortfolio()
     {
+        if (isDiscarded == true)
+        {
+            NavigationManager.NavigateTo("/portfolios/0", true);
+        }
+        
         var portfolioToDiscard = portfolioModel.Documents.FirstOrDefault();
         if (portfolioToDiscard != null)
         {
             var discardPortfolioResponse = await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
-            ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message);
-            Search();
+            await ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message, true);
+            isDiscarded = true;
         }
     }
 
-    private void ShowMessage(int code, string message, bool isConfirm = false)
+    private async Task ShowMessage(int code, string message, bool isConfirm = false)
     {
         string title;
         switch (code)
@@ -912,17 +919,17 @@
                 title = "";
                 break;
         }
-        ShowDialog(title, message, isConfirm);
+        await ShowDialog(title, message, isConfirm);
     }
 
-    private async void ShowDialog(string title, string text, bool isConfirm = false)
+    private async Task ShowDialog(string title, string text, bool isConfirm = false)
     {
         await JSRuntime.InvokeVoidAsync("showDialog", title, text, isConfirm);
     }
 
     private void Cancel()
 	{
-		NavigationManager.NavigateTo("/portfolioValuation/0/_/_");
+		NavigationManager.NavigateTo("/portfolioValuation/0/_/_", true);
 	}
 
     private async void SearchContract(KeyboardEventArgs e)
