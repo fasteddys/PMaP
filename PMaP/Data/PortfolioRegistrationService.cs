@@ -23,8 +23,11 @@ namespace PMaP.Data
 
         public async Task<PortfolioModel> Index(Models.ViewModels.PortfolioValuation.ViewModel portfolioValuationViewModel, Summary summary)
         {
-            portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Portfolio1 = "";
-            portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Subportfolio = "";
+            if (portfolioValuationViewModel.PortfolioValuationAdd != null)
+            {
+                portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Portfolio1 = "";
+                portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Subportfolio = "";
+            }
 
             PortfolioValuationModel portfolioValuationModel = new PortfolioValuationModel();
             using (var client = new HttpClient())
@@ -55,9 +58,9 @@ namespace PMaP.Data
                 ViewModel = new ViewModel
                 {
                     DateAdded = DateTime.Now,
-                    PortfolioId = portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Id,
-                    Portfolio = portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Portfolio1,
-                    Subportfolio = portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Subportfolio
+                    PortfolioId = portfolioValuationViewModel.PortfolioValuationAdd != null ? portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Id : 0,
+                    Portfolio = portfolioValuationViewModel.PortfolioValuationAdd != null ? portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Portfolio1 : "",
+                    Subportfolio = portfolioValuationViewModel.PortfolioValuationAdd != null? portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Subportfolio : ""
                 }
             };
 

@@ -611,7 +611,7 @@
                     else
                     {
                         <p align="right">
-                            <button type="submit" class="btn btn-danger" @onclick="DiscardPortfolio">
+                            <button type="submit" class="btn btn-danger" @onclick="DiscardPortfolio" disabled="@isDiscardPortfolioDisabled">
 		                        <i class="fa fa-trash"></i>&nbsp;&nbsp;Discard
                             </button>
                         </p>
@@ -642,6 +642,7 @@
     private bool isDisabled { get; set; }
     private bool isDateInputDisabled { get; set; }
     private bool isSearchAddButtonDisabled { get; set; }
+    private bool isDiscardPortfolioDisabled { get; set; }
     private bool displayAssessment { get; set; }
     private bool displayEntityList { get; set; }
 
@@ -702,6 +703,13 @@
         classContracts = "active";
         classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
         portfolioModel.ActiveTab = "contracts";
+
+        isDiscardPortfolioDisabled = true;
+        var portfolio = portfolioModel.Documents.FirstOrDefault();
+        if (portfolio != null && portfolio.OperationType == "SALE")
+        {
+            isDiscardPortfolioDisabled = false;
+        }
 
         StateHasChanged();
     }
