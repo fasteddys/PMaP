@@ -650,6 +650,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModalSuccess" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="title" class="modal-title">Success</h4>
+                <button type="button" data-dismiss="modal" @onclick="Reload">x</button>
+            </div>
+ 
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span id="messageSuccess"></span>
+            </div>
+ 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal" @onclick="Reload">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
     [Parameter]
     public string isAdd { get; set; }
@@ -873,7 +896,14 @@
     {
         portfolioModel.ViewModel.Portfolio = portfolioModel.Portfolio;
         var addPortfolioResponse = await PortfolioRegistrationService.AddPortfolio(portfolioModel);
-        await ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message);
+        if (addPortfolioResponse.ResponseCode == 200)
+        {
+            await JSRuntime.InvokeVoidAsync("showDialogSuccess", addPortfolioResponse.Message);
+        }
+        else
+        {
+            await ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message);
+        }
     }
 
     private void InvalidFormSubmitted(EditContext editContext)
@@ -892,8 +922,20 @@
         if (portfolioToDiscard != null)
         {
             var discardPortfolioResponse = await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
-            await ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message);
+            if (discardPortfolioResponse.ResponseCode == 200)
+            {
+                await JSRuntime.InvokeVoidAsync("showDialogSuccess", discardPortfolioResponse.Message);
+            }
+            else
+            {
+                await ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message);
+            }
         }
+    }
+
+    private void Reload()
+    {
+        NavigationManager.NavigateTo("/portfolios/0", true);
     }
 
     private async Task ShowMessage(int code, string message)

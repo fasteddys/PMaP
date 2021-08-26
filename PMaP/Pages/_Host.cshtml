@@ -175,6 +175,11 @@
             }
             $('#myModal').modal({backdrop: 'static', keyboard: false});
         };
+
+        window.showDialogSuccess = (message) => {
+            $('#messageSuccess').text(message);
+            $('#myModalSuccess').modal({backdrop: 'static', keyboard: false});
+        };
     </script>
 </body>
 </html>
