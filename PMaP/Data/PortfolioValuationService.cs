@@ -224,10 +224,10 @@ namespace PMaP.Data
             model.ViewModel.AddedInPortfolioList = selectListItems;
 
             List<ContractType> contractTypes = new List<ContractType>();
-            contractTypes.Add(new ContractType { Id = 1, Name = "Préstamo Hipotecario" });
-            contractTypes.Add(new ContractType { Id = 2, Name = "Descubiertos" });
-            contractTypes.Add(new ContractType { Id = 3, Name = "Descuentos comerciales" });
-            contractTypes.Add(new ContractType { Id = 4, Name = "Factoring" });
+            contractTypes.Add(new ContractType { Id = 1, Name = "Prestamo Hipotecario" });
+            contractTypes.Add(new ContractType { Id = 2, Name = "Contrato de Hipoteca de Maximo" });
+            contractTypes.Add(new ContractType { Id = 3, Name = "Credito con Garantia Hipotecaria" });
+            contractTypes.Add(new ContractType { Id = 4, Name = "Prestamo" });
             contractTypes.Add(new ContractType { Id = 5, Name = "Préstamo Consumo" });
             contractTypes.Add(new ContractType { Id = 6, Name = "Tarjetas" });
             contractTypes.Add(new ContractType { Id = 7, Name = "Leasing mobiliario" });
