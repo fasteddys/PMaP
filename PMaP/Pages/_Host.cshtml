@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PMaP</title>
     <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />*@
     @*<link href="css/site.css" rel="stylesheet" />*@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -66,7 +66,7 @@
     <script src="https://github.com/Daddoon/Blazor.Polyfill/releases/download/3.0.1/blazor.polyfill.min.js"></script>
     <script src="https://cdn.syncfusion.com/blazor/19.2.46/syncfusion-blazor.min.js"></script>
 </head>
-<body style="background-color: white;">
+<body style="background-color: white; overflow-x: hidden;">
     <app>
         <component type="typeof(App)" render-mode="ServerPrerendered" />
     </app>
@@ -179,6 +179,20 @@
         window.showDialogSuccess = (message) => {
             $('#messageSuccess').text(message);
             $('#myModalSuccess').modal({backdrop: 'static', keyboard: false});
+        };
+
+        window.onTopScroll = () => {
+            $("#tableTopScroll").scroll(function(){
+                $("#tableView")
+                    .scrollLeft($("#tableTopScroll").scrollLeft());
+            });
+        };
+
+        window.onScroll = () => {
+            $("#tableView").scroll(function(){
+                $("#tableTopScroll")
+                    .scrollLeft($("#tableView").scrollLeft());
+            });
         };
     </script>
 </body>
