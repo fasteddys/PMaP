@@ -181,6 +181,11 @@
             $('#myModalSuccess').modal({backdrop: 'static', keyboard: false});
         };
 
+        window.showDialogUpdateSuccess = (message) => {
+            $('#messageUpdateSuccess').text(message);
+            $('#myModalUpdateSuccess').modal({backdrop: 'static', keyboard: false});
+        };
+
         window.onTopScroll = () => {
             $("#tableTopScroll").scroll(function(){
                 $("#tableView")

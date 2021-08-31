@@ -3,6 +3,7 @@
 @using PMaP.Models
 @using System.Globalization
 @inject PortfolioService PortfolioService
+@inject IJSRuntime JSRuntime
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
@@ -15,97 +16,102 @@
 <div class="row">
     <div class="col mts">
         <div class="col-md-12">
-            <div style="overflow-x:scroll;">
-                <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
-                    <thead>
-                        <tr class="heading" style="color:#336699;">
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("HolderEntity"))">Holder Entity</span>
-                                <span class="fa @(GetSortStyle("HolderEntity"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("Investor"))">Investor</span>
-                                <span class="fa @(GetSortStyle("Investor"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("Portfolio1"))">Portfolio</span>
-                                <span class="fa @(GetSortStyle("Portfolio1"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("Subportfolio"))">Subportfolio</span>
-                                <span class="fa @(GetSortStyle("Subportfolio"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("ClosingOb"))">Nominal value</span>
-                                <span class="fa @(GetSortStyle("ClosingOb"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("Tipology"))">Contract Type</span>
-                                <span class="fa @(GetSortStyle("Tipology"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("Year"))">Year</span>
-                                <span class="fa @(GetSortStyle("Year"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("Contracts"))">Contracts</span>
-                                <span class="fa @(GetSortStyle("Contracts"))"></span>
-                            </th>
-                            <th>
-                                <span class="sort-link" @onclick="@(() => SortTable("Status"))">Status</span>
-                                <span class="fa @(GetSortStyle("Status"))"></span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input @onchange="OnHolderEntityChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnInvestorChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnPortfolioChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnSubportfolioChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnClosingObChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnTipologyChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnYearChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnContractsChanged" />
-                            </td>
-                            <td>
-                                <input @onchange="OnStatusChanged" />
-                            </td>
-                        </tr>
-                        @if (portfolioModel.Documents != null && portfolioModel.Documents.Count() > 0)
-                        {
-                            foreach (var item in portfolioModel.Documents)
+            <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+                <div style="width: 1770px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+            </div>
+            <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+                <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
+                    <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
+                        <thead>
+                            <tr class="heading" style="color:#336699;">
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("HolderEntity"))">Holder Entity</span>
+                                    <span class="fa @(GetSortStyle("HolderEntity"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Investor"))">Investor</span>
+                                    <span class="fa @(GetSortStyle("Investor"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Portfolio1"))">Portfolio</span>
+                                    <span class="fa @(GetSortStyle("Portfolio1"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Subportfolio"))">Subportfolio</span>
+                                    <span class="fa @(GetSortStyle("Subportfolio"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("ClosingOb"))">Nominal value</span>
+                                    <span class="fa @(GetSortStyle("ClosingOb"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Tipology"))">Contract Type</span>
+                                    <span class="fa @(GetSortStyle("Tipology"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Year"))">Year</span>
+                                    <span class="fa @(GetSortStyle("Year"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Contracts"))">Contracts</span>
+                                    <span class="fa @(GetSortStyle("Contracts"))"></span>
+                                </th>
+                                <th>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Status"))">Status</span>
+                                    <span class="fa @(GetSortStyle("Status"))"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input @onchange="OnHolderEntityChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnInvestorChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnPortfolioChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnSubportfolioChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnClosingObChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnTipologyChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnYearChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnContractsChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnStatusChanged" />
+                                </td>
+                            </tr>
+                            @if (portfolioModel.Documents != null && portfolioModel.Documents.Count() > 0)
                             {
-                                <tr>
-                                    <td>@item.HolderEntity</td>
-                                    <td>@item.Investor</td>
-                                    <td>@item.Portfolio1</td>
-                                    <td>@item.Subportfolio</td>
-                                    <td>@(item.ClosingOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                    <td>@item.Tipology</td>
-                                    <td>@item.Year</td>
-                                    <td>@item.Contracts</td>
-                                    <td>@item.Status</td>
-                                </tr>
+                                foreach (var item in portfolioModel.Documents)
+                                {
+                                    <tr>
+                                        <td>@item.HolderEntity</td>
+                                        <td>@item.Investor</td>
+                                        <td>@item.Portfolio1</td>
+                                        <td>@item.Subportfolio</td>
+                                        <td>@(item.ClosingOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                        <td>@item.Tipology</td>
+                                        <td>@item.Year</td>
+                                        <td>@item.Contracts</td>
+                                        <td>@item.Status</td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -253,5 +259,15 @@
         portfolioModel = await PortfolioService.Portfolios(queryStrings);
 
         StateHasChanged();
+    }
+
+    private async void OnTopScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onTopScroll");
+    }
+
+    private async void OnScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onScroll");
     }
 }

@@ -241,11 +241,11 @@
     <div class="row">
         <div class="col">
             <div class="col-md-12">
-                <div id="tableTopScroll" style="overflow-x: scroll; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                    <div style="width: 2650px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+                    <div style="width: 2930px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
                 </div>
                 <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
-                    <div id="tableView" style="height: 700px; overflow-y: scroll;" @onscroll="OnScroll">
+                    <div id="tableView" style="height: 100vh; overflow-y: auto;" @onscroll="OnScroll">
                         <table class="table table-striped table-bordered" style="background-color: #e6e6e6;">
                             <thead style="position: sticky; top: 0;">
                                 <tr class="heading" style="color:#336699">
@@ -303,49 +303,49 @@
                                     <th><span class="sort-link">Origin</span></th>
                                     <th></th>
                                 </tr>
+                                <tr class="heading" style="color:#336699">
+                                    <th>
+                                        <input @onchange="OnIdChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnMainParticipantIdChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnNumParticipantsChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnTotalAmountObChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnMaturityPrincipalBalanceChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnOutstandingPrincipalBalanceChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnOriginationDateChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnMaturityDateChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnFirstUnpaidInstalmentDateChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnJudicialProcessChanged" />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnPortfolioChanged" />
+                                    </th>
+                                    <th>
+                                        <input />
+                                    </th>
+                                    <th>
+                                        <input @onchange="OnOriginalEntityChanged" />
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <input @onchange="OnIdChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnMainParticipantIdChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnNumParticipantsChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnTotalAmountObChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnMaturityPrincipalBalanceChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnOutstandingPrincipalBalanceChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnOriginationDateChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnMaturityDateChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnFirstUnpaidInstalmentDateChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnJudicialProcessChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnPortfolioChanged" />
-                                    </td>
-                                    <td>
-                                        <input />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnOriginalEntityChanged" />
-                                    </td>
-                                </tr>
                                 @if (FilteredContractList != null && FilteredContractList.Count() > 0)
                                 {
                                     foreach (var item in FilteredContractList)

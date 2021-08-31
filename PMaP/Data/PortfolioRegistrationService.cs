@@ -140,5 +140,30 @@ namespace PMaP.Data
 
             return portfolioValuation;
         }
+
+        public async Task<PortfolioValuationModel> DeletePortfolioContracts(int portfolioId, List<Contract> contracts)
+        {
+            PortfolioValuationModel portfolioValuation = new PortfolioValuationModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpContent content = new StringContent(JsonConvert.SerializeObject(contracts), Encoding.UTF8, "application/json");
+                //HTTP PUT
+                var responseTask = await client.PutAsync("portfolioValuation/portfolio/" + portfolioId + "/contracts", content);
+
+                var result = responseTask;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = await result.Content.ReadAsStringAsync();
+                    portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
+                }
+            }
+
+            return portfolioValuation;
+        }
     }
 }
