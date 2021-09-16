@@ -31,7 +31,8 @@ namespace PMaP.Models.ViewModels.PortfolioValuation
         public List<int> ExcludedContractIds { get; set; }
         public string AddedInPortfolio { get; set; }
         public List<SelectListItem> AddedInPortfolioList { get; set; }
-
+        public bool ReflectExcludedContractIds { get; set; }
+        public bool ExcludePossitiveOB { get; set; }
     }
 
     public class ContractType

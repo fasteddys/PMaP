@@ -293,7 +293,8 @@
                                                 {
                                                     foreach (var item in portfolioModel.Contracts)
                                                     {
-                                                        <tr>
+                                                        string possitiveStyle = item.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
+                                                        <tr style="@possitiveStyle">
                                                             <td>@item.Id</td>
                                                             <td>@item.MainParticipantId</td>
                                                             <td>@item.NumParticipants</td>
@@ -402,7 +403,8 @@
                                                 {
                                                     foreach (var item in portfolioModel.Contracts)
                                                     {
-                                                        <tr>
+                                                        string possitiveStyle = item.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
+                                                        <tr style="@possitiveStyle">
                                                             <td>@item.Id</td>
                                                             <td>@item.ContractType</td>
                                                             <td>@item.PerformingStatus</td>
@@ -443,7 +445,7 @@
                         <div class="row">
                             <div class="col-md-12 mts">
                                 <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                                    <div style="width: 1645px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                                    <div style="width: 1910px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
                                 </div>
                                 <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
                                     <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
@@ -537,7 +539,8 @@
                                                 {
                                                     foreach (var item in portfolioModel.Participants)
                                                     {
-                                                        <tr>
+                                                        string possitiveStyle = item.ContractNavigation?.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
+                                                        <tr style="@possitiveStyle">
                                                             <td>@item.ContractId</td>
                                                             <td>@item.Name</td>
                                                             <td>@item.Identification</td>
@@ -558,6 +561,75 @@
                                                             <td>@item.Telephone1</td>
                                                             <td>@item.Telephone2</td>
                                                             <td>@item.Email</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (@portfolioModel.ActiveTab == "procedures")
+                    {
+                        <div class="row">
+                            <div class="col-md-12 mts">
+                                <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+                                    <div style="width: 1920px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                                </div>
+                                <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+                                    <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
+                                        <table class="table table-striped table-bordered" style="background-color:#e6e6e6;">
+                                            <thead>
+                                                <tr class="heading" style="color:#336699;">
+                                                    <th>Contract</th>
+                                                    <th>Process date</th>
+                                                    <th>Proceeding type</th>
+                                                    <th>Procedure type</th>
+                                                    <th>Lawsuit date</th>
+                                                    <th>Amount claimed</th>
+                                                    <th>Judicial cost amount</th>
+                                                    <th>Court procedure number</th>
+                                                    <th>Court</th>
+                                                    <th>Court number</th>
+                                                    <th>Court city</th>
+                                                    <th>Court province</th>
+                                                    <th>Lawyer name</th>
+                                                    <th>Solicitor name</th>
+                                                    <th>Lawyer mail</th>
+                                                    <th>Solicitor mail</th>
+                                                    <th>Lawyer phone number</th>
+                                                    <th>Solicitor phone number</th>
+                                                    <th>Law firm</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (portfolioModel.Procedures != null && portfolioModel.Procedures.Count() > 0)
+                                                {
+                                                    foreach (var item in portfolioModel.Procedures)
+                                                    {
+                                                        string possitiveStyle = item.ContractNavigation?.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
+                                                        <tr style="@possitiveStyle">
+                                                            <td>@item.ContractId</td>
+                                                            <td>@(item.ProcessDate?.ToString("yyyy-MM-dd"))</td>
+                                                            <td>@item.ProceedingType</td>
+                                                            <td>@item.ProcedureType</td>
+                                                            <td>@(item.LawsuitDate?.ToString("yyyy-MM-dd"))</td>
+                                                            <td>@(item.AmountClaimed?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                            <td>@(item.JudicialCostAmount?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                                            <td>@item.CourtProcedureNumber</td>
+                                                            <td>@item.Court</td>
+                                                            <td>@item.CourtNumber</td>
+                                                            <td>@item.CourtCity</td>
+                                                            <td>@item.CourtProvince</td>
+                                                            <td>@item.LaywerName</td>
+                                                            <td>@item.SolicitorName</td>
+                                                            <td>@item.LaywerMail</td>
+                                                            <td>@item.SolicitorMail</td>
+                                                            <td>@item.LaywerPhoneNumber</td>
+                                                            <td>@item.SolicitorPhoneNumber</td>
+                                                            <td>@item.LawFirm</td>
                                                         </tr>
                                                     }
                                                 }
@@ -743,7 +815,8 @@
         },
         Summary = new Summary(),
         Participants = new List<Participant>(),
-        Investors = new List<Investor>()
+        Investors = new List<Investor>(),
+        Procedures = new List<Procedure>()
     };
     private List<Portfolio> portfolios = new List<Portfolio>();
     
@@ -795,6 +868,8 @@
             var summary = await sessionStorage.GetItemAsync<Summary>("Summary");
             var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
             portfolioValuationViewModel.IsAdd = isAdd;
+            portfolioValuationViewModel.ReflectExcludedContractIds = true;
+            portfolioValuationViewModel.ExcludePossitiveOB = false;
 
             portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel, summary);
             portfolioModel.ViewModel.PortfolioList = new List<SelectListItem>();
@@ -881,6 +956,7 @@
             portfolioModel.Contracts = contractList.Documents;
             portfolioModel.Investors = contractList.Investors;
             portfolioModel.Participants = contractList.Participants;
+            portfolioModel.Procedures = contractList.Procedures;
         }
 
         classContracts = "active";

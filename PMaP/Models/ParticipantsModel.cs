@@ -41,5 +41,7 @@ namespace PMaP.Models
         public string Telephone1 { get; set; }
         public string Telephone2 { get; set; }
         public string Email { get; set; }
+
+        public virtual Contract ContractNavigation { get; set; }
     }
 }

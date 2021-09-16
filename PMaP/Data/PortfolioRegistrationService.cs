@@ -54,6 +54,7 @@ namespace PMaP.Data
                 Contracts = portfolioValuationModel.Contracts,
                 Participants = portfolioValuationModel.Participants,
                 Investors = portfolioValuationModel.Investors,
+                Procedures = portfolioValuationModel.Procedures,
                 Summary = summary,
                 ViewModel = new ViewModel
                 {

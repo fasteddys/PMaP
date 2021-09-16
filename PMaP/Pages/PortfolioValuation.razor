@@ -242,7 +242,7 @@
         <div class="col">
             <div class="col-md-12">
                 <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                    <div style="width: 2930px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                    <div style="width: 2800px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
                 </div>
                 <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
                     <div id="tableView" style="height: 100vh; overflow-y: auto;" @onscroll="OnScroll">
@@ -526,6 +526,8 @@
     {
         portfolioValuationModel.ViewModel.ContractTypes.ForEach(x => x.IsSelected = false);
         portfolioValuationModel.ViewModel.ContractTypes.Where(x => SelectedValues.Contains(x.Id)).ToList().ForEach(x => x.IsSelected = true);
+        portfolioValuationModel.ViewModel.ReflectExcludedContractIds = false;
+        portfolioValuationModel.ViewModel.ExcludePossitiveOB = true;
         portfolioValuationModel = await PortfolioValuationService.Summary(portfolioValuationModel);
         showSummary = true;
         showDetails = false;
@@ -537,6 +539,7 @@
         if (!showDetails)
         {
             portfolioValuationModel.ViewModel.ExcludedContractIds = new List<int>();
+            portfolioValuationModel.ViewModel.ExcludePossitiveOB = true;
             portfolioValuationModel = await PortfolioValuationService.Details(portfolioValuationModel);
             ContractList = FilteredContractList = portfolioValuationModel.Contracts;
         }
