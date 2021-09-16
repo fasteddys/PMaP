@@ -65,22 +65,44 @@
                                     </select>
                                 }
                             </div>
-                            <div class="col-md-2">
-                                <label>Date added / update</label>
-                                <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                            </div>
-                            <div class="col-md-2">
-                                <label>F. Cut off</label>
-                                <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                            </div>
-                            <div class="col-md-2">
-                                <label>F. Singning</label>
-                                <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                            </div>
-                            <div class="col-md-2">
-                                <label>F. Closing</label>
-                                <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                            </div>
+                            @if (isDateInputDisabled)
+                            {
+                                <div class="col-md-2">
+                                    <label>Date added / update</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Cut off</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Singning</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Closing</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-2">
+                                    <label>Date added / update</label>
+                                    <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Cut off</label>
+                                    <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Singning</label>
+                                    <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Closing</label>
+                                    <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                            }
                         </div>
                         <br><br>
                         <p align="right">
@@ -576,7 +598,7 @@
                         <div class="row">
                             <div class="col-md-12 mts">
                                 <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                                    <div style="width: 1920px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                                    <div style="width: 1850px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
                                 </div>
                                 <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
                                     <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">

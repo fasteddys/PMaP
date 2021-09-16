@@ -25,5 +25,8 @@ namespace PMaP.Models
         public string Telephone2 { get; set; }
         public string Iban { get; set; }
         public string Bank { get; set; }
+
+        public virtual Contract Contract { get; set; }
+        public virtual Portfolio Portfolio { get; set; }
     }
 }

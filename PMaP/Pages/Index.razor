@@ -87,16 +87,16 @@
                                 foreach (var item in model.Documents)
                                 {
                                     <tr>
-                                        <td>@item.portfolio</td>
-                                        <td>@item.subportfolio</td>
-                                        <td>@(item.nominalValue.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.secured.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.unsecured.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@item.debtType</td>
-                                        <td>@(item.priceSecured.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.unsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@item.assignmentEntity</td>
-                                        <td>@item.acquisitionYear</td>
+                                        <td>@item.Portfolio</td>
+                                        <td>@item.Subportfolio</td>
+                                        <td>@(item.NominalValue?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                        <td>@(item.Secured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                        <td>@(item.Unsecured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                        <td>@item.DebtType</td>
+                                        <td>@(item.PriceSecured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                        <td>@(item.UnsecuredPrice?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                        <td>@item.AssignmentEntity</td>
+                                        <td>@item.AcquisitionYear</td>
                                     </tr>
                                 }
                             }

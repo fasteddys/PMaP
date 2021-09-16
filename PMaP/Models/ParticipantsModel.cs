@@ -43,5 +43,6 @@ namespace PMaP.Models
         public string Email { get; set; }
 
         public virtual Contract ContractNavigation { get; set; }
+        public virtual Portfolio PortfolioNavigation { get; set; }
     }
 }
