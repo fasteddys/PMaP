@@ -891,7 +891,7 @@
             var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
             portfolioValuationViewModel.IsAdd = isAdd;
             portfolioValuationViewModel.ReflectExcludedContractIds = true;
-            portfolioValuationViewModel.ExcludePossitiveOB = false;
+            portfolioValuationViewModel.ExcludePossitiveOB = true;
 
             portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel, summary);
             portfolioModel.ViewModel.PortfolioList = new List<SelectListItem>();
