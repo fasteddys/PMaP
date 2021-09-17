@@ -63,8 +63,8 @@
                     <span class="title">Portfolio evaluation</span>
 				</a>                     
             </li>
-			<li class="">
-                <a href="" title="Portfolio registration">
+			<li class="@(GetMenuStyle("portfolioRegistration"))">
+                <a href="portfolioRegistration" title="Portfolio registration">
                     <i class="fa fa-upload" style="color:#336699;"></i>
                     <span class="title">Portfolio registration</span>
 				</a>                     
@@ -75,7 +75,7 @@
                     <span class="title">Generation of datatapes</span>
 				</a>
             </li>
-			<li class="dropdown">
+			<li class="dropdown @(GetMenuStyle("certificates"))">
 				<a href="" title="Certificates">
                     <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
 					<span class="title">Certificates</span>
@@ -83,8 +83,8 @@
 				</a>
 				<div class="dropdown-content">
 					<a href="">Alta plantillas</a>
-					<a href="">Form generation</a>
-					<a href="">Certificate generation</a>
+					<a href="certificates/formGeneration">Form generation</a>
+					<a href="certificates/certificateGeneration">Certificate generation</a>
 				</div>  
             </li>
 			<li class="">

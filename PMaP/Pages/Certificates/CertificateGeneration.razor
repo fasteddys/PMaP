@@ -1,0 +1,149 @@
+﻿@page "/certificates/certificateGeneration"
+
+<div class="col-md-12">
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <p style="color:#336699;">Certificados</p>
+        </li>
+    </ul>
+</div>
+<br />
+<div class="col-md-12">
+	<div class="row">
+		<div class="col">
+			<div class="card card-primary" style="width:90%">
+				<div class="card-header" style="background-color:#0066ff">
+					<div class="caption">
+						<font color="white">Datos básicos</font>
+					</div>
+				</div>
+				<div class="card-body" style="background-color:#e6f0ff">
+					<div class="row">
+						<div class="col-md-3">
+							<label>Portfolio</label>
+							<select class="form-control">
+								<option>Seleccionar</option>
+								<option>Voyager</option>
+								<option>Galerna</option>
+								<option>Makalu</option>
+								<option>Challenger-Coliseum</option>
+								<option>Vento</option>
+								<option>Explorer</option>
+								<option>Higgs</option>
+								<option>Aurora</option>
+								<option>Siroco</option>
+								<option>Garbi</option>
+								<option>Triton</option>
+								<option>Auster</option>
+								<option>Cadi</option>
+								<option>Empire</option>
+								<option>Chloe</option>
+								<option>Traveller</option>
+								<option>Corus</option>
+								<option>Gregal</option>
+								<option>Pirene</option>
+								<option>Normandia</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label for="Portfolio">Subporfolio</label>
+							<select class="form-control">
+								<option>Seleccionar</option>
+								<option>Pera</option>
+								<option>Sandi</option>
+								<option>Betz</option>
+								<option>Lacour</option>
+								<option>Kelvin</option>
+								<option>Challenger-Coliseum-1</option>
+								<option>Challenger-Coliseum-2</option>
+								<option>Challenger-Coliseum-3</option>
+								<option>Challenger-Coliseum-4</option>
+								<option>Explorer</option>
+								<option>Higgs1</option>
+								<option>Higgs2</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label for="Portfolio">Inversor</label>
+							<select class="form-control">
+								<option>Seleccionar</option>
+								<option>Farallon Capital</option>
+								<option>Axactor</option>
+								<option>D.E. Shaw</option>
+								<option>Lindorff</option>
+								<option>J.P. Morgan</option>
+								<option>Cerberus</option>
+								<option>Lone Star</option>
+								<option>Tilden Park</option>
+								<option>Oktree</option>
+								<option>Goldman Sachs</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label for="Portfolio">Apoderado</label>
+							<select class="form-control" onchange="submitForm()">
+								<option>Seleccionar</option>
+								<option>Nombre_1 Apellido_1</option>
+								<option>Nombre_2 Apellido_2</option>
+								<option>Nombre_3 Apellido_3</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<label>Contrato&nbsp;</label><i class="fa fa-search"></i>
+							<input type="search" class="form-control form-control-sm" placeholder="">
+						</div>
+						<div class="col-md-4">
+							<label>Interviniente&nbsp;</label><i class="fa fa-search"></i>
+							<input type="search" class="form-control form-control-sm" placeholder="">
+						</div>
+						<div class="col-md-4"> 
+							<label>Tipo interviniente&nbsp;</label>
+							<input type="search" class="form-control form-control-sm" readonly="readonly">
+						</div>
+					</div>
+				</div>
+			</div>
+			<br /><br />
+			<div class="card-card-primary" style="width:90%"></div>
+			<h5 class="border-bottom border-info text-left">Selección del Certificado</h5>
+			<br />
+			<div class="row">
+				<div class="col-md-3">
+					<label>Certificado</label>
+					<select class="form-control">
+						<option>Seleccionar</option>
+						<option>Certificado de saldo</option>
+						<option>Certificado de cesión</option>
+					</select>
+				</div>
+				<div class="col-md-4">
+					<label>Subtipo de certificado</label>
+					<select class="form-control">
+						<option>Seleccionar</option>
+						<option>Cesión - Garantía hipotecaria</option>
+						<option>Cesión - Póliza</option>
+						<option>Saldo - Con desglose de deuda</option>
+						<option>Cesión - Sin desglose de deuda</option>
+					</select>
+				</div>
+				<div class="col-md-4">
+					<label for="country">Tipo deuda</label>
+					<select id="country" name="country" class="form-control">
+						<option value="australia">Tipo de deuda</option>
+						<option value="australia">Secured</option>
+						<option value="australia">Unsecured</option>
+					</select>
+				</div>
+				<br /><br />
+				<input type="submit" class="btn btn-primary" value="Visualizar">
+				<br /><br />
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+
+}

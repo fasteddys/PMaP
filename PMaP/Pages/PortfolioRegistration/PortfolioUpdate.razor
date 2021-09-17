@@ -1,0 +1,556 @@
+﻿@page "/portfolioRegistration/portfolioUpdate"
+
+<div class="col-md-12">
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <p style="color:#336699;">Herramientas de venta&nbsp;&#187;&nbsp;Conformación perímetros</p>
+        </li>
+    </ul>
+</div>
+
+<div class="col-md-12">
+    <div class="Tabs" style="display: block;">       
+	    <ul class="nav nav-tabs">
+		    <li class="">
+			    <a href="portfolioRegistration">Alta de la cartera</a>
+		    </li>
+		    <li class="active">
+			    <a href="portfolioRegistration/portfolioUpdate">Actualización cartera</a>
+		    </li>
+	    </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+		<div class="col-md-4">
+		    <div>
+		        <h5 class="border-bottom border-info text-left font-r-sharp bold ">Selección de la cartera</h5>
+	        </div>
+            <div class="card card-primary" style="width:100%">  
+			    <div class="card-header" style="background-color:#0066ff"></div>
+			    <div class="card-body" style="background-color:#e6f0ff">
+			        <div class="row">
+                        <div class="col-md-6">   
+                            <label>Portfolio</label>
+					        <select class="form-control">
+					            <option>Seleccionar</option>
+					            <option>Cartera_A</option>
+					            <option>Cartera_B</option>
+					            <option>Cartera_C</option>
+					            <option>Cartera_D</option>
+					        </select>
+                        </div> 
+				        <div class="col-md-6">          
+                            <label>Subporfolio</label>
+						    <select class="form-control">
+						        <option>Seleccionar</option>
+					            <option>subCartera_A1</option>
+					            <option>subCartera_A2</option>
+					            <option>subCartera_A3</option>
+					            <option>subCartera_C1</option>
+					            <option>subCartera_D1</option>
+					        </select>
+				        </div>  
+			        </div>
+			    </div>
+            </div>
+		    <div>
+		    <h5 class="border-bottom border-info text-left font-r-sharp bold ">Actualización de fechas</h5> 
+		    </div> 
+	        <div class="card-card-primary" style="width:100%">
+			    <div class="card-header" style="background-color:#0066ff"></div>
+			    <div class="card-body" style="background-color:#e6f0ff">
+			        <div class="row">
+                        <div class="col-md-5">   
+                            <label>Pre-venta</label>
+					        <select class="form-control">
+					            <option>Seleccionar</option>
+					            <option>SÌ</option>
+					            <option>NO</option>
+					        </select>
+                        </div> 
+				        <div class="col-md-6">          
+                            <label>Fecha última extracción</label>
+						    <input class="form-control" type="date" value="yyyy-mm-dd">
+				        </div>  
+			        </div>
+			        <div class="row">
+                        <div class="col-md-5">   
+                            <label>Cut off</label>
+				            <select class="form-control">
+					            <option>Seleccionar</option>
+					            <option>SÌ</option>
+					            <option>NO</option>
+					        </select>
+                        </div> 
+				        <div class="col-md-6">          
+                            <label>Fecha cut off</label>
+						    <input class="form-control" type="date" value="yyyy-mm-dd">
+				        </div>  
+			        </div>
+			        <div class="row">
+                        <div class="col-md-5">   
+                            <label>Post-venta</label>
+				            <select class="form-control">
+					            <option>Seleccionar</option>
+					            <option>SÌ</option>
+					            <option>NO</option>
+					        </select>
+                        </div> 
+				        <div class="col-md-6">          
+                            <label>Fecha última extracción</label>
+						    <input class="form-control" type="date" value="yyyy-mm-dd">
+				        </div>  
+			        </div>
+			        <div class="row">
+                        <div class="col-md-5">   
+                            <label>Signing</label>
+				            <select class="form-control">
+					            <option>Seleccionar</option>
+					            <option>SÌ</option>
+					            <option>NO</option>
+					        </select>
+                        </div> 
+				        <div class="col-md-6">          
+                            <label>Fecha signing</label>
+						    <input class="form-control" type="date" value="yyyy-mm-dd">
+				        </div>  
+			        </div>
+			        <div class="row">
+                        <div class="col-md-5">   
+                            <label>Closing</label>
+				            <select class="form-control">
+					            <option>Seleccionar</option>
+					            <option>SÌ</option>
+					            <option>NO</option>
+					        </select>
+                        </div> 
+				        <div class="col-md-6">          
+                            <label>Fecha closing</label>
+						    <input class="form-control" type="date" value="yyyy-mm-dd">
+				        </div>  
+			        </div>
+                </div>
+			</div>
+        </div>
+	    <div class="col-md-8">
+	        <div>
+	        <h5 class="border-bottom border-info text-left font-r-sharp bold ">Actualización datos del perímetro</h5> 
+	        </div> 
+	        <div class="card-card-primary" style="width:100%">  
+		        <div class="card-header" style="background-color:#0066ff"></div>
+		        <div class="card-body" style="background-color:#e6f0ff">
+                    <div class="content-wrapper"> 
+					    <button class="btn" style="position: absolute; left: 29px; background-color:#D5D8DC">&nbsp;Examinar...</button>
+                        <input type="search" class="form-control form-control-sm" placeholder="">
+			        </div> 
+					<br><br>
+                    <p align="right">
+						<button class="btn btn-primary">Actualizar</button>
+						<button class="btn btn-danger">Cancelar</button>
+				    </p>
+		        </div>
+		        <hr>
+		        <div class="row">
+			        <div style="overflow-y:scroll;">
+                        <table class="table table-striped table-bordered" style="background-color:#e6e6e6; ">
+                            <thead>
+                                <tr class="heading" style="color:#336699">
+                                    <th>Contrato</th>
+                                    <th>Titular</th>
+                                    <th>Nº Fiadores</th>
+                                    <th>Saldo (OB)</th>
+							        <th>Capital vencido</th>
+							        <th>Capital pendiente</th>
+							        <th>Intereses ordinarios</th>
+							        <th>Intereses de demora</th>
+							        <th>Fecha firma</th>
+							        <th>Fecha vencimiento</th>
+                                    <th>Fecha primer imapago</th>
+                                    <th>Entidad de cesión</th>
+							        <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+						        <tr>
+                                    <td>
+								        8935093_3
+                                    </td>
+                                    <td>
+								        Francisco Álvarez Hermoso
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">3</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">21,740.89 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">12,740.00 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">9,000.89 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">1,349.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">1,509.13 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2003-04-05</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2022-05-01</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">20102-05-25</div>  
+                                    </td>
+                                    <td>
+  								        Caixabank
+                                    </td>  
+							        <td>
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+						        <tr>
+                                    <td>
+							            979860938
+							        </td>
+                                    <td>
+								        Agustín Requejo Gómez 
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">1</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">5,007.73 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">5,349.99 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">2,349.73 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">49.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">57.37 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2007-02-15</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2020-12-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2012-07-19</div>  
+                                    </td>
+                                    <td>
+  								        Banc Sabadell
+                                    </td> 
+							        <td>											
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+						        <tr>
+							        <td>
+								        78564378
+                                    </td>
+                                    <td>
+								        Carlos Pérez Fernández
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">0</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">11,983.41 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">2,049.23 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">1,221.31 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">294.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">489.15 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2005-03-01</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2025-03-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2009-04-29</div>  
+                                    </td>
+                                    <td>
+  								        Banc Sabadell
+                                    </td>  
+							        <td>											
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+                                    </td>
+                                </tr>
+						        <tr>
+							        <td>
+								        8935093_3
+                                    </td>
+                                    <td>
+								        Federico Álvarez Hermoso
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">1</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">6,034.08 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">2,307.16 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">1,340.22 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">93.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">106.33 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2005-02-15</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2020-01-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2011-01-26</div>  
+                                    </td>
+                                    <td>
+  								        Banc Sabadell
+                                    </td>  
+							        <td>											
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+						        <tr>
+							        <td>
+								        8736090_1
+                                    </td>
+                                    <td>
+								        Carolina Espejo Torres
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">1</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">6,129.15 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">3,301.81 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">949.78 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">34.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">29.13 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2005-11-23</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2015-12-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2012-08-19</div>  
+                                    </td>
+                                    <td>
+  								        Caixabank
+                                    </td>  
+							        <td>											
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+						        <tr>
+							        <td>
+								        670834554
+                                    </td>
+                                    <td>
+								        Ana María García Cid
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">1</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">6,889.45 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">3,349.99 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">1,349.73 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">109.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">59.13 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2005-02-15</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2025-12-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2012-06-09</div>  
+                                    </td>
+                                    <td>
+  								        Unicaja
+                                    </td>  
+							        <td>											
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+						        <tr>
+							        <td>
+								        8935093_3
+                                    </td>
+                                    <td>
+								        Carmen Cuesta Tomás
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">4</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">18,889.45 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">15,349.99 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">9,349.73 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">1049.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">979.13 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2009-02-15</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2022-12-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2015-06-09</div>  
+                                    </td>
+                                    <td>
+  								        Unicaja
+                                    </td>  
+							        <td>											
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+						        <tr>
+							        <td>
+								        89678654
+                                    </td>
+                                    <td>
+								        Laura Antón Espinela
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">0</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">8,889.45 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">5,349.99 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">2,349.73 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">349.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">509.13 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2007-02-15</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2025-12-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2010-06-09</div>  
+                                    </td>
+                                    <td>
+  								        Banc Sabadell
+                                    </td>  
+							        <td>											
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+						        <tr>
+							        <td>
+								        807896787
+                                    </td>
+                                    <td>
+								        Antonio Gómez López
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">3</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">3,889.45 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">5,349.99 €</div>
+                                    </td>
+							        <td>
+								        <div class="text-right text-nowrap">2,349.73 €</div>
+                                    </td>
+                                    <td>
+								        <div class="text-right text-nowrap">349.98 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">509.13 €</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2007-02-15</div>  
+                                    </td>
+                                    <td>
+                                        <div class="text-right text-nowrap">2025-12-31</div>    
+                                    </td>
+								        <td>
+                                        <div class="text-right text-nowrap">2010-06-09</div>  
+                                    </td>
+                                    <td>
+  								        Unicaja
+                                    </td>  
+							        <td>
+								        <button class="btn  btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+							        </td>
+                                </tr>
+                            </tbody>
+				        </table>
+			        </div>
+		        </div>
+	        </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}
