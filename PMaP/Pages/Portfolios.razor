@@ -131,7 +131,7 @@
                 </div>
                 <div class="card-body" style="background-color:#e6f0ff">
                     <div class="row">  
-                        <div class="col-md-1">          
+                        <div class="col-md-2">          
                             <label>Operation type</label>
                             <input placeholder="" type="text" readonly="readonly" class="form-control" @bind="@portfolioModel.ViewModel.OperationType">
                         </div>
@@ -155,7 +155,7 @@
                             <label>Contract &nbsp;</label><i class="fa fa-search"></i> 
                             <InputNumber id="Contract" class="form-control form-control-sm" placeholder="" disabled="@isDisabled" @bind-Value="@portfolioModel.ViewModel.Contract" @onkeyup="SearchContract" />
                         </div>
-                        <div class="col-md-2"> 
+                        <div class="col-md-1"> 
                             <label>Holder&nbsp;</label><i class="fa fa-search"></i> 
                             <input id="Holder" type="search" class="form-control form-control-sm" placeholder="" disabled="@isDisabled">
                         </div>
@@ -476,8 +476,8 @@
                                             <thead>
                                                 <tr class="heading" style="color:#336699;">
                                                     <th>
-                                                        <span class="sort-link" @onclick="@(() => SortParticipantsTable("ContractId"))">Contract</span>
-                                                        <span class="fa @(GetParticipantsSortStyle("ContractId"))"></span>
+                                                        <span class="sort-link" @onclick="@(() => SortParticipantsTable("Contract"))">Contract</span>
+                                                        <span class="fa @(GetParticipantsSortStyle("Contract"))"></span>
                                                     </th>
                                                     <th>
                                                         <span class="sort-link" @onclick="@(() => SortParticipantsTable("Name"))">Holder</span>
@@ -564,7 +564,7 @@
                                                     {
                                                         string possitiveStyle = item.ContractNavigation?.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
                                                         <tr style="@possitiveStyle">
-                                                            <td>@item.ContractId</td>
+                                                            <td>@item.Contract</td>
                                                             <td>@item.Name</td>
                                                             <td>@item.Identification</td>
                                                             <td>@item.PersonType</td>
@@ -606,7 +606,7 @@
                                         <table class="table table-striped table-bordered" style="background-color:#e6e6e6;">
                                             <thead>
                                                 <tr class="heading" style="color:#336699;">
-                                                    <th>Contract</th>
+                                                    <th>Contract Id</th>
                                                     <th>Process date</th>
                                                     <th>Proceeding type</th>
                                                     <th>Procedure type</th>
