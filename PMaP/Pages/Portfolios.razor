@@ -841,7 +841,7 @@
                             </div>
                         </div>
                     }
-
+                    <br />
                     @if (isAdd == "1")
                     {
                         <p align="right">
@@ -856,14 +856,20 @@
                     else
                     {
                         <p align="right">
-                            <button class="btn @(GetSaveStyle())" @onclick="UpdatePortfolio" disabled="@isSaveCancelButtonDisabled">
+                            <button type="button" class="btn @(GetSaveStyle())" @onclick="UpdatePortfolio" disabled="@isSaveCancelButtonDisabled">
                                 <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
                             </button>
-                            <button class="btn @(GetCancelStyle())" @onclick="Search" disabled="@isSaveCancelButtonDisabled">
+                            <button type="button" class="btn @(GetCancelStyle())" @onclick="Search" disabled="@isSaveCancelButtonDisabled">
                                 <i class="fa fa-close"></i>&nbsp;&nbsp;Cancel
                             </button>
-                            <button type="submit" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?"))" disabled="@isDiscardPortfolioDisabled">
-                                <i class="fa fa-trash"></i>&nbsp;&nbsp;Discard
+                            <button type="button" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?"))" disabled="@isDiscardPortfolioDisabled">
+                                <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Discard
+                            </button>
+                            <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
+                                <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Certificado
+                            </button>
+                            <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
+                                <i class="fa fa-envelope"></i>&nbsp;&nbsp;Comunicaciones
                             </button>
                         </p>
                     }
@@ -983,8 +989,7 @@
     private string currentContractsSortColumn;
     private bool isParticipantsSortedAscending;
     private string currentParticipantsSortColumn;
-    private bool isInvestorSortedAscending, isDiscarded;
-    private string currentInvestorSortColumn;
+    private bool isDiscarded;
 
     private bool isSaveCancelButtonDisabled { get; set; } = true;
     private List<Contract> contractsToDelete = new List<Contract>();
