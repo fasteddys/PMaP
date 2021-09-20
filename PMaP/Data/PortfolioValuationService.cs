@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PMaP.Models;
+using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.PortfolioValuation;
 using System;
 using System.Collections.Generic;
@@ -47,9 +48,9 @@ namespace PMaP.Data
 
             model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd { Portfolio = new Portfolio() };
 
-            if (portfolioModel.ResponseCode == 200 && portfolioModel.Documents != null && portfolioModel.Documents.Count() > 0)
+            if (portfolioModel.ResponseCode == 200 && portfolioModel.Portfolios != null && portfolioModel.Portfolios.Count() > 0)
             {
-                var portfolioContext = portfolioModel.Documents.First();
+                var portfolioContext = portfolioModel.Portfolios.First();
                 portfolioContext.Id = isAdd == "1" ? portfolioContext.Id : 0;
                 model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd
                 {

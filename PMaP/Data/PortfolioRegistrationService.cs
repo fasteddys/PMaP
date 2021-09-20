@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PMaP.Models;
+using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.Portfolio;
 using System;
 using System.Collections.Generic;

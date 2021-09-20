@@ -1,4 +1,5 @@
-﻿using PMaP.Models.ViewModels.PortfolioValuation;
+﻿using PMaP.Models.DBModels;
+using PMaP.Models.ViewModels.PortfolioValuation;
 using System;
 using System.Collections.Generic;
 using System.Linq;

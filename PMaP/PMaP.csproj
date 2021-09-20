@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\PortfolioModel - Copia.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NEvaldas.Blazor.Select2" Version="0.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="ProtectedBrowserStorage.NETStandard" Version="1.1.2" />
