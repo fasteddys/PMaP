@@ -17,9 +17,9 @@
     <div class="col mts">
         <div class="col-md-12">
             <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                <div style="width: 1770px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
-
-                <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+                <div style="width: 1350px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+            </div>
+            <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
                     <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
                         <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
                             <thead>
@@ -52,10 +52,6 @@
                                         <span class="sort-link" @onclick="@(() => SortTable("Value"))">Value</span>
                                         <span class="fa @(GetSortStyle("Value"))"></span>
                                     </th>
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Status"))">Status</span>
-                                        <span class="fa @(GetSortStyle("Status"))"></span>
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,6 +66,9 @@
                                         <input @onchange="OninvestorChanged" />
                                     </td>
                                     <td>
+                                        <input @onchange="OnYearChanged" />
+                                    </td>
+                                    <td>
                                         <input @onchange="OnTypologyChanged" />
                                     </td>
                                     <td>
@@ -77,9 +76,6 @@
                                     </td>
                                     <td>
                                         <input @onchange="OnValueChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnStatusChanged" />
                                     </td>
                                 </tr>
                                 @if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count() > 0)
@@ -94,14 +90,12 @@
                                             <td>@item.Typology</td>
                                             <td>@item.DebtType</td>
                                             <td>@item.Value</td>
-                                            <td>@item.Status</td>
                                         </tr>
                                     }
                                 }
                             </tbody>
                         </table>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -111,9 +105,8 @@
     private PortfolioMarketModel portfolioMarketModel = new PortfolioMarketModel();
 
     private bool isSortedAscending;
-    private bool Status;
     private string currentSortColumn;
-    private string Holder, Project, investor, Typology, DebtType, Value;
+    private string Holder, Project, investor, year, Typology, DebtType, Value;
 
 
     protected override async Task OnInitializedAsync()
@@ -184,6 +177,12 @@
         await PortfolioFilteringList();
     }
 
+    private async void OnYearChanged(ChangeEventArgs e)
+    {
+        year = e.Value.ToString();
+        await PortfolioFilteringList();
+    }
+
     private async void OnTypologyChanged(ChangeEventArgs e)
     {
         Typology = e.Value.ToString();
@@ -203,13 +202,6 @@
         await PortfolioFilteringList();
     }
 
-    private async void OnStatusChanged(ChangeEventArgs e)
-    {
-        Status = false;
-        bool.TryParse(e.Value.ToString(), out Status);
-        await PortfolioFilteringList();
-    }
-
     private async Task PortfolioFilteringList()
     {
         string queryStrings = "?isTableFilter=true";
@@ -226,9 +218,9 @@
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "DebtType=" + DebtType;
         if (!string.IsNullOrEmpty(Value))
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Value=" + Value;
-
-        queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Status=" + Status;
-
+        if (!string.IsNullOrEmpty(year))
+            queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Year=" + year;
+        
         portfolioMarketModel = await PortfolioMarketService.Portfolios(queryStrings);
 
         StateHasChanged();
