@@ -82,9 +82,9 @@
                                         <input @onchange="OnStatusChanged" />
                                     </td>
                                 </tr>
-                                @if (portfolioMarketModel.Documents != null && portfolioMarketModel.Documents.Count() > 0)
+                                @if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count() > 0)
                                 {
-                                    foreach (var item in portfolioMarketModel.Documents)
+                                    foreach (var item in portfolioMarketModel.PortfolioMarkets)
                                     {
                                         <tr>
                                             <td>@item.Holder</td>
@@ -139,7 +139,7 @@
 
     private void SortTable(string columnName)
     {
-        var items = portfolioMarketModel.Documents;
+        var items = portfolioMarketModel.PortfolioMarkets;
 
         if (columnName != currentSortColumn)
         {
@@ -161,7 +161,7 @@
             isSortedAscending = !isSortedAscending;
         }
 
-        portfolioMarketModel.Documents = items;
+        portfolioMarketModel.PortfolioMarkets = items;
 
         StateHasChanged();
     }

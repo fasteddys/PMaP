@@ -47,7 +47,7 @@ namespace PMaP.Models.ViewModels.PortfolioValuation
         //public int PortfolioId { get; set; }
         //public string Portfolio { get; set; }
         //public string Subportfolio { get; set; }
-        public Models.Portfolio Portfolio { get; set; }
+        public DBModels.Portfolio Portfolio { get; set; }
         public string Situation { get; set; }
         //public string OB { get; set; }
         public int NoContracts { get; set; }
