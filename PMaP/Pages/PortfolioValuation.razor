@@ -257,8 +257,8 @@
                             <thead style="position: sticky; top: 0;">
                                 <tr class="heading" style="color:#336699">
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Id"))">Contract</span>
-                                        <span class="fa @(GetSortStyle("Id"))"></span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("ContractId"))">Contract</span>
+                                        <span class="fa @(GetSortStyle("ContractId"))"></span>
                                     </th>
                                     <th>
                                         <span class="sort-link" @onclick="@(() => SortTable("MainParticipantId"))">Participant</span>
@@ -358,7 +358,7 @@
                                     foreach (var item in FilteredContractList)
                                     {
                                         <tr>
-                                            <td>@item.Id</td>
+                                            <td>@item.ContractId</td>
                                             <td>@item.MainParticipantId</td>
                                             <td>@item.NumParticipants</td>
                                             <td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
@@ -494,7 +494,7 @@
 
     private List<Contract> ContractList = new List<Contract>();
     private List<Contract> FilteredContractList = new List<Contract>();
-    private string id, mainParticipantId, numParticipants, totalAmountOb, maturityPrincipalBalance, outstandingPrincipalBalance, originationDate, maturityDate,
+    private string ContractId, id, mainParticipantId, numParticipants, totalAmountOb, maturityPrincipalBalance, outstandingPrincipalBalance, originationDate, maturityDate,
         firstUnpaidInstalmentDate, judicialProcess, portfolioFilter, originalEntity;
 
     protected override async Task OnInitializedAsync()
@@ -662,7 +662,7 @@
 
     private void OnIdChanged(ChangeEventArgs e)
     {
-        id = e.Value.ToString();
+        ContractId = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
@@ -673,70 +673,70 @@
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnNumParticipantsChanged(ChangeEventArgs e)
     {
         numParticipants = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnTotalAmountObChanged(ChangeEventArgs e)
     {
         totalAmountOb = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnMaturityPrincipalBalanceChanged(ChangeEventArgs e)
     {
         maturityPrincipalBalance = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnOutstandingPrincipalBalanceChanged(ChangeEventArgs e)
     {
         outstandingPrincipalBalance = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnOriginationDateChanged(ChangeEventArgs e)
     {
         originationDate = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnMaturityDateChanged(ChangeEventArgs e)
     {
         maturityDate = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnFirstUnpaidInstalmentDateChanged(ChangeEventArgs e)
     {
         firstUnpaidInstalmentDate = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnJudicialProcessChanged(ChangeEventArgs e)
     {
         judicialProcess = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnPortfolioChanged(ChangeEventArgs e)
     {
         portfolioFilter = e.Value.ToString();
         ContractFilteringList();
         StateHasChanged();
     }
-    
+
     private void OnOriginalEntityChanged(ChangeEventArgs e)
     {
         originalEntity = e.Value.ToString();
@@ -747,8 +747,8 @@
     private void ContractFilteringList()
     {
         FilteredContractList = ContractList;
-        if (!string.IsNullOrEmpty(id))
-            FilteredContractList = ContractList.Where(x => x.Id.ToString().ToLower().Contains(id.ToLower())).ToList();
+        if (!string.IsNullOrEmpty(ContractId))
+            FilteredContractList = ContractList.Where(x => x.ContractId.ToString().ToLower().Contains(ContractId.ToLower())).ToList();
         if (!string.IsNullOrEmpty(mainParticipantId))
             FilteredContractList = ContractList.Where(x => x.MainParticipantId.ToLower().Contains(mainParticipantId.ToLower())).ToList();
         if (!string.IsNullOrEmpty(numParticipants))

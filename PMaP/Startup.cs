@@ -42,6 +42,7 @@ namespace PMaP
             services.AddSingleton<PortfolioService>();
             services.AddSingleton<PortfolioValuationService>();
             services.AddSingleton<PortfolioRegistrationService>();
+            services.AddSingleton<PortfolioMarketService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

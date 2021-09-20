@@ -5,27 +5,11 @@
 <div class="page-sidebar-wrapper" >
     <div class="page-sidebar navbar-collapse collapse" style="background-color:#e6f0ff">
         <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-			<li class="@(GetMenuStyle(""))">
+            <li class="@(GetMenuStyle(""))">
                 <a href="" title="Home">
                     <i class="fa fa-home" aria-hidden="true" style="color:#336699;"></i>
                     <span class="title">Home</span>
                 </a>
-            </li>
-			<li class="dropdown">
-				<a href="" tille="DataTapes">
-				    <i class="fa fa-upload" style="color:#336699;"></i>
-				    <span class="title">DataTapes</span><span class="caret"></span>
-                </a>
-				<div class="dropdown-content">
-				    <a href="#">Contracts</a>
-				    <a href="#">Participants</a>
-				    <a href="#">Colaterals</a>
-				    <a href="#">Procedures</a>
-				    <a href="#">Insolvencies</a>
-				    <a href="#">Liens</a>
-				    <a href="#">Novations</a>
-				    <a href="#">Prices</a>
-				</div>
             </li>
             <li class="@(GetMenuStyle("portfolioMarket"))">
                 <a href="portfolioMarket" title="Portfolio market">
@@ -33,64 +17,80 @@
                     <span class="title">Portfolio market</span>
                 </a>
             </li>
-			<li class="@(GetMenuStyle("portfolios"))">
+            <li class="@(GetMenuStyle("portfolioValuation"))">
+                <a href="portfolioValuation/0/_/_" title="Portfolio evaluation">
+                    <i class="fa fa-cog" style="color:#336699;"></i>
+                    <span class="title">Portfolio evaluation</span>
+                </a>
+            </li>
+            <li class="@(GetMenuStyle("portfolios"))">
                 <a href="portfolios/0" title="Portfolios">
                     <i class="fa fa-suitcase" aria-hidden="true" style="color:#336699;"></i>
                     <span class="title">Portfolios</span>
                 </a>
             </li>
-            <li class="">
-                <a href="" title="Portfolio evolution">
+            <li class="@(GetMenuStyle("PortfolioProgress"))">
+                <a href="PortfolioProgress" title="Portfolio progress">
                     <i class="fa fa-tasks" style="color:#336699;"></i>
-                    <span class="title">Portfolio evolution</span>
-				</a>                     
+                    <span class="title">Portfolio progress</span>
+                </a>
             </li>
             <li class="dropdown">
                 <a href="" title="Actualization">
                     <i class="fa fa-handshake-o" style="color:#336699;"></i>
                     <span class="title">Actualization</span><span class="caret"></span>
                 </a>
-				<div class="dropdown-content">
-					<a href="">Debt recoveries</a>
-					<a href="">Judicial proceedings</a>
-					<a href="">Concursos / Adjudication</a>
-					<a href="">Participantes</a>
-				</div>
+                <div class="dropdown-content">
+                    <a href="">Debt recoveries</a>
+                    <a href="">Judicial proceedings</a>
+                    <a href="">Concursos / Adjudication</a>
+                    <a href="">Participantes</a>
+                </div>
             </li>
-			<li class="@(GetMenuStyle("portfolioValuation"))">
-                <a href="portfolioValuation/0/_/_" title="Portfolio evaluation">
-                    <i class="fa fa-cog" style="color:#336699;"></i>
-                    <span class="title">Portfolio evaluation</span>
-				</a>                     
+            <li class="dropdown @(GetMenuStyle("certificates"))">
+                <a href="" title="Certificates">
+                    <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
+                    <span class="title">Certificates</span>
+                    <span class="caret"></span>
+                </a>
+                <div class="dropdown-content">
+                    <a href="">Alta plantillas</a>
+                    <a href="certificates/formGeneration">Form generation</a>
+                    <a href="certificates/certificateGeneration">Certificate generation</a>
+                </div>
             </li>
-			<li class="@(GetMenuStyle("portfolioRegistration"))">
+            <li class="">
+                <a href="" title="Notifications">
+                    <i class="fa fa-envelope-open-o" style="color:#336699;"></i>
+                    <span class="title">Notifications</span>
+                </a>
+            </li>
+            <li class="@(GetMenuStyle("portfolioRegistration"))">
                 <a href="portfolioRegistration" title="Portfolio registration">
                     <i class="fa fa-upload" style="color:#336699;"></i>
                     <span class="title">Portfolio registration</span>
-				</a>                     
+                </a>
             </li>
-			<li class="">
+            <li class="dropdown">
+                <a href="" tille="DataTapes">
+                    <i class="fa fa-upload" style="color:#336699;"></i>
+                    <span class="title">DataTapes</span><span class="caret"></span>
+                </a>
+                <div class="dropdown-content">
+                    <a href="#">Contracts</a>
+                    <a href="#">Participants</a>
+                    <a href="#">Colaterals</a>
+                    <a href="#">Procedures</a>
+                    <a href="#">Insolvencies</a>
+                    <a href="#">Liens</a>
+                    <a href="#">Novations</a>
+                    <a href="#">Prices</a>
+                </div>
+            </li>
+            <li class="">
                 <a href="" title="Generation of datatapes">
                     <i class="fa fa-download" style="color:#336699;"></i>
                     <span class="title">Generation of datatapes</span>
-				</a>
-            </li>
-			<li class="dropdown @(GetMenuStyle("certificates"))">
-				<a href="" title="Certificates">
-                    <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
-					<span class="title">Certificates</span>
-					<span class="caret"></span>
-				</a>
-				<div class="dropdown-content">
-					<a href="">Alta plantillas</a>
-					<a href="certificates/formGeneration">Form generation</a>
-					<a href="certificates/certificateGeneration">Certificate generation</a>
-				</div>  
-            </li>
-			<li class="">
-				<a href="" title="Releases">
-                    <i class="fa fa-envelope-open-o" style="color:#336699;"></i>
-                    <span class="title">Releases</span>
                 </a>
             </li>
         </ul>
