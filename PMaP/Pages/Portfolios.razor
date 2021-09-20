@@ -346,7 +346,7 @@
                         <div class="row">
                             <div class="col-md-12 mts">
                                 <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                                    <div style="width: 1400px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                                    <div style="width: 3300px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
                                 </div>
                                 <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
                                     <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
@@ -354,11 +354,23 @@
                                             <thead>
                                                 <tr class="heading" style="color:#336699;">
                                                     <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("Portfolio"))">Portfolio</span>
+                                                        <span class="fa @(GetContractsSortStyle("Portfolio"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("Subportfolio"))">Subportfolio</span>
+                                                        <span class="fa @(GetContractsSortStyle("Subportfolio"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("ProcessDate"))">Process Date</span>
+                                                        <span class="fa @(GetContractsSortStyle("ProcessDate"))"></span>
+                                                    </th>
+                                                    <th>
                                                         <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">Contract ID</span>
                                                         <span class="fa @(GetContractsSortStyle("Id"))"></span>
                                                     </th>
                                                     <th>
-                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("ContractType"))">Typology</span>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("ContractType"))">Contract type</span>
                                                         <span class="fa @(GetContractsSortStyle("ContractType"))"></span>
                                                     </th>
                                                     <th>
@@ -370,23 +382,23 @@
                                                         <span class="fa @(GetContractsSortStyle("DebtType"))"></span>
                                                     </th>
                                                     <th>
-                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Main Holder ID</span>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Main Participant ID</span>
                                                         <span class="fa @(GetContractsSortStyle("MainParticipantId"))"></span>
                                                     </th>
                                                     <th>
-                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">No. participants</span>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">Num participants</span>
                                                         <span class="fa @(GetContractsSortStyle("NumParticipants"))"></span>
                                                     </th>
                                                     <th>
-                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("NumGuarantors"))">No. guarantors</span>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("NumGuarantors"))">Num guarantors</span>
                                                         <span class="fa @(GetContractsSortStyle("NumGuarantors"))"></span>
                                                     </th>
                                                     <th>
-                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Bank of origin</span>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Original Entity</span>
                                                         <span class="fa @(GetContractsSortStyle("OriginalEntity"))"></span>
                                                     </th>
                                                     <th>
-                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Total OB</span>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Total Amount (OB)</span>
                                                         <span class="fa @(GetContractsSortStyle("TotalAmountOb"))"></span>
                                                     </th>
                                                     <th>
@@ -405,7 +417,10 @@
                                                         <span class="sort-link" @onclick="@(() => SortContractsTable("OrdinaryInterests"))">Ordinary interests</span>
                                                         <span class="fa @(GetContractsSortStyle("OrdinaryInterests"))"></span>
                                                     </th>
-                                                    <th><span class="sort-link">Interest on late payment</span></th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("DefaultInterests"))">Default interests</span>
+                                                        <span class="fa @(GetContractsSortStyle("DefaultInterests"))"></span>
+                                                    </th>
                                                     <th>
                                                         <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">Origination date</span>
                                                         <span class="fa @(GetContractsSortStyle("OriginationDate"))"></span>
@@ -413,6 +428,86 @@
                                                     <th>
                                                         <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">Maturity Date</span>
                                                         <span class="fa @(GetContractsSortStyle("MaturityDate"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("EarlyMaturity"))">Early maturity</span>
+                                                        <span class="fa @(GetContractsSortStyle("EarlyMaturity"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("EarlyMaturityDate"))">Early maturity date</span>
+                                                        <span class="fa @(GetContractsSortStyle("EarlyMaturityDate"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("FirstUnpaidInstalmentDate"))">First unpaid instalment date</span>
+                                                        <span class="fa @(GetContractsSortStyle("FirstUnpaidInstalmentDate"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("DefaultDate"))">Default date</span>
+                                                        <span class="fa @(GetContractsSortStyle("DefaultDate"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("UnpaidInstalments"))">Unpaid instalments</span>
+                                                        <span class="fa @(GetContractsSortStyle("UnpaidInstalments"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingInstalments"))">Outstanding instalments</span>
+                                                        <span class="fa @(GetContractsSortStyle("OutstandingInstalments"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("AccountingSituation"))">Accounting situation</span>
+                                                        <span class="fa @(GetContractsSortStyle("AccountingSituation"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("LtvOriginal"))">LTV original</span>
+                                                        <span class="fa @(GetContractsSortStyle("LtvOriginal"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("Syndicated"))">Syndicated</span>
+                                                        <span class="fa @(GetContractsSortStyle("Syndicated"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("SyndicationPercent"))">% of syndication</span>
+                                                        <span class="fa @(GetContractsSortStyle("SyndicationPercent"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("Securitized"))">Securitized</span>
+                                                        <span class="fa @(GetContractsSortStyle("Securitized"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("SecurityNumber"))">Security number</span>
+                                                        <span class="fa @(GetContractsSortStyle("SecurityNumber"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("Novation"))">Novation</span>
+                                                        <span class="fa @(GetContractsSortStyle("Novation"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("NovationDate"))">Novation date</span>
+                                                        <span class="fa @(GetContractsSortStyle("NovationDate"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("JudicialProcess"))">Judicial process</span>
+                                                        <span class="fa @(GetContractsSortStyle("JudicialProcess"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("ProceedingType"))">Proceeding type</span>
+                                                        <span class="fa @(GetContractsSortStyle("ProceedingType"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("LegalProcess"))">Legal process</span>
+                                                        <span class="fa @(GetContractsSortStyle("LegalProcess"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("Insolvency"))">Insolvency</span>
+                                                        <span class="fa @(GetContractsSortStyle("Insolvency"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("Reo"))">REO</span>
+                                                        <span class="fa @(GetContractsSortStyle("Reo"))"></span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="sort-link" @onclick="@(() => SortContractsTable("ReoAmount"))">REO amount</span>
+                                                        <span class="fa @(GetContractsSortStyle("ReoAmount"))"></span>
                                                     </th>
                                                     @if (isAdd == "0")
                                                     {
@@ -428,6 +523,9 @@
                                                     {
                                                         string possitiveStyle = item.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
                                                         <tr style="@possitiveStyle">
+                                                            <td>@item.Portfolio</td>
+                                                            <td>@item.Subportfolio</td>
+                                                            <td>@(item.ProcessDate?.ToString("yyyy-MM-dd"))</td>
                                                             <td>@item.Id</td>
                                                             <td>@item.ContractType</td>
                                                             <td>@item.PerformingStatus</td>
@@ -441,13 +539,33 @@
                                                             <td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
                                                             <td>@(item.OutstandingPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
                                                             <td>@(item.OrdinaryInterests?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                                            <td></td>
+                                                            <td>@(item.DefaultInterests?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
                                                             <td>@(item.OriginationDate?.ToString("yyyy-MM-dd"))</td>
                                                             <td>@(item.MaturityDate?.ToString("yyyy-MM-dd"))</td>
+                                                            <td>@(item.EarlyMaturity == 1 ? "Yes" : "No")</td>
+                                                            <td>@(item.EarlyMaturityDate?.ToString("yyyy-MM-dd"))</td>
+                                                            <td>@(item.FirstUnpaidInstalmentDate?.ToString("yyyy-MM-dd"))</td>
+                                                            <td>@(item.DefaultDate?.ToString("yyyy-MM-dd"))</td>
+                                                            <td>@item.UnpaidInstalments</td>
+                                                            <td>@item.OutstandingInstalments</td>
+                                                            <td>@item.AccountingSituation</td>
+                                                            <td>@item.LtvOriginal</td>
+                                                            <td>@(item.Syndicated == 1 ? "Yes" : "No")</td>
+                                                            <td>@item.SyndicationPercent</td>
+                                                            <td>@(item.Securitized == 1 ? "Yes" : "No")</td>
+                                                            <td>@item.SecurityNumber</td>
+                                                            <td>@(item.Novation == 1 ? "Yes" : "No")</td>
+                                                            <td>@(item.NovationDate?.ToString("yyyy-MM-dd"))</td>
+                                                            <td>@(item.JudicialProcess == 1 ? "Yes" : "No")</td>
+                                                            <td>@item.ProceedingType</td>
+                                                            <td>@(item.LegalProcess == 1 ? "Yes" : "No")</td>
+                                                            <td>@item.Insolvency</td>
+                                                            <td>@(item.Reo == 1 ? "Yes" : "No")</td>
+                                                            <td>@(item.ReoAmount?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
                                                             @if (isAdd == "0")
                                                             {
                                                                 <td>
-                                                                    <button class="btn btn-xs btn-danger" @onclick="() => { Remove(item); }"><i class="fa fa-trash-o"></i></button>
+                                                                    <button type="button" class="btn btn-xs btn-danger" @onclick="@(() => Remove(item))"><i class="fa fa-trash-o"></i></button>
                                                                 </td> 
                                                                 <td>
                                                                     <input type="checkbox" disabled>
