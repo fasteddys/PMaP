@@ -37,8 +37,8 @@
                                         <span class="fa @(GetSortStyle("investor"))"></span>
                                     </th>
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("year"))">Year</span>
-                                        <span class="fa @(GetSortStyle("year"))"></span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Year"))">Year</span>
+                                        <span class="fa @(GetSortStyle("Year"))"></span>
                                     </th>
                                     <th>
                                         <span class="sort-link" @onclick="@(() => SortTable("Typology"))">Typology</span>
@@ -51,6 +51,10 @@
                                     <th>
                                         <span class="sort-link" @onclick="@(() => SortTable("Value"))">Value</span>
                                         <span class="fa @(GetSortStyle("Value"))"></span>
+                                    </th>
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Status"))">Status</span>
+                                        <span class="fa @(GetSortStyle("Status"))"></span>
                                     </th>
                                 </tr>
                             </thead>
@@ -66,9 +70,6 @@
                                         <input @onchange="OninvestorChanged" />
                                     </td>
                                     <td>
-                                        <input @onchange="OnYearChanged" />
-                                    </td>
-                                    <td>
                                         <input @onchange="OnTypologyChanged" />
                                     </td>
                                     <td>
@@ -77,19 +78,23 @@
                                     <td>
                                         <input @onchange="OnValueChanged" />
                                     </td>
+                                    <td>
+                                        <input @onchange="OnStatusChanged" />
+                                    </td>
                                 </tr>
-                                @if (portfolioMarketModel.Documents != null && portfolioMarketModel.Documents.Count() > 0)
+                                @if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count() > 0)
                                 {
-                                    foreach (var item in portfolioMarketModel.Documents)
+                                    foreach (var item in portfolioMarketModel.PortfolioMarkets)
                                     {
                                         <tr>
                                             <td>@item.Holder</td>
                                             <td>@item.Project</td>
                                             <td>@item.Investor</td>
-                                            <td>@item.year</td>
+                                            <td>@item.Year</td>
                                             <td>@item.Typology</td>
                                             <td>@item.DebtType</td>
                                             <td>@item.Value</td>
+                                            <td>@item.Status</td>
                                         </tr>
                                     }
                                 }
@@ -108,7 +113,7 @@
     private bool isSortedAscending;
     private bool Status;
     private string currentSortColumn;
-    private string Holder, Project, investor, year, Typology, DebtType, Value;
+    private string Holder, Project, investor, Typology, DebtType, Value;
 
 
     protected override async Task OnInitializedAsync()
@@ -134,7 +139,7 @@
 
     private void SortTable(string columnName)
     {
-        var items = portfolioMarketModel.Documents;
+        var items = portfolioMarketModel.PortfolioMarkets;
 
         if (columnName != currentSortColumn)
         {
@@ -156,7 +161,7 @@
             isSortedAscending = !isSortedAscending;
         }
 
-        portfolioMarketModel.Documents = items;
+        portfolioMarketModel.PortfolioMarkets = items;
 
         StateHasChanged();
     }
@@ -179,12 +184,6 @@
         await PortfolioFilteringList();
     }
 
-    private async void OnYearChanged(ChangeEventArgs e)
-    {
-        year = e.Value.ToString();
-        await PortfolioFilteringList();
-    }
-
     private async void OnTypologyChanged(ChangeEventArgs e)
     {
         Typology = e.Value.ToString();
@@ -204,6 +203,12 @@
         await PortfolioFilteringList();
     }
 
+    private async void OnStatusChanged(ChangeEventArgs e)
+    {
+        Status = false;
+        bool.TryParse(e.Value.ToString(), out Status);
+        await PortfolioFilteringList();
+    }
 
     private async Task PortfolioFilteringList()
     {
@@ -215,8 +220,6 @@
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Project=" + Project;
         if (!string.IsNullOrEmpty(investor))
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "investor=" + investor;
-        if (!string.IsNullOrEmpty(year))
-            queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "year=" + year;
         if (!string.IsNullOrEmpty(Typology))
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Typology=" + Typology;
         if (!string.IsNullOrEmpty(DebtType))
@@ -224,6 +227,7 @@
         if (!string.IsNullOrEmpty(Value))
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Value=" + Value;
 
+        queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Status=" + Status;
 
         portfolioMarketModel = await PortfolioMarketService.Portfolios(queryStrings);
 

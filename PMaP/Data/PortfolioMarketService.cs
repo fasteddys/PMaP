@@ -47,9 +47,9 @@ namespace PMaP.Data
             portfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
             List<SelectListItem> subportfolioList = new List<SelectListItem>();
             subportfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
-            if (model.ResponseCode == 200 && model.Documents != null && model.Documents.Count() > 0)
+            if (model.ResponseCode == 200 && model.PortfolioMarkets != null && model.PortfolioMarkets.Count() > 0)
             {
-                var portfolios = model.Documents.GroupBy(x => x.Project).Select(x => x.First()).OrderBy(x => x.Project).ToList();
+                var portfolios = model.PortfolioMarkets.GroupBy(x => x.Project).Select(x => x.First()).OrderBy(x => x.Project).ToList();
                 foreach (var item in portfolios)
                 {
                     portfolioList.Add(new SelectListItem() { Text = item.Project, Value = item.Project });
@@ -62,7 +62,7 @@ namespace PMaP.Data
                 //}
             }
 
-            return new PortfolioMarketModel { ViewModel = new ViewModel { PortfolioList = portfolioList, SubportfolioList = subportfolioList }, Documents = model.Documents };
+            return new PortfolioMarketModel { ViewModel = new ViewModel { PortfolioList = portfolioList, SubportfolioList = subportfolioList }, PortfolioMarkets = model.PortfolioMarkets };
         }
 
         public async Task<PortfolioModel> Characteristics(PortfolioModel model)
@@ -90,9 +90,9 @@ namespace PMaP.Data
 
             model.ViewModel.OperationType = model.ViewModel.OBCutOff = model.ViewModel.OBSingning = model.ViewModel.OBClosing = "";
             model.ViewModel.DateAdded = model.ViewModel.DateCutOff = model.ViewModel.DateSigning = model.ViewModel.DateClosing = null;
-            if (model.ResponseCode == 200 && model.Documents != null && model.Documents.Count() > 0)
+            if (model.ResponseCode == 200 && model.Portfolios != null && model.Portfolios.Count() > 0)
             {
-                var portfolio = model.Documents.First();
+                var portfolio = model.Portfolios.First();
                 model.ViewModel.OperationType = portfolio.OperationType;
                 model.ViewModel.OBCutOff = portfolio.CutOffOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
                 model.ViewModel.OBSingning = portfolio.SigningOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));

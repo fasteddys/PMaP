@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using PMaP.Data
 @using PMaP.Models
+@using PMaP.Models.DBModels
 @using PMaP.Models.ViewModels.Portfolio
 @using ProtectedLocalStore
 @using System.Globalization
@@ -879,7 +880,7 @@
         displayAssessment = false;
         isDiscarded = false;
         portfolioModel = await PortfolioService.Portfolios("");
-        portfolios = portfolioModel.Documents;
+        portfolios = portfolioModel.Portfolios;
 
         if (isAdd == "1")
         {
@@ -920,7 +921,7 @@
 
         isDiscardPortfolioDisabled = true;
         isAddButtonDisabled = true;
-        var portfolio = portfolioModel.Documents.FirstOrDefault();
+        var portfolio = portfolioModel.Portfolios.FirstOrDefault();
         if (portfolio != null && portfolio.OperationType == "SALE")
         {
             isDiscardPortfolioDisabled = false;
@@ -932,7 +933,7 @@
 
     private async void UpdatePortfolio()
     {
-        var portfolio = portfolioModel.Documents.FirstOrDefault();
+        var portfolio = portfolioModel.Portfolios.FirstOrDefault();
         if (portfolio != null)
         {
             var deletePortfolioContractsResponse = await PortfolioRegistrationService.DeletePortfolioContracts(portfolio.Id, contractsToDelete);
@@ -975,7 +976,7 @@
             {
                 contractList = await PortfolioService.Contracts();
             }
-            portfolioModel.Contracts = contractList.Documents;
+            portfolioModel.Contracts = contractList.Contracts;
             portfolioModel.Investors = contractList.Investors;
             portfolioModel.Participants = contractList.Participants;
             portfolioModel.Procedures = contractList.Procedures;
@@ -1103,7 +1104,7 @@
             NavigationManager.NavigateTo("/portfolios/0", true);
         }
         
-        var portfolioToDiscard = portfolioModel.Documents.FirstOrDefault();
+        var portfolioToDiscard = portfolioModel.Portfolios.FirstOrDefault();
         if (portfolioToDiscard != null)
         {
             var discardPortfolioResponse = await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
@@ -1175,7 +1176,7 @@
                 contract = await PortfolioService.Contracts();
             }
 
-            portfolioModel.Contracts = contract.Documents;
+            portfolioModel.Contracts = contract.Contracts;
             portfolioModel.Investors = contract.Investors;
             portfolioModel.Participants = contract.Participants;
         }
