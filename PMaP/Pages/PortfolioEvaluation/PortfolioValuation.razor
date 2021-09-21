@@ -23,40 +23,7 @@
 </div>
 @if (@showPortfolioDetail)
 {
-    <div class="row"> 
-        <div class="col">
-            <div class="col-md-12">
-                <div class="card card-primary">
-                    <div class="card-header" style="background-color:#0066ff">
-                    </div>
-                </div>
-                <div class="card-body" style="background-color:#e6f0ff">
-                    <div class="row">
-                        <div class="col-md-1">
-                            <label>Portfolio</label>
-                            <input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Portfolio1">
-                        </div>
-                        <div class="col-md-1">
-                            <label>Subportfolio</label>
-                            <input type="text" readonly="readonly" class="form-control" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.Subportfolio">
-                        </div>
-                        <div class="col-md-1">
-                            <label>Situation</label>
-                            <input type="text" class="form-control" readonly="readonly" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Situation">
-                        </div>
-                        <div class="col-md-2">
-                            <label>OB</label>
-                            <input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.Portfolio.CutOffOb">
-                        </div>
-                        <div class="col-md-2">
-                            <label>No. Contracts</label>
-                            <input type="text" readonly="readonly" class="form-control text-right" @bind="portfolioValuationModel.ViewModel.PortfolioValuationAdd.NoContracts">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <PortfolioDetail PortfolioValuationAdd="@portfolioValuationModel.ViewModel.PortfolioValuationAdd" />
 }
 <div class="row">
     <div class="col">
@@ -199,50 +166,7 @@
 </div>
 @if (@showSummary)
 {
-    <div class="row mb-2">
-        <div class="col">
-            <div class="col-md-12">
-                <hr style="height:1px; color:#0066ff;background-color:#0066ff;">
-                <div class="card-header" style="background-color:#0066ff">
-                    <div class="caption">
-                        <font color="white">Summary</font>
-                        <button class="button_add" @onclick="Details">
-                            <i class="fa @(GetShowDetailsStyle())"></i>&nbsp;&nbsp;Detail
-                        </button>
-                    </div>
-                </div>
-                <table class="table table-striped table-bordered" style="background-color:#e6e6e6" >
-                    <thead>
-                        <tr class="heading" style="color:#336699;">
-                            <th>Contracts</th>
-                            <th class="sorting_desc">Total OB </th>
-                            <th class="sorting_desc">Secured OB </th>
-                            <th class="sorting_desc">Unsecured OB </th>
-                            <th class="sorting_desc">Secured Price</th>
-                            <th class="sorting_desc">Unsecured Price</th>
-                            <th>Debtors</th>
-                            <th>Guarantors</th>   
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (portfolioValuationModel.Summary != null)
-                        {
-                            <tr>
-                                <td>@portfolioValuationModel.Summary.Contracts</td>
-                                <td>@portfolioValuationModel.Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                                <td>@portfolioValuationModel.Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                                <td>@portfolioValuationModel.Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                                <td>@portfolioValuationModel.Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                                <td>@portfolioValuationModel.Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                                <td>@portfolioValuationModel.Summary.Debtors</td>
-                                <td>@portfolioValuationModel.Summary.Guarantors</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <Assessment Caption="Summary" Summary="@portfolioValuationModel.Summary" showDetailButton="true" OnDetailsClick="Details" showDetails="@showDetails" />
 }
 @if (@showDetails)
 {
@@ -360,7 +284,7 @@
                                     {
                                         <tr>
                                             <td>@item.ContractId</td>
-                                            <td>@item.MainParticipantId</td>
+                                            <td>@(portfolioValuationModel.Participants.Where(x => x.ContractId == item.Id).Select(x => x.Name).FirstOrDefault())</td>
                                             <td>@item.NumParticipants</td>
                                             <td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
                                             <td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>

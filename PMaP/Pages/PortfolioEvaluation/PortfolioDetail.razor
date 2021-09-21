@@ -1,0 +1,41 @@
+﻿@using PMaP.Models.ViewModels.PortfolioValuation
+
+<div class="row">
+    <div class="col">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header" style="background-color:#0066ff">
+                </div>
+            </div>
+            <div class="card-body" style="background-color:#e6f0ff">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Portfolio</label>
+                        <input type="text" readonly="readonly" class="form-control" @bind="PortfolioValuationAdd.Portfolio.Portfolio1">
+                    </div>
+                    <div class="col-md-1">
+                        <label>Subportfolio</label>
+                        <input type="text" readonly="readonly" class="form-control" @bind="PortfolioValuationAdd.Portfolio.Subportfolio">
+                    </div>
+                    <div class="col-md-1">
+                        <label>Situation</label>
+                        <input type="text" class="form-control" readonly="readonly" @bind="PortfolioValuationAdd.Situation">
+                    </div>
+                    <div class="col-md-2">
+                        <label>OB</label>
+                        <input type="text" readonly="readonly" class="form-control text-right" @bind="PortfolioValuationAdd.Portfolio.CutOffOb">
+                    </div>
+                    <div class="col-md-2">
+                        <label>No. Contracts</label>
+                        <input type="text" readonly="readonly" class="form-control text-right" @bind="PortfolioValuationAdd.NoContracts">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public PortfolioValuationAdd PortfolioValuationAdd { get; set; }
+}
