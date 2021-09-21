@@ -1,0 +1,190 @@
+﻿@using System.Globalization
+@using PMaP.Models.DBModels
+@inject IJSRuntime JSRuntime
+
+<div class="row">
+    <div class="col-md-12 mts">
+        <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+            <div style="width: 1930px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+        </div>
+        <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+            <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
+                <table class="table table-striped table-bordered" style="background-color:#e6e6e6;">
+                    <thead>
+                        <tr class="heading" style="color:#336699;">
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("ContractId"))">Contract Id</span>
+                                <span class="fa @(GetSortStyle("ContractId"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("ProcessDate"))">Process date</span>
+                                <span class="fa @(GetSortStyle("ProcessDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("ProceedingType"))">Proceeding type</span>
+                                <span class="fa @(GetSortStyle("ProceedingType"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("ProcedureType"))">Procedure type</span>
+                                <span class="fa @(GetSortStyle("ProcedureType"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("LawsuitDate"))">Lawsuit date</span>
+                                <span class="fa @(GetSortStyle("LawsuitDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("AmountClaimed"))">Amount claimed</span>
+                                <span class="fa @(GetSortStyle("AmountClaimed"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("JudicialCostAmount"))">Judicial cost amount</span>
+                                <span class="fa @(GetSortStyle("JudicialCostAmount"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("CourtProcedureNumber"))">Court procedure number</span>
+                                <span class="fa @(GetSortStyle("CourtProcedureNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("Court"))">Court</span>
+                                <span class="fa @(GetSortStyle("Court"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("CourtNumber"))">Court number</span>
+                                <span class="fa @(GetSortStyle("CourtNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("CourtCity"))">Court city</span>
+                                <span class="fa @(GetSortStyle("CourtCity"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("CourtProvince"))">Court province</span>
+                                <span class="fa @(GetSortStyle("CourtProvince"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("LaywerName"))">Lawyer name</span>
+                                <span class="fa @(GetSortStyle("LaywerName"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("SolicitorName"))">Solicitor name</span>
+                                <span class="fa @(GetSortStyle("SolicitorName"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("LaywerMail"))">Lawyer mail</span>
+                                <span class="fa @(GetSortStyle("LaywerMail"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("SolicitorMail"))">Solicitor mail</span>
+                                <span class="fa @(GetSortStyle("SolicitorMail"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("LaywerPhoneNumber"))">Lawyer phone number</span>
+                                <span class="fa @(GetSortStyle("LaywerPhoneNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("SolicitorPhoneNumber"))">Solicitor phone number</span>
+                                <span class="fa @(GetSortStyle("SolicitorPhoneNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortTable("LawFirm"))">Law firm</span>
+                                <span class="fa @(GetSortStyle("LawFirm"))"></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Procedures != null && Procedures.Count() > 0)
+                        {
+                            foreach (var item in Procedures)
+                            {
+                                string possitiveStyle = item.ContractNavigation?.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
+                                <tr style="@possitiveStyle">
+                                    <td>@item.ContractId</td>
+                                    <td>@(item.ProcessDate?.ToString("yyyy-MM-dd"))</td>
+                                    <td>@item.ProceedingType</td>
+                                    <td>@item.ProcedureType</td>
+                                    <td>@(item.LawsuitDate?.ToString("yyyy-MM-dd"))</td>
+                                    <td>@(item.AmountClaimed?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                    <td>@(item.JudicialCostAmount?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                    <td>@item.CourtProcedureNumber</td>
+                                    <td>@item.Court</td>
+                                    <td>@item.CourtNumber</td>
+                                    <td>@item.CourtCity</td>
+                                    <td>@item.CourtProvince</td>
+                                    <td>@item.LaywerName</td>
+                                    <td>@item.SolicitorName</td>
+                                    <td>@item.LaywerMail</td>
+                                    <td>@item.SolicitorMail</td>
+                                    <td>@item.LaywerPhoneNumber</td>
+                                    <td>@item.SolicitorPhoneNumber</td>
+                                    <td>@item.LawFirm</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Procedure> Procedures { get; set; }
+
+    private string currentSortColumn;
+    private bool isSortedAscending;
+
+    private async void OnTopScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onTopScroll");
+    }
+
+    private async void OnScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onScroll");
+    }
+
+    private void SortTable(string columnName)
+    {
+        var items = Procedures;
+
+        if (columnName != currentSortColumn)
+        {
+            items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            currentSortColumn = columnName;
+            isSortedAscending = true;
+        }
+        else
+        {
+            if (isSortedAscending)
+            {
+                items = items.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+
+            isSortedAscending = !isSortedAscending;
+        }
+
+        Procedures = items;
+
+        StateHasChanged();
+    }
+
+    private string GetSortStyle(string columnName)
+    {
+        if (currentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+}

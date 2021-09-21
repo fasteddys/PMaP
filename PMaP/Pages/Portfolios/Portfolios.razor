@@ -1,0 +1,762 @@
+﻿@page "/portfolios/{isAdd}"
+
+@using Blazored.SessionStorage
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using PMaP.Data
+@using PMaP.Models
+@using PMaP.Models.DBModels
+@using PMaP.Models.ViewModels.Portfolio
+@using ProtectedLocalStore
+@using System.Globalization
+@inject PortfolioService PortfolioService
+@inject PortfolioRegistrationService PortfolioRegistrationService
+@inject NavigationManager NavigationManager
+@inject ISessionStorageService sessionStorage
+@inject IJSRuntime JSRuntime
+
+<div class="col-md-12">
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <p style="color:#336699;">Portfolios</p>
+        </li>
+    </ul>
+</div>
+
+<EditForm Model=@portfolioModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
+    <DataAnnotationsValidator />
+    <div class="row">
+        <div class="col">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header" style="background-color:#0066ff">
+                        <div class="caption"><font color="white">Portfolio</font></div>
+                    </div>
+                    <div class="card-body" style="background-color:#e6f0ff">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Portfolio</label>
+                                @if (@isAdd == "1")
+                                {
+                                    <InputText type="text" class="form-control" @bind-Value="@portfolioModel.Portfolio" />
+                                    <ValidationMessage For=@(() => portfolioModel.Portfolio) />
+                                }
+                                else
+                                {
+                                    <select class="form-control" value="@portfolioModel.ViewModel.Portfolio" @onchange="GetSubportfolios">
+                                        @foreach (var item in portfolioModel.ViewModel.PortfolioList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
+                            <div class="col-md-2">
+                                <label>Subporfolio</label>
+                                @if (@isAdd == "1")
+                                {
+                                    <input type="text" class="form-control" @bind="@portfolioModel.ViewModel.Subportfolio">
+                                }
+                                else
+                                {
+                                    <select class="form-control" @bind="portfolioModel.ViewModel.Subportfolio">
+                                        @foreach (var item in portfolioModel.ViewModel.SubportfolioList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
+                            @if (isDateInputDisabled)
+                            {
+                                <div class="col-md-2">
+                                    <label>Date added / update</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Cut off</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Singning</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Closing</label>
+                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-2">
+                                    <label>Date added / update</label>
+                                    <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Cut off</label>
+                                    <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Singning</label>
+                                    <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>F. Closing</label>
+                                    <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                </div>
+                            }
+                        </div>
+                        <br><br>
+                        <p align="right">
+                            <button type="button" class="btn @(GetSearchStyle())" @onclick="Search" disabled="@isSearchButtonDisabled">
+                                <i class="fa fa-search"></i>&nbsp;&nbsp;Search
+                            </button>
+                            <button type="button" class="btn @(GetAddStyle())" @onclick="Add" disabled="@isAddButtonDisabled">
+                                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Add contracts
+                            </button>
+                        </p>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+    <div class="row"> 
+        <div class="col">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header" style="background-color:#0066ff">
+                        <div class="caption"><font color="white">Characteristics</font></div>
+                    </div>
+                </div>
+                <div class="card-body" style="background-color:#e6f0ff">
+                    <div class="row">  
+                        <div class="col-md-2">          
+                            <label>Operation type</label>
+                            <input placeholder="" type="text" readonly="readonly" class="form-control" @bind="@portfolioModel.ViewModel.OperationType">
+                        </div>
+                        <div class="col-md-1">
+                            <label>Situation</label>
+                            <input placeholder="" type="text" class="form-control" readonly="readonly" @bind="@portfolioModel.ViewModel.Situation">
+                        </div>
+                        <div class="col-md-2">          
+                            <label>OB Cut off</label>
+                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBCutOff">
+                        </div>
+                        <div class="col-md-2">          
+                            <label>OB Singning</label>
+                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBSingning">
+                        </div>
+                        <div class="col-md-2">          
+                            <label>OB Closing</label>
+                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBClosing">
+                        </div>
+                        <div class="col-md-2"> 
+                            <label>Contract &nbsp;</label><i class="fa fa-search"></i> 
+                            <InputNumber id="Contract" class="form-control form-control-sm" placeholder="" disabled="@isDisabled" @bind-Value="@portfolioModel.ViewModel.Contract" @onkeyup="SearchContract" />
+                        </div>
+                        <div class="col-md-1"> 
+                            <label>Holder&nbsp;</label><i class="fa fa-search"></i> 
+                            <input id="Holder" type="search" class="form-control form-control-sm" placeholder="" disabled="@isDisabled">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (@displayAssessment || isAdd == "1")
+    {
+        <Assessment Caption="Assessment" Summary="@portfolioModel.Summary" />
+    }
+
+    @if (@displayEntityList || isAdd == "1")
+    {
+        <div class="row">
+            <div class="col">
+                <div class="col-md-12">
+                    <hr style="height:1px; color:#0066ff;background-color:#0066ff;">
+                    <div class="Tabs" style="display: block;">
+                        <ul class="nav nav-tabs">
+                            @if (isAdd == "1")
+                            {
+                                <li class="@classSummary">
+                                    <a href="" @onclick="@GetSummary" @onclick:preventDefault>Summary</a>
+                                </li>
+                            }
+                            <li class="@classContracts">
+                                <a href="" @onclick="@GetContracts" @onclick:preventDefault>Contracts</a>
+                            </li>
+                            <li class="@classParticipants">
+                                <a href="" @onclick="@GetParticipants" @onclick:preventDefault>Participants</a>
+                            </li>
+                            <li class="@classCollaterals">
+                                <a href="" @onclick="@GetCollaterals" @onclick:preventDefault>Collaterals</a>
+                            </li>
+                                <li class="@classProcedure">
+                                <a href="" @onclick="@GetProcedures" @onclick:preventDefault>Procedures</a>
+                            </li>
+                            <li class="@classInsolvencies">
+                                <a href="" @onclick="@GetInsolvencies" @onclick:preventDefault>Insolvencies</a>
+                            </li>
+                            <li class="@classLiens">
+                                <a href="" @onclick="@GetLiens" @onclick:preventDefault>Liens</a>
+                            </li>
+                            <li class="@classNovations">
+                                <a href="" @onclick="@GetNovations" @onclick:preventDefault>Novations</a>
+                            </li>
+                            <li class="@classInvestor">
+                                <a href="" @onclick="@GetInvestors" @onclick:preventDefault>Investor</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    @if (@portfolioModel.ActiveTab == "summary")
+                    {
+                        <SummaryTable Contracts="@portfolioModel.Contracts" />
+                    }
+                    @if (@portfolioModel.ActiveTab == "contracts")
+                    {
+                        <ContractsTable isAdd="@isAdd" Contracts="@portfolioModel.Contracts" OnRemoveContract="Remove" />
+                    }
+                    @if (@portfolioModel.ActiveTab == "participants")
+                    {
+                        <ParticipantsTable Participants="@portfolioModel.Participants" />
+                    }
+                    @if (@portfolioModel.ActiveTab == "procedures")
+                    {
+                        <ProceduresTable Procedures="@portfolioModel.Procedures" />
+                    }
+                    @if (@portfolioModel.ActiveTab == "investor")
+                    {
+                        <InvestorTable isAdd="@isAdd" Investors="@portfolioModel.Investors" />
+                    }
+                </div>
+            </div>
+        </div>
+        <br />
+        @if (isAdd == "1")
+        {
+            <p align="right">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
+                </button>
+                <button class="btn btn-danger" @onclick="Cancel">
+                    <i class="fa fa-close"></i>&nbsp;&nbsp;Cancel
+                </button>
+            </p>
+        }
+        else
+        {
+            <p align="right">
+                <button type="button" class="btn @(GetSaveStyle())" @onclick="UpdatePortfolio" disabled="@isSaveCancelButtonDisabled">
+                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
+                </button>
+                <button type="button" class="btn @(GetCancelStyle())" @onclick="Search" disabled="@isSaveCancelButtonDisabled">
+                    <i class="fa fa-close"></i>&nbsp;&nbsp;Cancel
+                </button>
+                <button type="button" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?"))" disabled="@isDiscardPortfolioDisabled">
+                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Discard
+                </button>
+                <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
+                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Certificado
+                </button>
+                <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
+                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;Comunicaciones
+                </button>
+            </p>
+        }
+    }
+</EditForm>
+
+<div class="modal fade" id="myModal" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="title" class="modal-title"></h4>
+                <button type="button" data-dismiss="modal">x</button>
+            </div>
+ 
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span id="message"></span>
+            </div>
+ 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id="btnOK" type="button" class="btn btn-light" data-dismiss="modal">OK</button>
+                <button id="btnOKConfirm" type="button" class="btn btn-light" data-dismiss="modal" @onclick="DiscardPortfolio">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalSuccess" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="title" class="modal-title">Success</h4>
+                <button type="button" data-dismiss="modal" @onclick="Reload">x</button>
+            </div>
+ 
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span id="messageSuccess"></span>
+            </div>
+ 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal" @onclick="Reload">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalUpdateSuccess" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 id="title" class="modal-title">Success</h4>
+                <button type="button" data-dismiss="modal" @onclick="Search">x</button>
+            </div>
+ 
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span id="messageUpdateSuccess"></span>
+            </div>
+ 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal" @onclick="Search">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string isAdd { get; set; }
+
+    private PortfolioModel portfolioModel { get; set; } = new PortfolioModel
+    {
+        ViewModel = new ViewModel
+        {
+            PortfolioList = new List<SelectListItem>(),
+            SubportfolioList = new List<SelectListItem>()
+        },
+        Summary = new Summary(),
+        Participants = new List<Participant>(),
+        Investors = new List<Investor>(),
+        Procedures = new List<Procedure>()
+    };
+    private List<Portfolio> portfolios = new List<Portfolio>();
+    
+    private bool isDisabled { get; set; }
+    private bool isDateInputDisabled { get; set; }
+    private bool isSearchButtonDisabled { get; set; }
+    private bool isAddButtonDisabled { get; set; }
+    private bool isDiscardPortfolioDisabled { get; set; }
+    private bool displayAssessment { get; set; }
+    private bool displayEntityList { get; set; }
+
+    private string classSummary { get; set; }
+    private string classContracts { get; set; }
+    private string classParticipants { get; set; }
+    private string classCollaterals { get; set; }
+    private string classProcedure { get; set; }
+    private string classInsolvencies { get; set; }
+    private string classLiens { get; set; }
+    private string classNovations { get; set; }
+    private string classInvestor { get; set; }
+
+    private bool isDiscarded;
+
+    private bool isSaveCancelButtonDisabled { get; set; } = true;
+    private List<Contract> contractsToDelete = new List<Contract>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        isDisabled = true;
+        isDateInputDisabled = true;
+        isSearchButtonDisabled = false;
+        isAddButtonDisabled = true;
+        displayAssessment = false;
+        isDiscarded = false;
+        portfolioModel = await PortfolioService.Portfolios("");
+        portfolios = portfolioModel.Portfolios;
+
+        if (isAdd == "1")
+        {
+            isDateInputDisabled = false;
+            isSearchButtonDisabled = true;
+            isAddButtonDisabled = true;
+
+            var summary = await sessionStorage.GetItemAsync<Summary>("Summary");
+            var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
+            portfolioValuationViewModel.IsAdd = isAdd;
+            portfolioValuationViewModel.ReflectExcludedContractIds = true;
+            portfolioValuationViewModel.ExcludePossitiveOB = true;
+
+            portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel, summary);
+            portfolioModel.ViewModel.PortfolioList = new List<SelectListItem>();
+            portfolioModel.ViewModel.SubportfolioList = new List<SelectListItem>();
+
+            classSummary = "active";
+            classContracts = classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+        }
+    }
+
+    private async void Search()
+    {
+        portfolioModel = await PortfolioService.Characteristics(portfolioModel);
+        isDisabled = false;
+        displayAssessment = true;
+        isSaveCancelButtonDisabled = true;
+        contractsToDelete = new List<Contract>();
+
+        await GetAssessment();
+        await GetContracts();
+
+        displayEntityList = true;
+        classContracts = "active";
+        classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "contracts";
+
+        isDiscardPortfolioDisabled = true;
+        isAddButtonDisabled = true;
+        var portfolio = portfolioModel.Portfolios.FirstOrDefault();
+        if (portfolio != null && portfolio.OperationType == "SALE")
+        {
+            isDiscardPortfolioDisabled = false;
+            isAddButtonDisabled = false;
+        }
+
+        StateHasChanged();
+    }
+
+    private async void UpdatePortfolio()
+    {
+        var portfolio = portfolioModel.Portfolios.FirstOrDefault();
+        if (portfolio != null)
+        {
+            var deletePortfolioContractsResponse = await PortfolioRegistrationService.DeletePortfolioContracts(portfolio.Id, contractsToDelete);
+            if (deletePortfolioContractsResponse.ResponseCode == 200)
+            {
+                await JSRuntime.InvokeVoidAsync("showDialogUpdateSuccess", deletePortfolioContractsResponse.Message);
+            }
+            else
+            {
+                await ShowMessage(deletePortfolioContractsResponse.ResponseCode, deletePortfolioContractsResponse.Message);
+            }
+        }
+    }
+
+    private async Task GetAssessment()
+    {
+        var assessment = await PortfolioService.Assessment();
+        portfolioModel.Summary = assessment.Summary;
+    }
+
+    private void GetSummary()
+    {
+        classSummary = "active";
+        classContracts = classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "summary";
+
+        StateHasChanged();
+    }
+
+    private async Task GetContracts()
+    {
+        if (isAdd != "1" && isSaveCancelButtonDisabled)
+        {
+            ContractsModel contractList = new ContractsModel();
+            if (portfolioModel.ViewModel.Contract != null && portfolioModel.ViewModel.Contract > 0)
+            {
+                contractList = await PortfolioService.SearchContract(portfolioModel.ViewModel.Contract ?? 0);
+            }
+            else
+            {
+                contractList = await PortfolioService.Contracts();
+            }
+            portfolioModel.Contracts = contractList.Contracts;
+            portfolioModel.Investors = contractList.Investors;
+            portfolioModel.Participants = contractList.Participants;
+            portfolioModel.Procedures = contractList.Procedures;
+        }
+
+        classContracts = "active";
+        classSummary = classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "contracts";
+
+        StateHasChanged();
+    }
+
+    private void GetParticipants()
+    {
+        classParticipants = "active";
+        classSummary = classContracts = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "participants";
+
+        StateHasChanged();
+    }
+
+    private void GetCollaterals()
+    {
+        classCollaterals = "active";
+        classSummary = classContracts = classParticipants = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "collaterals";
+
+        StateHasChanged();
+    }
+
+    private void GetProcedures()
+    {
+        classProcedure = "active";
+        classSummary = classContracts = classParticipants = classCollaterals = classInsolvencies = classLiens = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "procedures";
+
+        StateHasChanged();
+    }
+
+    private void GetInsolvencies()
+    {
+        classInsolvencies = "active";
+        classSummary = classContracts = classParticipants = classCollaterals = classProcedure = classLiens = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "insolvencies";
+
+        StateHasChanged();
+    }
+
+    private void GetLiens()
+    {
+        classLiens = "active";
+        classSummary = classContracts = classParticipants = classCollaterals = classProcedure = classInsolvencies = classNovations = classInvestor = "";
+        portfolioModel.ActiveTab = "liens";
+
+        StateHasChanged();
+    }
+
+    private void GetNovations()
+    {
+        classNovations = "active";
+        classSummary = classContracts = classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classInvestor = "";
+        portfolioModel.ActiveTab = "novations";
+
+        StateHasChanged();
+    }
+
+    private void GetInvestors()
+    {
+        classInvestor = "active";
+        classSummary = classContracts = classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = "";
+        portfolioModel.ActiveTab = "investor";
+
+        StateHasChanged();
+    }
+
+    private void Add()
+    {
+        string portfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Portfolio) ? portfolioModel.ViewModel.Portfolio : "_";
+        string subportfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Subportfolio) ? portfolioModel.ViewModel.Subportfolio : "_";
+        NavigationManager.NavigateTo("/portfolioValuation/1/" + portfolio + "/" + subportfolio);
+    }
+
+    private void AddPortfolio()
+    {
+        
+    }
+
+    private void Remove(Contract contract)
+    {
+        portfolioModel.Contracts.Remove(contract);
+        contract.Participants = portfolioModel.Participants.Where(x => x.ContractId == contract.Id).ToList();
+        contract.Investors = portfolioModel.Investors.Where(x => x.ContractId == contract.Id).ToList();
+        contractsToDelete.Add(contract);
+        var participantIds = contract.Participants.Select(x => x.Id).ToList();
+        var investorIds = contract.Investors.Select(x => x.Id).ToList();
+        portfolioModel.Participants = portfolioModel.Participants.Where(x => !participantIds.Contains(x.Id)).ToList();
+        portfolioModel.Investors = portfolioModel.Investors.Where(x => !investorIds.Contains(x.Id)).ToList();
+        isSaveCancelButtonDisabled = false;
+        StateHasChanged();
+    }
+
+    private async void ValidFormSubmitted(EditContext editContext)
+    {
+        portfolioModel.ViewModel.Portfolio = portfolioModel.Portfolio;
+        var addPortfolioResponse = await PortfolioRegistrationService.AddPortfolio(portfolioModel);
+        if (addPortfolioResponse.ResponseCode == 200)
+        {
+            await JSRuntime.InvokeVoidAsync("showDialogSuccess", addPortfolioResponse.Message);
+        }
+        else
+        {
+            await ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message);
+        }
+    }
+
+    private void InvalidFormSubmitted(EditContext editContext)
+    {
+        
+    }
+
+    private async Task DiscardPortfolio()
+    {
+        if (isDiscarded == true)
+        {
+            NavigationManager.NavigateTo("/portfolios/0", true);
+        }
+        
+        var portfolioToDiscard = portfolioModel.Portfolios.FirstOrDefault();
+        if (portfolioToDiscard != null)
+        {
+            var discardPortfolioResponse = await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
+            if (discardPortfolioResponse.ResponseCode == 200)
+            {
+                await JSRuntime.InvokeVoidAsync("showDialogSuccess", discardPortfolioResponse.Message);
+            }
+            else
+            {
+                await ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message);
+            }
+        }
+    }
+
+    private void Reload()
+    {
+        NavigationManager.NavigateTo("/portfolios/0", true);
+    }
+
+    private async Task ShowMessage(int code, string message)
+    {
+        string title;
+        bool isConfirm = false;
+        switch (code)
+        {
+            case 1:
+                title = "Confimation";
+                isConfirm = true;
+                break;
+            case 200:
+                title = "Success";
+                isDiscarded = true;
+                isConfirm = true;
+                break;
+            case 400:
+                title = "Warning!";
+                break;
+            case 500:
+                title = "Error!";
+                break;
+            default:
+                title = "";
+                break;
+        }
+        await ShowDialog(title, message, isConfirm);
+    }
+
+    private async Task ShowDialog(string title, string text, bool isConfirm = false)
+    {
+        await JSRuntime.InvokeVoidAsync("showDialog", title, text, isConfirm);
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/portfolioValuation/0/_/_");
+    }
+
+    private async void SearchContract(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+            ContractsModel contract = new ContractsModel();
+            if (portfolioModel.ViewModel.Contract != null && portfolioModel.ViewModel.Contract > 0)
+            {
+                contract = await PortfolioService.SearchContract(portfolioModel.ViewModel.Contract ?? 0);
+            }
+            else
+            {
+                contract = await PortfolioService.Contracts();
+            }
+
+            portfolioModel.Contracts = contract.Contracts;
+            portfolioModel.Investors = contract.Investors;
+            portfolioModel.Participants = contract.Participants;
+        }
+
+        StateHasChanged();
+    }
+
+    private void GetSubportfolios(ChangeEventArgs e)
+    {
+        string portfolio = e.Value.ToString();
+
+        List<SelectListItem> subportfolioList = new List<SelectListItem>();
+        subportfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
+        
+        var subportfolios = portfolios.Where(x => x.Portfolio1 == portfolio && !string.IsNullOrEmpty(x.Subportfolio))
+            .GroupBy(x => x.Subportfolio)
+            .Select(x => x.First())
+            .OrderBy(x => x.Subportfolio)
+            .ToList();
+        
+        foreach (var item in subportfolios)
+        {
+            subportfolioList.Add(new SelectListItem() { Text = item.Subportfolio, Value = item.Subportfolio });
+        }
+
+        portfolioModel.ViewModel.Portfolio = portfolio;
+        portfolioModel.ViewModel.Subportfolio = "";
+        portfolioModel.ViewModel.SubportfolioList = subportfolioList;
+
+        isAddButtonDisabled = true;
+        isDiscardPortfolioDisabled = true;
+
+        StateHasChanged();
+    }
+
+    private string GetSearchStyle()
+    {
+        string style = "btn-disabled";
+        if (!isSearchButtonDisabled)
+        {
+            style = "btn-primary";
+        }
+        return style;
+    }
+
+    private string GetAddStyle()
+    {
+        string style = "btn-disabled";
+        if (!isAddButtonDisabled)
+        {
+            style = "btn-primary";
+        }
+        return style;
+    }
+
+    private string GetDiscardStyle()
+    {
+        string style = "btn-disabled";
+        if (!isDiscardPortfolioDisabled)
+        {
+            style = "btn-danger";
+        }
+        return style;
+    }
+
+    private string GetSaveStyle()
+    {
+        return isSaveCancelButtonDisabled ? "btn-disabled" : "btn-primary";
+    }
+
+    private string GetCancelStyle()
+    {
+        return isSaveCancelButtonDisabled ? "btn-disabled" : "btn-danger";
+    }
+}

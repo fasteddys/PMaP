@@ -1,0 +1,158 @@
+﻿@using PMaP.Models.DBModels
+@using System.Globalization
+@inject IJSRuntime JSRuntime
+
+<div class="row">
+    <div class="col-md-12 mts">
+        <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+            <div style="width: 1120px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+        </div>
+        <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+            <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
+                <table class="table table-striped table-bordered" style="background-color:#e6e6e6;">
+                    <thead>
+                        <tr class="heading" style="color:#336699">
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">Contract</span>
+                                <span class="fa @(GetContractsSortStyle("Id"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Participant</span>
+                                <span class="fa @(GetContractsSortStyle("MainParticipantId"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">No. guarantors</span>
+                                <span class="fa @(GetContractsSortStyle("NumParticipants"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Balance (OB)</span>
+                                <span class="fa @(GetContractsSortStyle("TotalAmountOb"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityPrincipalBalance"))">Maturity principal balance</span>
+                                <span class="fa @(GetContractsSortStyle("MaturityPrincipalBalance"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingPrincipalBalance"))">Outstanding principal balance</span>
+                                <span class="fa @(GetContractsSortStyle("OutstandingPrincipalBalance"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">Origination date</span>
+                                <span class="fa @(GetContractsSortStyle("OriginationDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">Maturity Date</span>
+                                <span class="fa @(GetContractsSortStyle("MaturityDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("FirstUnpaidInstalmentDate"))">First unpaid installment date</span>
+                                <span class="fa @(GetContractsSortStyle("FirstUnpaidInstalmentDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("JudicialProcess"))">Judicial process</span>
+                                <span class="fa @(GetContractsSortStyle("JudicialProcess"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link">Type of judicial procedure</span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Assignment entity</span>
+                                <span class="fa @(GetContractsSortStyle("OriginalEntity"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link">Origin</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Contracts != null && Contracts.Count() > 0)
+                        {
+                            foreach (var item in Contracts)
+                            {
+                                string possitiveStyle = item.TotalAmountOb > 0 ? "background-color: #a9f7a9;" : "";
+                                <tr style="@possitiveStyle">
+                                    <td>@item.Id</td>
+                                    <td>@item.MainParticipantId</td>
+                                    <td>@item.NumParticipants</td>
+                                    <td>@(item.TotalAmountOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                    <td>@(item.MaturityPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                    <td>@(item.OutstandingPrincipalBalance?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                    <td>@item.OriginationDate</td>
+                                    <td>@item.MaturityDate</td>
+                                    <td>@item.FirstUnpaidInstalmentDate</td>
+                                    <td>@(item.JudicialProcess != null && (sbyte)item.JudicialProcess == 1 ? "Yes" : "No")</td>
+                                    <td></td>
+                                    <td>@item.OriginalEntity</td>
+                                    <td></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Contract> Contracts { get; set; }
+
+    private string currentContractsSortColumn;
+    private bool isContractsSortedAscending;
+
+	private void SortContractsTable(string columnName)
+    {
+        var items = Contracts;
+
+        if (columnName != currentContractsSortColumn)
+        {
+            items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            currentContractsSortColumn = columnName;
+            isContractsSortedAscending = true;
+        }
+        else
+        {
+            if (isContractsSortedAscending)
+            {
+                items = items.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+
+            isContractsSortedAscending = !isContractsSortedAscending;
+        }
+
+        Contracts = items;
+
+        StateHasChanged();
+    }
+
+    private string GetContractsSortStyle(string columnName)
+    {
+        if (currentContractsSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isContractsSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+
+    private async void OnTopScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onTopScroll");
+    }
+
+    private async void OnScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onScroll");
+    }
+}
