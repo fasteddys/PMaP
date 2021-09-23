@@ -23,8 +23,11 @@
                         <th class="sorting_desc">Total OB</th>
 					    <th class="sorting_desc">Secured OB</th>
 					    <th class="sorting_desc">Unsecured OB</th>
-					    <th class="sorting_desc">Secured Price</th>
-					    <th class="sorting_desc">Unsecured Price</th>
+                        @if (showPrices)
+                        {
+                            <th class="sorting_desc">Secured Price</th>
+					        <th class="sorting_desc">Unsecured Price</th>
+                        }
                         <th>Debtors</th>
                         <th>Guarantors</th>   
                     </tr>
@@ -35,8 +38,11 @@
                         <td>@Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
                         <td>@Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
                         <td>@Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                        <td>@Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                        <td>@Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                        @if (showPrices)
+                        {
+                            <td>@Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                            <td>@Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                        }
                         <td>@Summary.Debtors</td>
                         <td>@Summary.Guarantors</td>
                     </tr>
@@ -57,6 +63,8 @@
     public EventCallback<bool> OnDetailsClick { get; set; }
 	[Parameter]
 	public bool showDetails { get; set; } = false;
+    [Parameter]
+    public bool showPrices { get; set; } = true;
 
     private Task Details()
 	{
