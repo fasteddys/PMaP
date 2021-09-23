@@ -562,7 +562,7 @@
     private void Add()
     {
         string portfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Portfolio) ? portfolioModel.ViewModel.Portfolio : "_";
-        string subportfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Subportfolio) ? portfolioModel.ViewModel.Subportfolio : "_";
+        string subportfolio = !string.IsNullOrEmpty(portfolioModel.ViewModel.Subportfolio) && portfolioModel.ViewModel.Subportfolio.ToLower() != "select" ? portfolioModel.ViewModel.Subportfolio : "_";
         NavigationManager.NavigateTo("/portfolioValuation/1/" + portfolio + "/" + subportfolio);
     }
 
@@ -710,7 +710,7 @@
         }
 
         portfolioModel.ViewModel.Portfolio = portfolio;
-        portfolioModel.ViewModel.Subportfolio = "";
+        portfolioModel.ViewModel.Subportfolio = "Select";
         portfolioModel.ViewModel.SubportfolioList = subportfolioList;
 
         isAddButtonDisabled = true;
