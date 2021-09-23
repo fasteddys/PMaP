@@ -4,43 +4,45 @@
 <br /><br />
 <div class="row">
     <div class="col">
-		<div class="card-header" style="background-color:#0066ff">
-            <div class="caption">
-                <font color="white">@Caption</font>
-                @if (showDetailButton)
-                {
-                    <button type="button" class="button_add" @onclick="Details">
-                        <i class="fa @(GetShowDetailsStyle())"></i>&nbsp;&nbsp;Detail
-                    </button>
-                }
+        <div class="col-md-12">
+		    <div class="card-header" style="background-color:#0066ff">
+                <div class="caption">
+                    <font color="white">@Caption</font>
+                    @if (showDetailButton)
+                    {
+                        <button type="button" class="button_add" @onclick="Details">
+                            <i class="fa @(GetShowDetailsStyle())"></i>&nbsp;&nbsp;Detail
+                        </button>
+                    }
+                </div>
             </div>
+            <table class="table table-striped table-bordered" style="background-color:#e6e6e6" >
+                <thead>
+                    <tr class="heading" style="color:#336699;">
+                        <th>Contracts</th>
+                        <th class="sorting_desc">Total OB</th>
+					    <th class="sorting_desc">Secured OB</th>
+					    <th class="sorting_desc">Unsecured OB</th>
+					    <th class="sorting_desc">Secured Price</th>
+					    <th class="sorting_desc">Unsecured Price</th>
+                        <th>Debtors</th>
+                        <th>Guarantors</th>   
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Summary.Contracts</td>
+                        <td>@Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                        <td>@Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                        <td>@Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                        <td>@Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                        <td>@Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
+                        <td>@Summary.Debtors</td>
+                        <td>@Summary.Guarantors</td>
+                    </tr>
+			    </tbody>
+		    </table>
         </div>
-        <table class="table table-striped table-bordered" style="background-color:#e6e6e6" >
-            <thead>
-                <tr class="heading" style="color:#336699;">
-                    <th>Contracts</th>
-                    <th class="sorting_desc">Total OB</th>
-					<th class="sorting_desc">Secured OB</th>
-					<th class="sorting_desc">Unsecured OB</th>
-					<th class="sorting_desc">Secured Price</th>
-					<th class="sorting_desc">Unsecured Price</th>
-                    <th>Debtors</th>
-                    <th>Guarantors</th>   
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>@Summary.Contracts</td>
-                    <td>@Summary.TotalOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                    <td>@Summary.SecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                    <td>@Summary.UnsecuredOB.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                    <td>@Summary.SecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                    <td>@Summary.UnsecuredPrice.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"))</td>
-                    <td>@Summary.Debtors</td>
-                    <td>@Summary.Guarantors</td>
-                </tr>
-			</tbody>
-		</table>
     </div>
 </div>
 

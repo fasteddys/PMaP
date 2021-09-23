@@ -22,7 +22,7 @@ namespace PMaP.Data
             Configuration = configuration;
         }
 
-        public async Task<PortfolioModel> Index(Models.ViewModels.PortfolioValuation.ViewModel portfolioValuationViewModel, Summary summary)
+        public async Task<PortfolioModel> Index(Models.ViewModels.PortfolioValuation.ViewModel portfolioValuationViewModel)
         {
             if (portfolioValuationViewModel.PortfolioValuationAdd != null)
             {
@@ -56,7 +56,7 @@ namespace PMaP.Data
                 Participants = portfolioValuationModel.Participants,
                 Investors = portfolioValuationModel.Investors,
                 Procedures = portfolioValuationModel.Procedures,
-                Summary = summary,
+                Summary = portfolioValuationModel.Summary,
                 ViewModel = new ViewModel
                 {
                     DateAdded = DateTime.Now,

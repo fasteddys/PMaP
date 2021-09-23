@@ -396,13 +396,12 @@
             isSearchButtonDisabled = true;
             isAddButtonDisabled = true;
 
-            var summary = await sessionStorage.GetItemAsync<Summary>("Summary");
             var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
             portfolioValuationViewModel.IsAdd = isAdd;
             portfolioValuationViewModel.ReflectExcludedContractIds = true;
             portfolioValuationViewModel.ExcludePossitiveOB = true;
 
-            portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel, summary);
+            portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel);
             portfolioModel.ViewModel.PortfolioList = new List<SelectListItem>();
             portfolioModel.ViewModel.SubportfolioList = new List<SelectListItem>();
 

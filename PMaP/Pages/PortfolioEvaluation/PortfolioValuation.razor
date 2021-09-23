@@ -348,7 +348,6 @@
             await JSRuntime.InvokeVoidAsync("showDialog", "Warning!", "Contract/s already added to a portfolio.");
             return;
         }
-        await sessionStorage.SetItemAsync("Summary", portfolioValuationModel.Summary);
         await sessionStorage.SetItemAsync("portfolioValuationViewModel", portfolioValuationModel.ViewModel);
         NavigationManager.NavigateTo("/portfolios/1");
     }
