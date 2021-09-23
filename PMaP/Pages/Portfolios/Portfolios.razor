@@ -577,10 +577,9 @@
         contract.Participants = portfolioModel.Participants.Where(x => x.ContractId == contract.Id).ToList();
         contract.Investors = portfolioModel.Investors.Where(x => x.ContractId == contract.Id).ToList();
         contractsToDelete.Add(contract);
-        var participantIds = contract.Participants.Select(x => x.Id).ToList();
-        var investorIds = contract.Investors.Select(x => x.Id).ToList();
-        portfolioModel.Participants = portfolioModel.Participants.Where(x => !participantIds.Contains(x.Id)).ToList();
-        portfolioModel.Investors = portfolioModel.Investors.Where(x => !investorIds.Contains(x.Id)).ToList();
+        portfolioModel.Participants = portfolioModel.Participants.Where(x => x.ContractId != contract.Id).ToList();
+        portfolioModel.Investors = portfolioModel.Investors.Where(x => x.ContractId != contract.Id).ToList();
+        portfolioModel.Procedures = portfolioModel.Procedures.Where(x => x.ContractId != contract.Id).ToList();
         isSaveCancelButtonDisabled = false;
         StateHasChanged();
     }
