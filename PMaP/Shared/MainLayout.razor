@@ -1,4 +1,10 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazored.SessionStorage
+@using PMaP.Data
+@using PMaP.Models.Authenticate
+@inherits LayoutComponentBase
+@inject IMainLayoutService MainLayoutService
+@inject ISessionStorageService sessionStorage
+@inject NavigationManager NavigationManager
 
 <style>
     body {
@@ -143,28 +149,32 @@
     }
 </style>
 
-@*<body class="page-header-fixed" style="background-color: white !important;">
-    <Header />
-    <div class="page-container">
-        <NavMenu />
-        <div class="page-content-wrapper">
-            <div class="page-content ptn">
-                @Body
+
+@if (!showNavMenu)
+{
+    <div class="sidebar" style="width: 216px; position: fixed; z-index: 2; top: 0; left: 0; overflow-x: hidden; background-color: #e6f0ff;">
+        <div class="page-header navbar">
+            <div class="container clearfix et_menu_container">
+                <span style="font-size: 15px; font-weight: bold; text-align: center;">
+                    Portfolio Management Platform - PMaP
+                </span>
             </div>
         </div>
     </div>
-</body>*@
-
-<div class="sidebar" style="height: 100%; width: 216px; position: fixed; z-index: 2; top: 0; left: 0; overflow-x: hidden; background-color: #e6f0ff;">
-    <div class="page-header navbar">
-        <div class="container clearfix et_menu_container">
-            <span style="font-size: 15px; font-weight: bold; text-align: center;">
-                Portfolio Management Platform - PMaP
-            </span>
+}
+@if (showNavMenu)
+{
+    <div class="sidebar" style="height: 100%; width: 216px; position: fixed; z-index: 2; top: 0; left: 0; overflow-x: hidden; background-color: #e6f0ff;">
+        <div class="page-header navbar">
+            <div class="container clearfix et_menu_container">
+                <span style="font-size: 15px; font-weight: bold; text-align: center;">
+                    Portfolio Management Platform - PMaP
+                </span>
+            </div>
         </div>
+        <NavMenu />
     </div>
-    <NavMenu />
-</div>
+}
 
 <div class="main" style="margin-left: 200px; padding-left: 20px;">
     <Header />
@@ -173,3 +183,36 @@
         @Body
     </div>
 </div>
+
+@code {
+    private bool showNavMenu = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            NavigationManager.LocationChanged += LocationChanged;
+            base.OnInitialized();
+
+            await NavMenuVisibility();
+        }
+    }
+
+    async void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        await NavMenuVisibility();
+    }
+
+    private async Task NavMenuVisibility()
+    {
+        showNavMenu = false;
+
+        AuthenticateResponse authenticateResponse = await MainLayoutService.GetUser();
+        if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+        {
+            showNavMenu = true;
+        }
+
+        StateHasChanged();
+    }
+}

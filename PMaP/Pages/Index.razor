@@ -1,10 +1,16 @@
 ﻿@page "/"
 
+@using Blazored.SessionStorage
 @using PMaP.Data
 @using PMaP.Models
 @using System.Globalization
-@inject HomeService HomeService
+@using System.Net
+@using PMaP.Models.Authenticate
+@inject IHomeService HomeService
 @inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorageService
+@inject ISessionStorageService sessionStorage
+@inject NavigationManager NavigationManager
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
@@ -113,9 +119,17 @@
     private bool isSortedAscending;
     private string currentSortColumn;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        model = await HomeService.PortfolioComposition();
+        if (firstRender)
+        {
+            model = await HomeService.PortfolioComposition();
+            if (model.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
+            }
+            StateHasChanged();
+        }
     }
 
     private string GetSortStyle(string columnName)

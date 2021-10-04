@@ -41,6 +41,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<PortfolioMarketModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             List<SelectListItem> portfolioList = new List<SelectListItem>();
@@ -62,7 +63,16 @@ namespace PMaP.Data
                 //}
             }
 
-            return new PortfolioMarketModel { ViewModel = new ViewModel { PortfolioList = portfolioList, SubportfolioList = subportfolioList }, PortfolioMarkets = model.PortfolioMarkets };
+            return new PortfolioMarketModel
+            {
+                ResponseCode = model.ResponseCode,
+                ViewModel = new ViewModel
+                {
+                    PortfolioList = portfolioList,
+                    SubportfolioList = subportfolioList
+                },
+                PortfolioMarkets = model.PortfolioMarkets
+            };
         }
 
         public async Task<PortfolioModel> Characteristics(PortfolioModel model)

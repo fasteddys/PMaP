@@ -1,19 +1,11 @@
-using Blazored.LocalStorage;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PMaP.Data;
 using Syncfusion.Blazor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PMaP
 {
@@ -38,11 +30,14 @@ namespace PMaP
                 options.MaximumReceiveMessageSize = null;
             });
 
-            services.AddSingleton<HomeService>();
+            services.AddScoped<ILocalStorageService, LocalStorageService>();
+            services.AddScoped<IHomeService, HomeService>();
             services.AddSingleton<PortfolioService>();
             services.AddSingleton<PortfolioValuationService>();
             services.AddSingleton<PortfolioRegistrationService>();
             services.AddSingleton<PortfolioMarketService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IMainLayoutService, MainLayoutService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

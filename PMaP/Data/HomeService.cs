@@ -1,22 +1,28 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PMaP.Models;
+using PMaP.Models.Authenticate;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
 {
-    public class HomeService
+    public interface IHomeService
     {
-        public IConfiguration Configuration { get; }
+        Task<HomeModel> PortfolioComposition();
+    }
 
-        public HomeService(IConfiguration configuration)
+    public class HomeService : IHomeService
+    {
+        private IConfiguration _configuration;
+        private ILocalStorageService _localStorageService;
+
+        public HomeService(IConfiguration configuration, ILocalStorageService localStorageService)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _localStorageService = localStorageService;
         }
 
         public async Task<HomeModel> PortfolioComposition()
@@ -25,11 +31,21 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("homeUri"));
+                client.BaseAddress = new Uri(_configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP GET
-                var responseTask = await client.GetAsync("home");
+                var responseTask = await client.GetAsync("api/home");
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -37,6 +53,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<HomeModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             return model;
