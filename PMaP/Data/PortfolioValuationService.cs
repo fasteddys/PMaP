@@ -2,26 +2,36 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PMaP.Models;
+using PMaP.Models.Authenticate;
 using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.PortfolioValuation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
 {
-    public class PortfolioValuationService
+    public interface IPortfolioValuationService
+    {
+        Task<PortfolioValuationModel> Index(string portfolio, string subportfolio, string isAdd = "0");
+        Task<PortfolioValuationModel> Summary(PortfolioValuationModel model);
+        Task<PortfolioValuationModel> Details(PortfolioValuationModel model);
+    }
+
+    public class PortfolioValuationService : IPortfolioValuationService
     {
         private IConfiguration Configuration { get; }
+        private ILocalStorageService _localStorageService;
 
-        public PortfolioValuationService(IConfiguration configuration)
+        public PortfolioValuationService(IConfiguration configuration, ILocalStorageService localStorageService)
         {
             Configuration = configuration;
+            _localStorageService = localStorageService;
         }
 
         public async Task<PortfolioValuationModel> Index(string portfolio, string subportfolio, string isAdd = "0")
@@ -32,11 +42,21 @@ namespace PMaP.Data
             PortfolioModel portfolioModel = new PortfolioModel();
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP GET
-                var responseTask = await client.GetAsync("portfolios?portfolio=" + portfolio + "&subportfolio=" + subportfolio);
+                var responseTask = await client.GetAsync("api/portfolio?portfolio=" + portfolio + "&subportfolio=" + subportfolio);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -44,6 +64,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     portfolioModel = JsonConvert.DeserializeObject<PortfolioModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd { Portfolio = new Portfolio() };
@@ -81,13 +102,22 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(model.ViewModel), Encoding.UTF8, "application/json");
                 //HTTP POST
-                var responseTask = await client.PostAsync("portfolioValuation/summary", content);
+                var responseTask = await client.PostAsync("api/portfolioEvaluation/summary", content);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -95,6 +125,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             viewModel.DebtOB = debtOB;
@@ -115,13 +146,22 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(model.ViewModel), Encoding.UTF8, "application/json");
                 //HTTP POST
-                var responseTask = await client.PostAsync("portfolioValuation/details/contracts", content);
+                var responseTask = await client.PostAsync("api/portfolioEvaluation/details/contracts", content);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -129,30 +169,35 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
-            model.Contracts.ForEach(x => x.Portfolio = null);
-            if (viewModel.AddedInPortfolio == "1")
+            if (model.ResponseCode == (int)HttpStatusCode.OK)
             {
-                model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
-            }
-            else if (string.IsNullOrEmpty(viewModel.AddedInPortfolio) || viewModel.AddedInPortfolio == "Select")
-            {
-                foreach (var item in model.Contracts)
+                model.Contracts.ForEach(x => x.Portfolio = null);
+                if (viewModel.AddedInPortfolio == "1")
                 {
-                    string portfolio = "";
-                    portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
-                    if (string.IsNullOrEmpty(portfolio))
+                    model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
+                }
+                else if (string.IsNullOrEmpty(viewModel.AddedInPortfolio) || viewModel.AddedInPortfolio == "Select")
+                {
+                    foreach (var item in model.Contracts)
                     {
-                        portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
+                        string portfolio = "";
+                        portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
+                        if (string.IsNullOrEmpty(portfolio))
+                        {
+                            portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
+                        }
+                        item.Portfolio = portfolio;
                     }
-                    item.Portfolio = portfolio;
+                }
+                else
+                {
+                    model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
                 }
             }
-            else
-            {
-                model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
-            }
+
             model.ViewModel = viewModel;
             model.Summary = summary;
             return model;

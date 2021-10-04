@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PMaP.Models;
+using PMaP.Models.Authenticate;
 using PMaP.Models.ViewModels.Portfolio;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,25 @@ using System.Threading.Tasks;
 
 namespace PMaP.Data
 {
-    public class PortfolioService
+    public interface IPortfolioService
+    {
+        Task<PortfolioModel> Portfolios(string queryStrings);
+        Task<PortfolioModel> Characteristics(PortfolioModel model);
+        Task<ContractsModel> Assessment();
+        Task<ContractsModel> Contracts();
+        Task<ContractsModel> SearchContract(int id);
+    }
+
+    public class PortfolioService : IPortfolioService
     {
         private IConfiguration Configuration { get; }
+        private ILocalStorageService _localStorageService;
         public static int _portfolioId;
 
-        public PortfolioService(IConfiguration configuration)
+        public PortfolioService(IConfiguration configuration, ILocalStorageService localStorageService)
         {
             Configuration = configuration;
+            _localStorageService = localStorageService;
         }
 
         public async Task<PortfolioModel> Portfolios(string queryStrings)
@@ -29,11 +41,21 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP GET
-                var responseTask = await client.GetAsync("portfolios" + queryStrings);
+                var responseTask = await client.GetAsync("api/portfolio" + queryStrings);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -41,6 +63,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<PortfolioModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             List<SelectListItem> portfolioList = new List<SelectListItem>();
@@ -62,7 +85,16 @@ namespace PMaP.Data
                 //}
             }
 
-            return new PortfolioModel { ViewModel = new ViewModel { PortfolioList = portfolioList, SubportfolioList = subportfolioList }, Portfolios = model.Portfolios };
+            return new PortfolioModel
+            {
+                ResponseCode = model.ResponseCode,
+                ViewModel = new ViewModel
+                {
+                    PortfolioList = portfolioList,
+                    SubportfolioList = subportfolioList
+                },
+                Portfolios = model.Portfolios
+            };
         }
 
         public async Task<PortfolioModel> Characteristics(PortfolioModel model)
@@ -71,13 +103,23 @@ namespace PMaP.Data
             ViewModel viewModel = model.ViewModel;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP GET
                 string portfolio = model.ViewModel.PortfolioList.Find(x => x.Text == model.ViewModel.Portfolio)?.Value;
                 string subportfolio = model.ViewModel.SubportfolioList.Find(x => x.Text == model.ViewModel.Subportfolio)?.Value;
-                var responseTask = await client.GetAsync("portfolios?portfolio=" + portfolio + "&subportfolio=" + subportfolio);
+                var responseTask = await client.GetAsync("api/portfolio?portfolio=" + (portfolio.ToLower() != "select" ? portfolio : "") + "&subportfolio=" + (subportfolio.ToLower() != "select" ? subportfolio : ""));
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -85,6 +127,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<PortfolioModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
             model.ViewModel = viewModel;
 
@@ -113,11 +156,21 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("contractUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP GET
-                var responseTask = await client.GetAsync("contracts/portfolio/" + _portfolioId + "/assessment");
+                var responseTask = await client.GetAsync("api/contract/portfolio/" + _portfolioId + "/assessment");
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -125,6 +178,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<ContractsModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             return model;
@@ -136,11 +190,21 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("contractUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP GET
-                var responseTask = await client.GetAsync("contracts/portfolio/" + _portfolioId);
+                var responseTask = await client.GetAsync("api/contract/portfolio/" + _portfolioId);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -148,56 +212,57 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<ContractsModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             return model;
         }
 
-        public async Task<ParticipantsModel> Participants()
-        {
-            ParticipantsModel model = new ParticipantsModel();
+        //public async Task<ParticipantsModel> Participants()
+        //{
+        //    ParticipantsModel model = new ParticipantsModel();
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("participantUri"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //HTTP GET
-                var responseTask = await client.GetAsync("participants/portfolio/" + _portfolioId);
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(Configuration.GetConnectionString("participantUri"));
+        //        client.DefaultRequestHeaders.Accept.Clear();
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        //HTTP GET
+        //        var responseTask = await client.GetAsync("participants/portfolio/" + _portfolioId);
 
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<ParticipantsModel>(readTask);
-                }
-            }
+        //        var result = responseTask;
+        //        if (result.IsSuccessStatusCode)
+        //        {
+        //            var readTask = await result.Content.ReadAsStringAsync();
+        //            model = JsonConvert.DeserializeObject<ParticipantsModel>(readTask);
+        //        }
+        //    }
 
-            return model;
-        }
+        //    return model;
+        //}
 
-        public async Task<InvestorsModel> Investors()
-        {
-            InvestorsModel model = new InvestorsModel();
+        //public async Task<InvestorsModel> Investors()
+        //{
+        //    InvestorsModel model = new InvestorsModel();
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("investorUri"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //HTTP GET
-                var responseTask = await client.GetAsync("investors/portfolio/" + _portfolioId);
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(Configuration.GetConnectionString("investorUri"));
+        //        client.DefaultRequestHeaders.Accept.Clear();
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        //HTTP GET
+        //        var responseTask = await client.GetAsync("investors/portfolio/" + _portfolioId);
 
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<InvestorsModel>(readTask);
-                }
-            }
+        //        var result = responseTask;
+        //        if (result.IsSuccessStatusCode)
+        //        {
+        //            var readTask = await result.Content.ReadAsStringAsync();
+        //            model = JsonConvert.DeserializeObject<InvestorsModel>(readTask);
+        //        }
+        //    }
 
-            return model;
-        }
+        //    return model;
+        //}
 
         public async Task<ContractsModel> SearchContract(int id)
         {
@@ -205,11 +270,21 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("contractUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP GET
-                var responseTask = await client.GetAsync("contracts/" + id + "/portfolio/" + _portfolioId);
+                var responseTask = await client.GetAsync("api/contract/" + id + "/portfolio/" + _portfolioId);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -217,6 +292,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<ContractsModel>(readTask);
                 }
+                model.ResponseCode = (int)result.StatusCode;
             }
 
             return model;

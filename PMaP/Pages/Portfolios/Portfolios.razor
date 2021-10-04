@@ -8,8 +8,9 @@
 @using PMaP.Models.ViewModels.Portfolio
 @using ProtectedLocalStore
 @using System.Globalization
-@inject PortfolioService PortfolioService
-@inject PortfolioRegistrationService PortfolioRegistrationService
+@using System.Net
+@inject IPortfolioService PortfolioService
+@inject IPortfolioRegistrationService PortfolioRegistrationService
 @inject NavigationManager NavigationManager
 @inject ISessionStorageService sessionStorage
 @inject IJSRuntime JSRuntime
@@ -379,40 +380,57 @@
     private bool isSaveCancelButtonDisabled { get; set; } = true;
     private List<Contract> contractsToDelete = new List<Contract>();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        isDisabled = true;
-        isDateInputDisabled = true;
-        isSearchButtonDisabled = false;
-        isAddButtonDisabled = true;
-        displayAssessment = false;
-        isDiscarded = false;
-        portfolioModel = await PortfolioService.Portfolios("");
-        portfolios = portfolioModel.Portfolios;
-
-        if (isAdd == "1")
+        if (firstRender)
         {
-            isDateInputDisabled = false;
-            isSearchButtonDisabled = true;
+            isDisabled = true;
+            isDateInputDisabled = true;
+            isSearchButtonDisabled = false;
             isAddButtonDisabled = true;
+            displayAssessment = false;
+            isDiscarded = false;
+            portfolioModel = await PortfolioService.Portfolios("");
+            if (portfolioModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
+            }
+            portfolios = portfolioModel.Portfolios;
 
-            var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
-            portfolioValuationViewModel.IsAdd = isAdd;
-            portfolioValuationViewModel.ReflectExcludedContractIds = true;
-            portfolioValuationViewModel.ExcludePossitiveOB = true;
+            if (isAdd == "1")
+            {
+                isDateInputDisabled = false;
+                isSearchButtonDisabled = true;
+                isAddButtonDisabled = true;
 
-            portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel);
-            portfolioModel.ViewModel.PortfolioList = new List<SelectListItem>();
-            portfolioModel.ViewModel.SubportfolioList = new List<SelectListItem>();
+                var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
+                portfolioValuationViewModel.IsAdd = isAdd;
+                portfolioValuationViewModel.ReflectExcludedContractIds = true;
+                portfolioValuationViewModel.ExcludePossitiveOB = true;
 
-            classSummary = "active";
-            classContracts = classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+                portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel);
+                if (portfolioModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
+                {
+                    NavigationManager.NavigateTo("/account/login");
+                }
+                portfolioModel.ViewModel.PortfolioList = new List<SelectListItem>();
+                portfolioModel.ViewModel.SubportfolioList = new List<SelectListItem>();
+
+                classSummary = "active";
+                classContracts = classParticipants = classCollaterals = classProcedure = classInsolvencies = classLiens = classNovations = classInvestor = "";
+            }
+
+            StateHasChanged();
         }
     }
 
     private async void Search()
     {
         portfolioModel = await PortfolioService.Characteristics(portfolioModel);
+        if (portfolioModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
+        {
+            NavigationManager.NavigateTo("/account/login");
+        }
         isDisabled = false;
         displayAssessment = true;
         isSaveCancelButtonDisabled = true;
@@ -444,6 +462,10 @@
         if (portfolio != null)
         {
             var deletePortfolioContractsResponse = await PortfolioRegistrationService.DeletePortfolioContracts(portfolio.Id, contractsToDelete);
+            if (deletePortfolioContractsResponse.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
+            }
             if (deletePortfolioContractsResponse.ResponseCode == 200)
             {
                 await JSRuntime.InvokeVoidAsync("showDialogUpdateSuccess", deletePortfolioContractsResponse.Message);
@@ -458,6 +480,10 @@
     private async Task GetAssessment()
     {
         var assessment = await PortfolioService.Assessment();
+        if (assessment.ResponseCode == (int)HttpStatusCode.Unauthorized)
+        {
+            NavigationManager.NavigateTo("/account/login");
+        }
         portfolioModel.Summary = assessment.Summary;
     }
 
@@ -482,6 +508,10 @@
             else
             {
                 contractList = await PortfolioService.Contracts();
+            }
+            if (contractList.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
             }
             portfolioModel.Contracts = contractList.Contracts;
             portfolioModel.Investors = contractList.Investors;
@@ -588,6 +618,10 @@
     {
         portfolioModel.ViewModel.Portfolio = portfolioModel.Portfolio;
         var addPortfolioResponse = await PortfolioRegistrationService.AddPortfolio(portfolioModel);
+        if (addPortfolioResponse.ResponseCode == (int)HttpStatusCode.Unauthorized)
+        {
+            NavigationManager.NavigateTo("/account/login");
+        }
         if (addPortfolioResponse.ResponseCode == 200)
         {
             await JSRuntime.InvokeVoidAsync("showDialogSuccess", addPortfolioResponse.Message);
@@ -614,6 +648,10 @@
         if (portfolioToDiscard != null)
         {
             var discardPortfolioResponse = await PortfolioRegistrationService.DiscardPortfolio(portfolioToDiscard);
+            if (discardPortfolioResponse.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
+            }
             if (discardPortfolioResponse.ResponseCode == 200)
             {
                 await JSRuntime.InvokeVoidAsync("showDialogSuccess", discardPortfolioResponse.Message);
@@ -680,6 +718,10 @@
             else
             {
                 contract = await PortfolioService.Contracts();
+            }
+            if (contract.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
             }
 
             portfolioModel.Contracts = contract.Contracts;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PMaP.Models;
+using PMaP.Models.Authenticate;
 using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.Portfolio;
 using System;
@@ -13,13 +14,24 @@ using System.Threading.Tasks;
 
 namespace PMaP.Data
 {
-    public class PortfolioRegistrationService
+    public interface IPortfolioRegistrationService
+    {
+        Task<PortfolioModel> Index(Models.ViewModels.PortfolioValuation.ViewModel portfolioValuationViewModel);
+        Task<PortfolioValuationModel> AddPortfolio(PortfolioModel model);
+        Task<PortfolioValuationModel> UpdatePortfolio(PortfolioValuationModel model);
+        Task<PortfolioValuationModel> DiscardPortfolio(Portfolio portfolio);
+        Task<PortfolioValuationModel> DeletePortfolioContracts(int portfolioId, List<Contract> contracts);
+    }
+
+    public class PortfolioRegistrationService : IPortfolioRegistrationService
     {
         private IConfiguration Configuration { get; }
+        private ILocalStorageService _localStorageService;
 
-        public PortfolioRegistrationService(IConfiguration configuration)
+        public PortfolioRegistrationService(IConfiguration configuration, ILocalStorageService localStorageService)
         {
             Configuration = configuration;
+            _localStorageService = localStorageService;
         }
 
         public async Task<PortfolioModel> Index(Models.ViewModels.PortfolioValuation.ViewModel portfolioValuationViewModel)
@@ -33,13 +45,22 @@ namespace PMaP.Data
             PortfolioValuationModel portfolioValuationModel = new PortfolioValuationModel();
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(portfolioValuationViewModel), Encoding.UTF8, "application/json");
                 //HTTP POST
-                var responseTask = await client.PostAsync("portfolioValuation/details/contracts", content);
+                var responseTask = await client.PostAsync("api/portfolioEvaluation/details/contracts", content);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -47,10 +68,12 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     portfolioValuationModel = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
                 }
+                portfolioValuationModel.ResponseCode = (int)result.StatusCode;
             }
 
             PortfolioModel portfolioModel = new PortfolioModel
             {
+                ResponseCode = portfolioValuationModel.ResponseCode,
                 ActiveTab = "summary",
                 Contracts = portfolioValuationModel.Contracts,
                 Participants = portfolioValuationModel.Participants,
@@ -75,13 +98,22 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
                 //HTTP POST
-                var responseTask = await client.PostAsync("portfolioValuation/portfolio", content);
+                var responseTask = await client.PostAsync("api/portfolioEvaluation/portfolio", content);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -89,6 +121,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
                 }
+                portfolioValuation.ResponseCode = (int)result.StatusCode;
             }
 
             return portfolioValuation;
@@ -100,13 +133,22 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
                 //HTTP PUT
-                var responseTask = await client.PutAsync("portfolioValuation/portfolio", content);
+                var responseTask = await client.PutAsync("api/portfolioEvaluation/portfolio", content);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -114,6 +156,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
                 }
+                portfolioValuation.ResponseCode = (int)result.StatusCode;
             }
 
             return portfolioValuation;
@@ -125,12 +168,21 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 //HTTP DELETE
-                var responseTask = await client.DeleteAsync("portfolioValuation/portfolio/" + portfolio.Id);
+                var responseTask = await client.DeleteAsync("api/portfolioEvaluation/portfolio/" + portfolio.Id);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -138,6 +190,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
                 }
+                portfolioValuation.ResponseCode = (int)result.StatusCode;
             }
 
             return portfolioValuation;
@@ -149,13 +202,22 @@ namespace PMaP.Data
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("portfolioValuationUri"));
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+                try
+                {
+                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                }
+                catch { }
+                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(contracts), Encoding.UTF8, "application/json");
                 //HTTP PUT
-                var responseTask = await client.PutAsync("portfolioValuation/portfolio/" + portfolioId + "/contracts", content);
+                var responseTask = await client.PutAsync("api/portfolioEvaluation/portfolio/" + portfolioId + "/contracts", content);
 
                 var result = responseTask;
                 if (result.IsSuccessStatusCode)
@@ -163,6 +225,7 @@ namespace PMaP.Data
                     var readTask = await result.Content.ReadAsStringAsync();
                     portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
                 }
+                portfolioValuation.ResponseCode = (int)result.StatusCode;
             }
 
             return portfolioValuation;

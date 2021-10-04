@@ -2,8 +2,10 @@
 @using PMaP.Data
 @using PMaP.Models
 @using System.Globalization
-@inject PortfolioMarketService PortfolioMarketService
+@using System.Net
 @inject IJSRuntime JSRuntime
+@inject IPortfolioMarketService PortfolioMarketService
+@inject NavigationManager NavigationManager
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
@@ -108,10 +110,17 @@
     private string currentSortColumn;
     private string Holder, Project, investor, year, Typology, DebtType, Value;
 
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        portfolioMarketModel = await PortfolioMarketService.Portfolios("");
+        if (firstRender)
+        {
+            portfolioMarketModel = await PortfolioMarketService.Portfolios("");
+            if (portfolioMarketModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
+            }
+            StateHasChanged();
+        }
     }
 
     private string GetSortStyle(string columnName)

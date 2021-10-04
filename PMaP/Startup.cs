@@ -32,10 +32,10 @@ namespace PMaP
 
             services.AddScoped<ILocalStorageService, LocalStorageService>();
             services.AddScoped<IHomeService, HomeService>();
-            services.AddSingleton<PortfolioService>();
-            services.AddSingleton<PortfolioValuationService>();
-            services.AddSingleton<PortfolioRegistrationService>();
-            services.AddSingleton<PortfolioMarketService>();
+            services.AddScoped<IPortfolioService, PortfolioService>();
+            services.AddScoped<IPortfolioValuationService, PortfolioValuationService>();
+            services.AddScoped<IPortfolioRegistrationService, PortfolioRegistrationService>();
+            services.AddScoped<IPortfolioMarketService, PortfolioMarketService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IMainLayoutService, MainLayoutService>();
         }

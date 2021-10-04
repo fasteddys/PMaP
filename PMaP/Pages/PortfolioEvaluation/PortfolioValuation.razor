@@ -8,8 +8,9 @@
 @using PMaP.Models.ViewModels.PortfolioValuation
 @using ProtectedLocalStore
 @using System.Globalization
-@inject PortfolioRegistrationService PortfolioRegistrationService
-@inject PortfolioValuationService PortfolioValuationService
+@using System.Net
+@inject IPortfolioRegistrationService PortfolioRegistrationService
+@inject IPortfolioValuationService PortfolioValuationService
 @inject NavigationManager NavigationManager
 @inject ISessionStorageService sessionStorage
 @inject IJSRuntime JSRuntime
@@ -283,17 +284,26 @@
     private List<Contract> ContractList = new List<Contract>();
     private List<Contract> FilteredContractList = new List<Contract>();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        portfolio = portfolio.Length == 1 ? portfolio.Replace("_", "") : portfolio;
-        subportfolio = subportfolio.Length == 1 ? subportfolio.Replace("_", "") : subportfolio;
+        if (firstRender)
+        {
+            portfolio = portfolio.Length == 1 ? portfolio.Replace("_", "") : portfolio;
+            subportfolio = subportfolio.Length == 1 ? subportfolio.Replace("_", "") : subportfolio;
 
-        portfolioValuationModel = await PortfolioValuationService.Index(portfolio, subportfolio, isAdd);
+            portfolioValuationModel = await PortfolioValuationService.Index(portfolio, subportfolio, isAdd);
+            if (portfolioValuationModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
+            }
 
-        showSummary = false;
-        showDetails = false;
-        showPortfolioDetail = isAdd == "1" ? true : false;
-        pageBreadcrumb = isAdd == "1" ? "Portfolio evaluation » Add contracts" : "Portfolio evaluation";
+            showSummary = false;
+            showDetails = false;
+            showPortfolioDetail = isAdd == "1" ? true : false;
+            pageBreadcrumb = isAdd == "1" ? "Portfolio evaluation » Add contracts" : "Portfolio evaluation";
+
+            StateHasChanged();
+        }
     }
 
     private void CheckboxClicked(int aSelectedId, object aChecked)
@@ -322,6 +332,10 @@
         portfolioValuationModel.ViewModel.ReflectExcludedContractIds = false;
         portfolioValuationModel.ViewModel.ExcludePossitiveOB = true;
         portfolioValuationModel = await PortfolioValuationService.Summary(portfolioValuationModel);
+        if (portfolioValuationModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
+        {
+            NavigationManager.NavigateTo("/account/login");
+        }
         showSummary = true;
         showDetails = false;
         StateHasChanged();
@@ -334,6 +348,10 @@
             portfolioValuationModel.ViewModel.ExcludedContractIds = new List<int>();
             portfolioValuationModel.ViewModel.ExcludePossitiveOB = true;
             portfolioValuationModel = await PortfolioValuationService.Details(portfolioValuationModel);
+            if (portfolioValuationModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/account/login");
+            }
             ContractList = FilteredContractList = portfolioValuationModel.Contracts;
         }
         showDetails = showDetails ? false : true;
@@ -373,6 +391,10 @@
             return;
         }
         var updatePortfolioResponse = await PortfolioRegistrationService.UpdatePortfolio(portfolioValuationModel);
+        if (updatePortfolioResponse.ResponseCode == (int)HttpStatusCode.Unauthorized)
+        {
+            NavigationManager.NavigateTo("/account/login");
+        }
         if (updatePortfolioResponse.ResponseCode == 200)
         {
             await JSRuntime.InvokeVoidAsync("showDialogSuccess", updatePortfolioResponse.Message);
