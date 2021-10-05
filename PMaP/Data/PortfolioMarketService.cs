@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using PMaP.Models;
-using PMaP.Models.Authenticate;
 using PMaP.Models.ViewModels.Portfolio;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
@@ -21,46 +16,21 @@ namespace PMaP.Data
     public class PortfolioMarketService : IPortfolioMarketService
     {
         private IConfiguration Configuration { get; }
-        private ILocalStorageService _localStorageService;
+        private IHttpService _httpService;
         //public static int _portfolioId;
 
-        public PortfolioMarketService(IConfiguration configuration, ILocalStorageService localStorageService)
+        public PortfolioMarketService(IConfiguration configuration, IHttpService httpService)
         {
             Configuration = configuration;
-            _localStorageService = localStorageService;
+            _httpService = httpService;
         }
 
         public async Task<PortfolioMarketModel> Portfolios(string queryStrings)
         {
             PortfolioMarketModel model = new PortfolioMarketModel();
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                //HTTP GET
-                var responseTask = await client.GetAsync("api/portfoliosMarket" + queryStrings);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<PortfolioMarketModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
-            }
-
+            model = await _httpService.Get<PortfolioMarketModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfoliosMarket" + queryStrings) ?? new PortfolioMarketModel();
+            
             List<SelectListItem> portfolioList = new List<SelectListItem>();
             portfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
             List<SelectListItem> subportfolioList = new List<SelectListItem>();
@@ -72,12 +42,6 @@ namespace PMaP.Data
                 {
                     portfolioList.Add(new SelectListItem() { Text = item.Project, Value = item.Project });
                 }
-
-                //var subportfolios = model.Documents.Where(x => !string.IsNullOrEmpty(x.Subportfolio)).GroupBy(x => x.Subportfolio).Select(x => x.First()).OrderBy(x => x.Subportfolio).ToList();
-                //foreach (var item in subportfolios)
-                //{
-                //    subportfolioList.Add(new SelectListItem() { Text = item.Subportfolio, Value = item.Subportfolio });
-                //}
             }
 
             return new PortfolioMarketModel

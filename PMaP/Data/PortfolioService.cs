@@ -1,15 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using PMaP.Models;
-using PMaP.Models.Authenticate;
 using PMaP.Models.ViewModels.Portfolio;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
@@ -26,45 +21,20 @@ namespace PMaP.Data
     public class PortfolioService : IPortfolioService
     {
         private IConfiguration Configuration { get; }
-        private ILocalStorageService _localStorageService;
+        private IHttpService _httpService;
         public static int _portfolioId;
 
-        public PortfolioService(IConfiguration configuration, ILocalStorageService localStorageService)
+        public PortfolioService(IConfiguration configuration, IHttpService httpService)
         {
             Configuration = configuration;
-            _localStorageService = localStorageService;
+            _httpService = httpService;
         }
 
         public async Task<PortfolioModel> Portfolios(string queryStrings)
         {
             PortfolioModel model = new PortfolioModel();
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                //HTTP GET
-                var responseTask = await client.GetAsync("api/portfolio" + queryStrings);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<PortfolioModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
-            }
+            model = await _httpService.Get<PortfolioModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolio" + queryStrings) ?? new PortfolioModel();
 
             List<SelectListItem> portfolioList = new List<SelectListItem>();
             portfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
@@ -78,11 +48,6 @@ namespace PMaP.Data
                     portfolioList.Add(new SelectListItem() { Text = item.Portfolio1, Value = item.Portfolio1 });
                 }
 
-                //var subportfolios = model.Documents.Where(x => !string.IsNullOrEmpty(x.Subportfolio)).GroupBy(x => x.Subportfolio).Select(x => x.First()).OrderBy(x => x.Subportfolio).ToList();
-                //foreach (var item in subportfolios)
-                //{
-                //    subportfolioList.Add(new SelectListItem() { Text = item.Subportfolio, Value = item.Subportfolio });
-                //}
             }
 
             return new PortfolioModel
@@ -101,41 +66,40 @@ namespace PMaP.Data
         {
             _portfolioId = 0;
             ViewModel viewModel = model.ViewModel;
-            using (var client = new HttpClient())
+            
+            string portfolioViewModel = model.ViewModel.PortfolioList.Find(x => x.Text == model.ViewModel.Portfolio)?.Value;
+            string subportfolio = model.ViewModel.SubportfolioList.Find(x => x.Text == model.ViewModel.Subportfolio)?.Value;
+            var response = await _httpService.Get<PortfolioModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolio?portfolio=" + (portfolioViewModel?.ToLower() != "select" ? portfolioViewModel : "") + "&subportfolio=" + (subportfolio?.ToLower() != "select" ? subportfolio : ""));
+            if (response != null)
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                response.ViewModel = viewModel;
 
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
+                response.ViewModel.OperationType = response.ViewModel.OBCutOff = response.ViewModel.OBSingning = response.ViewModel.OBClosing = "";
+                response.ViewModel.DateAdded = response.ViewModel.DateCutOff = response.ViewModel.DateSigning = response.ViewModel.DateClosing = null;
+                if (response.ResponseCode == 200 && response.Portfolios != null && response.Portfolios.Count() > 0)
                 {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
+                    var portfolio = response.Portfolios.First();
+                    response.ViewModel.OperationType = portfolio.OperationType;
+                    response.ViewModel.OBCutOff = portfolio.CutOffOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                    response.ViewModel.OBSingning = portfolio.SigningOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                    response.ViewModel.OBClosing = portfolio.ClosingOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                    response.ViewModel.DateAdded = portfolio.CreationDate;
+                    response.ViewModel.DateCutOff = portfolio.CutOffDate;
+                    response.ViewModel.DateSigning = portfolio.SigningDate;
+                    response.ViewModel.DateClosing = portfolio.ClosingDate;
+                    _portfolioId = portfolio.Id;
                 }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
 
-                //HTTP GET
-                string portfolio = model.ViewModel.PortfolioList.Find(x => x.Text == model.ViewModel.Portfolio)?.Value;
-                string subportfolio = model.ViewModel.SubportfolioList.Find(x => x.Text == model.ViewModel.Subportfolio)?.Value;
-                var responseTask = await client.GetAsync("api/portfolio?portfolio=" + (portfolio.ToLower() != "select" ? portfolio : "") + "&subportfolio=" + (subportfolio.ToLower() != "select" ? subportfolio : ""));
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<PortfolioModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
+                return response;
             }
+            
             model.ViewModel = viewModel;
 
             model.ViewModel.OperationType = model.ViewModel.OBCutOff = model.ViewModel.OBSingning = model.ViewModel.OBClosing = "";
             model.ViewModel.DateAdded = model.ViewModel.DateCutOff = model.ViewModel.DateSigning = model.ViewModel.DateClosing = null;
-            if (model.ResponseCode == 200 && model.Portfolios != null && model.Portfolios.Count() > 0)
+            if (response != null && response.ResponseCode == 200 && response.Portfolios != null && response.Portfolios.Count() > 0)
             {
-                var portfolio = model.Portfolios.First();
+                var portfolio = response.Portfolios.First();
                 model.ViewModel.OperationType = portfolio.OperationType;
                 model.ViewModel.OBCutOff = portfolio.CutOffOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
                 model.ViewModel.OBSingning = portfolio.SigningOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
@@ -154,31 +118,10 @@ namespace PMaP.Data
         {
             ContractsModel model = new ContractsModel { Summary = new Summary() };
 
-            using (var client = new HttpClient())
+            var response = await _httpService.Get<ContractsModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/contract/portfolio/" + _portfolioId + "/assessment");
+            if (response != null)
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                //HTTP GET
-                var responseTask = await client.GetAsync("api/contract/portfolio/" + _portfolioId + "/assessment");
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<ContractsModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
+                return response;
             }
 
             return model;
@@ -186,36 +129,7 @@ namespace PMaP.Data
 
         public async Task<ContractsModel> Contracts()
         {
-            ContractsModel model = new ContractsModel();
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                //HTTP GET
-                var responseTask = await client.GetAsync("api/contract/portfolio/" + _portfolioId);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<ContractsModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
-            }
-
-            return model;
+            return await _httpService.Get<ContractsModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/contract/portfolio/" + _portfolioId) ?? new ContractsModel();
         }
 
         //public async Task<ParticipantsModel> Participants()
@@ -266,36 +180,7 @@ namespace PMaP.Data
 
         public async Task<ContractsModel> SearchContract(int id)
         {
-            ContractsModel model = new ContractsModel();
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                //HTTP GET
-                var responseTask = await client.GetAsync("api/contract/" + id + "/portfolio/" + _portfolioId);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<ContractsModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
-            }
-
-            return model;
+            return await _httpService.Get<ContractsModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/contract/" + id + "/portfolio/" + _portfolioId) ?? new ContractsModel();
         }
     }
 }

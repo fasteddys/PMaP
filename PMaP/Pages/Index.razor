@@ -124,10 +124,6 @@
         if (firstRender)
         {
             model = await HomeService.PortfolioComposition();
-            if (model.ResponseCode == (int)HttpStatusCode.Unauthorized)
-            {
-                NavigationManager.NavigateTo("/account/login");
-            }
             StateHasChanged();
         }
     }

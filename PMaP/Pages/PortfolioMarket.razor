@@ -115,10 +115,6 @@
         if (firstRender)
         {
             portfolioMarketModel = await PortfolioMarketService.Portfolios("");
-            if (portfolioMarketModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
-            {
-                NavigationManager.NavigateTo("/account/login");
-            }
             StateHasChanged();
         }
     }

@@ -1,15 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using PMaP.Models;
-using PMaP.Models.Authenticate;
 using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.Portfolio;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
@@ -26,12 +20,12 @@ namespace PMaP.Data
     public class PortfolioRegistrationService : IPortfolioRegistrationService
     {
         private IConfiguration Configuration { get; }
-        private ILocalStorageService _localStorageService;
+        private IHttpService _httpService;
 
-        public PortfolioRegistrationService(IConfiguration configuration, ILocalStorageService localStorageService)
+        public PortfolioRegistrationService(IConfiguration configuration, IHttpService httpService)
         {
             Configuration = configuration;
-            _localStorageService = localStorageService;
+            _httpService = httpService;
         }
 
         public async Task<PortfolioModel> Index(Models.ViewModels.PortfolioValuation.ViewModel portfolioValuationViewModel)
@@ -43,32 +37,29 @@ namespace PMaP.Data
             }
 
             PortfolioValuationModel portfolioValuationModel = new PortfolioValuationModel();
-            using (var client = new HttpClient())
+            
+            var response = await _httpService.Post<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/details/contracts", portfolioValuationViewModel);
+            if (response != null)
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
+                PortfolioModel portfolioModelResponse = new PortfolioModel
                 {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
+                    ResponseCode = response.ResponseCode,
+                    ActiveTab = "summary",
+                    Contracts = response.Contracts,
+                    Participants = response.Participants,
+                    Investors = response.Investors,
+                    Procedures = response.Procedures,
+                    Summary = response.Summary,
+                    ViewModel = new ViewModel
+                    {
+                        DateAdded = DateTime.Now,
+                        PortfolioId = portfolioValuationViewModel.PortfolioValuationAdd != null ? portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Id : 0,
+                        Portfolio = portfolioValuationViewModel.PortfolioValuationAdd != null ? portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Portfolio1 : "",
+                        Subportfolio = portfolioValuationViewModel.PortfolioValuationAdd != null ? portfolioValuationViewModel.PortfolioValuationAdd.Portfolio.Subportfolio : ""
+                    }
+                };
 
-                HttpContent content = new StringContent(JsonConvert.SerializeObject(portfolioValuationViewModel), Encoding.UTF8, "application/json");
-                //HTTP POST
-                var responseTask = await client.PostAsync("api/portfolioEvaluation/details/contracts", content);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    portfolioValuationModel = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
-                }
-                portfolioValuationModel.ResponseCode = (int)result.StatusCode;
+                return portfolioModelResponse;
             }
 
             PortfolioModel portfolioModel = new PortfolioModel
@@ -94,141 +85,22 @@ namespace PMaP.Data
 
         public async Task<PortfolioValuationModel> AddPortfolio(PortfolioModel model)
         {
-            PortfolioValuationModel portfolioValuation = new PortfolioValuationModel();
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                HttpContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                //HTTP POST
-                var responseTask = await client.PostAsync("api/portfolioEvaluation/portfolio", content);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
-                }
-                portfolioValuation.ResponseCode = (int)result.StatusCode;
-            }
-
-            return portfolioValuation;
+            return await _httpService.Post<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/portfolio", model) ?? new PortfolioValuationModel();
         }
 
         public async Task<PortfolioValuationModel> UpdatePortfolio(PortfolioValuationModel model)
         {
-            PortfolioValuationModel portfolioValuation = new PortfolioValuationModel();
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                HttpContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                //HTTP PUT
-                var responseTask = await client.PutAsync("api/portfolioEvaluation/portfolio", content);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
-                }
-                portfolioValuation.ResponseCode = (int)result.StatusCode;
-            }
-
-            return portfolioValuation;
+            return await _httpService.Put<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/portfolio", model) ?? new PortfolioValuationModel() ?? new PortfolioValuationModel();
         }
 
         public async Task<PortfolioValuationModel> DiscardPortfolio(Portfolio portfolio)
         {
-            PortfolioValuationModel portfolioValuation = new PortfolioValuationModel();
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                //HTTP DELETE
-                var responseTask = await client.DeleteAsync("api/portfolioEvaluation/portfolio/" + portfolio.Id);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
-                }
-                portfolioValuation.ResponseCode = (int)result.StatusCode;
-            }
-
-            return portfolioValuation;
+            return await _httpService.Delete<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/portfolio/" + portfolio.Id) ?? new PortfolioValuationModel();
         }
 
         public async Task<PortfolioValuationModel> DeletePortfolioContracts(int portfolioId, List<Contract> contracts)
         {
-            PortfolioValuationModel portfolioValuation = new PortfolioValuationModel();
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                HttpContent content = new StringContent(JsonConvert.SerializeObject(contracts), Encoding.UTF8, "application/json");
-                //HTTP PUT
-                var responseTask = await client.PutAsync("api/portfolioEvaluation/portfolio/" + portfolioId + "/contracts", content);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    portfolioValuation = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
-                }
-                portfolioValuation.ResponseCode = (int)result.StatusCode;
-            }
-
-            return portfolioValuation;
+            return await _httpService.Put<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/portfolio/" + portfolioId + "/contracts", contracts) ?? new PortfolioValuationModel();
         }
     }
 }

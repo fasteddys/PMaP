@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using PMaP.Models;
-using PMaP.Models.Authenticate;
 using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.PortfolioValuation;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
@@ -26,12 +20,12 @@ namespace PMaP.Data
     public class PortfolioValuationService : IPortfolioValuationService
     {
         private IConfiguration Configuration { get; }
-        private ILocalStorageService _localStorageService;
+        private IHttpService _httpService;
 
-        public PortfolioValuationService(IConfiguration configuration, ILocalStorageService localStorageService)
+        public PortfolioValuationService(IConfiguration configuration, IHttpService httpService)
         {
             Configuration = configuration;
-            _localStorageService = localStorageService;
+            _httpService = httpService;
         }
 
         public async Task<PortfolioValuationModel> Index(string portfolio, string subportfolio, string isAdd = "0")
@@ -39,37 +33,11 @@ namespace PMaP.Data
             PortfolioValuationModel model = new PortfolioValuationModel { ViewModel = new ViewModel { ExcludedContractIds = new List<int>() } };
             PrepareDropDownLists(ref model);
 
-            PortfolioModel portfolioModel = new PortfolioModel();
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                //HTTP GET
-                var responseTask = await client.GetAsync("api/portfolio?portfolio=" + portfolio + "&subportfolio=" + subportfolio);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    portfolioModel = JsonConvert.DeserializeObject<PortfolioModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
-            }
+            var portfolioModel = await _httpService.Get<PortfolioModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolio?portfolio=" + portfolio + "&subportfolio=" + subportfolio);
 
             model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd { Portfolio = new Portfolio() };
 
-            if (portfolioModel.ResponseCode == 200 && portfolioModel.Portfolios != null && portfolioModel.Portfolios.Count() > 0)
+            if (portfolioModel != null && portfolioModel.ResponseCode == 200 && portfolioModel.Portfolios != null && portfolioModel.Portfolios.Count() > 0)
             {
                 var portfolioContext = portfolioModel.Portfolios.First();
                 portfolioContext.Id = isAdd == "1" ? portfolioContext.Id : 0;
@@ -100,34 +68,8 @@ namespace PMaP.Data
             model.ViewModel.PerformingStatus = model.ViewModel.PerformingStatus != "Select" ? model.ViewModel.PerformingStatus : model.ViewModel.PerformingStatusList.Find(x => x.Text == model.ViewModel.PerformingStatus)?.Value;
             model.ViewModel.Region = model.ViewModel.Region != "Select" ? model.ViewModel.Region : model.ViewModel.RegionList.Find(x => x.Text == model.ViewModel.Region)?.Value;
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                HttpContent content = new StringContent(JsonConvert.SerializeObject(model.ViewModel), Encoding.UTF8, "application/json");
-                //HTTP POST
-                var responseTask = await client.PostAsync("api/portfolioEvaluation/summary", content);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
-            }
-
+            var response = await _httpService.Post<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/summary", model.ViewModel);
+            
             viewModel.DebtOB = debtOB;
             viewModel.DebtorType = debtorType;
             viewModel.DebtType = debtType;
@@ -136,6 +78,13 @@ namespace PMaP.Data
             viewModel.PerformingStatus = performingStatus;
             viewModel.Region = region;
             model.ViewModel = viewModel;
+
+            if (response != null)
+            {
+                response.ViewModel = model.ViewModel;
+                return response;
+            }
+
             return model;
         }
 
@@ -144,33 +93,7 @@ namespace PMaP.Data
             ViewModel viewModel = model.ViewModel;
             Summary summary = model.Summary;
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("pmapApiUrl"));
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-                try
-                {
-                    authenticateResponse = await _localStorageService.GetItem<AuthenticateResponse>("user");
-                }
-                catch { }
-                if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authenticateResponse.Token);
-
-                HttpContent content = new StringContent(JsonConvert.SerializeObject(model.ViewModel), Encoding.UTF8, "application/json");
-                //HTTP POST
-                var responseTask = await client.PostAsync("api/portfolioEvaluation/details/contracts", content);
-
-                var result = responseTask;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = await result.Content.ReadAsStringAsync();
-                    model = JsonConvert.DeserializeObject<PortfolioValuationModel>(readTask);
-                }
-                model.ResponseCode = (int)result.StatusCode;
-            }
+            model = await _httpService.Post<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/details/contracts", model.ViewModel) ?? new PortfolioValuationModel();
 
             if (model.ResponseCode == (int)HttpStatusCode.OK)
             {
