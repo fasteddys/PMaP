@@ -177,7 +177,7 @@
 }
 
 <div class="main" style="margin-left: 200px; padding-left: 20px;">
-    <Header />
+    <Header UserName="@userName" />
     <br />
     <div class="content page-content-wrapper" style="margin-top: 75px;">
         @Body
@@ -186,6 +186,7 @@
 
 @code {
     private bool showNavMenu = true;
+    private string userName = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -206,11 +207,13 @@
     private async Task NavMenuVisibility()
     {
         showNavMenu = false;
+        userName = "";
 
         AuthenticateResponse authenticateResponse = await MainLayoutService.GetUser();
         if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
         {
             showNavMenu = true;
+            userName = authenticateResponse.Username;
         }
 
         StateHasChanged();

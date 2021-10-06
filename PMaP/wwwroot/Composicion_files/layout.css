@@ -439,7 +439,7 @@ Page Header
   font-weight: 600;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-menu {
-  width: 175px;
+  /*width: 175px;*/
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-menu > li > a {
   font-size: 14px;

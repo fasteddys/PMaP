@@ -1,6 +1,6 @@
-﻿@using Blazored.SessionStorage
+﻿@using PMaP.Data
 @inject NavigationManager NavigationManager
-@inject ISessionStorageService sessionStorage
+@inject ILocalStorageService LocalStorageService
 
 <div class="page-sidebar-wrapper" >
     <div class="page-sidebar navbar-collapse collapse" style="background-color:#e6f0ff">
@@ -120,7 +120,7 @@
     {
         if (firstRender)
         {
-            currentLocation = await sessionStorage.GetItemAsync<string>("currentLocation");
+            currentLocation = await LocalStorageService.GetItem<string>("currentLocation");
             StateHasChanged();
         }
     }
@@ -129,7 +129,7 @@
     {
         var locations = e.Location.Split("/");
         currentLocation = locations[3];
-        await sessionStorage.SetItemAsync("currentLocation", currentLocation);
+        await LocalStorageService.SetItem("currentLocation", currentLocation);
         if (e.IsNavigationIntercepted && previousLocation == currentLocation)
         {
             NavigationManager.NavigateTo(e.Location, true);

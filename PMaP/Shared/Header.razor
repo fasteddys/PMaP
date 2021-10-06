@@ -2,17 +2,22 @@
 <div class="page-header navbar" style="z-index: 1; position: fixed; top: 0; left: 0;">
     <div class="container clearfix et_menu_container">
         <a href="" @onclick:preventDefault>
-            <img src="Composicion_files/es.png" style="position: absolute; left: 90%;" > 
+            <img src="Composicion_files/es.png" style="position: absolute; left: 85%;" />
         </a>
         <a href="" @onclick:preventDefault>
-            <img src="Composicion_files/cat.png" style="position: absolute; left: 92%;" > 
+            <img src="Composicion_files/cat.png" style="position: absolute; left: 87%;" />
         </a>
         <a href="" @onclick:preventDefault>
-            <img src="Composicion_files/gb.png" style="position: absolute; left: 94%;" > 
+            <img src="Composicion_files/gb.png" style="position: absolute; left: 89%;" />
         </a>      
     </div>
+    @if (!string.IsNullOrEmpty(UserName))
+    {
+        <UserMenu UserName="@UserName" />
+    }
 </div>
 
 @code {
-
+    [Parameter]
+    public string UserName { get; set; }
 }
