@@ -1,5 +1,8 @@
 ﻿@page "/certificates/certificateGeneration"
 
+@using PMaP.Data
+@inject IHomeService HomeService
+
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
@@ -145,5 +148,11 @@
 </div>
 
 @code {
-
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var model = await HomeService.PortfolioComposition();
+        }
+    }
 }

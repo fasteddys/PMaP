@@ -1,5 +1,7 @@
-
 @page "/PortfolioProgress"
+
+@using PMaP.Data
+@inject IHomeService HomeService
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
@@ -237,5 +239,11 @@
 
 
 @code {
-    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var model = await HomeService.PortfolioComposition();
+        }
+    }
 }
