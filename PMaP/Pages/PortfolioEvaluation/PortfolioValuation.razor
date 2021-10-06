@@ -390,6 +390,12 @@
             await JSRuntime.InvokeVoidAsync("showDialog", "Warning!", "Contract/s already added to a portfolio.");
             return;
         }
+        foreach (var contract in portfolioValuationModel.Contracts)
+        {
+            contract.Investors = portfolioValuationModel.Investors.Where(x => x.ContractId == contract.Id).ToList();
+            contract.Participants = portfolioValuationModel.Participants.Where(x => x.ContractId == contract.Id).ToList();
+            contract.Procedures = portfolioValuationModel.Procedures.Where(x => x.ContractId == contract.Id).ToList();
+        }
         var updatePortfolioResponse = await PortfolioRegistrationService.UpdatePortfolio(portfolioValuationModel);
         if (updatePortfolioResponse.ResponseCode == (int)HttpStatusCode.Unauthorized)
         {
