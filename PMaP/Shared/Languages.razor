@@ -1,0 +1,53 @@
+﻿@using PMaP.Helpers
+
+
+<li class="dropdown dropdown-language">
+    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" @onclick:preventDefault>
+        <img alt="@languageActive.Name" src="Composicion_files/@languageActive.Flag">
+        <span class="langname">@languageActive.Value</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-language">
+        @foreach (var language in languageItems)
+        {
+            <li>
+                <a href="" rel="@language.Value" @onclick:preventDefault>
+                    <img alt="@language.Name" src="Composicion_files/@language.Flag"> @language.Name
+                </a>
+            </li>
+        }
+    </ul>
+</li>
+
+@code {
+    private List<LanguageItem> languageItems = new List<LanguageItem>();
+    private LanguageItem languageActive = new LanguageItem();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            languageItems.Add(new LanguageItem
+            {
+                Active = true,
+                Culture = "es-ES",
+                Default = true,
+                Flag = "es.png",
+                Name = "Español",
+                Value = "es"
+            });
+            languageItems.Add(new LanguageItem
+            {
+                Active = true,
+                Culture = "en-GB",
+                Default = false,
+                Flag = "gb.png",
+                Name = "Ingles",
+                Value = "en"
+            });
+
+            languageActive = languageItems.First();
+
+            StateHasChanged();
+        }
+    }   
+}
