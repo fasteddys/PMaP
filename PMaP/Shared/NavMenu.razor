@@ -131,6 +131,7 @@
         currentLocation = locations[3];
         await LocalStorageService.SetItem("currentLocation", currentLocation);
         bool languageChanged = await LocalStorageService.GetItem<bool>("languageChanged");
+        await LocalStorageService.SetItem("languageChanged", false);
         if (e.IsNavigationIntercepted && previousLocation == currentLocation && !languageChanged)
         {
             NavigationManager.NavigateTo(e.Location, true);
