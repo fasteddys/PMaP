@@ -130,7 +130,8 @@
         var locations = e.Location.Split("/");
         currentLocation = locations[3];
         await LocalStorageService.SetItem("currentLocation", currentLocation);
-        if (e.IsNavigationIntercepted && previousLocation == currentLocation)
+        bool languageChanged = await LocalStorageService.GetItem<bool>("languageChanged");
+        if (e.IsNavigationIntercepted && previousLocation == currentLocation && !languageChanged)
         {
             NavigationManager.NavigateTo(e.Location, true);
         }

@@ -1,11 +1,14 @@
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PMaP.Data;
 using Syncfusion.Blazor;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace PMaP
 {
@@ -39,6 +42,24 @@ namespace PMaP
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IMainLayoutService, MainLayoutService>();
             services.AddScoped<IHttpService, HttpService>();
+
+            #region Localization
+
+            services.AddControllers();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCutures = new List<CultureInfo>()
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("es-ES")
+                };
+                options.DefaultRequestCulture = new RequestCulture("es-ES");
+                options.SupportedCultures = supportedCutures;
+                options.SupportedUICultures = supportedCutures;
+            });
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +76,12 @@ namespace PMaP
                 app.UseHsts();
             }
 
+            #region Localization
+
+            app.UseRequestLocalization();
+
+            #endregion
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -62,6 +89,7 @@ namespace PMaP
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

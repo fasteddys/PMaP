@@ -5,12 +5,13 @@
 @using System.Net
 @inject IJSRuntime JSRuntime
 @inject IPortfolioMarketService PortfolioMarketService
+@inject IStringLocalizer<PortfolioMarket> localizer
 @inject NavigationManager NavigationManager
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
-            <p style="color:#336699;">Portfolio market</p>
+            <p style="color:#336699;">@localizer["lblPortfolioMarket"]</p>
         </li>
     </ul>
 </div>
@@ -27,31 +28,31 @@
                             <thead>
                                 <tr class="heading" style="color:#336699;">
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Holder"))">Holder</span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Holder"))">@localizer["Holder"]</span>
                                         <span class="fa @(GetSortStyle("Holder"))"></span>
                                     </th>
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Project"))">Project</span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Project"))">@localizer["Project"]</span>
                                         <span class="fa @(GetSortStyle("Project"))"></span>
                                     </th>
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Investor"))">Investor</span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Investor"))">@localizer["Investor"]</span>
                                         <span class="fa @(GetSortStyle("Investor"))"></span>
                                     </th>
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Year"))">Year</span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Year"))">@localizer["Year"]</span>
                                         <span class="fa @(GetSortStyle("Year"))"></span>
                                     </th>
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Typology"))">Typology</span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Typology"))">@localizer["Typology"]</span>
                                         <span class="fa @(GetSortStyle("Typology"))"></span>
                                     </th>
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("DebtType"))">DebtType</span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("DebtType"))">@localizer["DebtType"]</span>
                                         <span class="fa @(GetSortStyle("DebtType"))"></span>
                                     </th>
                                     <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Value"))">Value</span>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Value"))">@localizer["Value"]</span>
                                         <span class="fa @(GetSortStyle("Value"))"></span>
                                     </th>
                                 </tr>

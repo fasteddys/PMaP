@@ -1,5 +1,7 @@
-﻿@using PMaP.Helpers
-
+﻿@using PMaP.Data
+@using PMaP.Helpers
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
 
 <li class="dropdown dropdown-language">
     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" @onclick:preventDefault>
@@ -10,7 +12,7 @@
         @foreach (var language in languageItems)
         {
             <li>
-                <a href="" rel="@language.Value" @onclick:preventDefault>
+                <a href="" rel="@language.Value" @onclick="@(() => OnSelected(language))">
                     <img alt="@language.Name" src="Composicion_files/@language.Flag"> @language.Name
                 </a>
             </li>
@@ -38,16 +40,29 @@
             languageItems.Add(new LanguageItem
             {
                 Active = true,
-                Culture = "en-GB",
+                Culture = "en-US",
                 Default = false,
                 Flag = "gb.png",
                 Name = "Ingles",
                 Value = "en"
             });
 
-            languageActive = languageItems.First();
-
+            var language = await LocalStorageService.GetItem<LanguageItem>("language");
+            languageActive = languageItems.Where(x => x.Value == language?.Value).FirstOrDefault() ?? new LanguageItem();
+            if (language == null) languageActive = languageItems.First();
+            
             StateHasChanged();
         }
-    }   
+    }
+
+    async void OnSelected(LanguageItem language)
+    {
+        await LocalStorageService.SetItem("language", language);
+        await LocalStorageService.SetItem("languageChanged", true);
+
+        var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+        var query = $"?culture={Uri.EscapeDataString(language.Culture)}&redirectionUri={Uri.EscapeDataString(uri)}";
+
+        NavigationManager.NavigateTo("Culture/SetCulture" + query, true);
+    }
 }

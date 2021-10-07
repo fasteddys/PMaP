@@ -1,21 +1,24 @@
 ﻿@page "/"
 
 @using Blazored.SessionStorage
+@using Microsoft.Extensions.Localization
 @using PMaP.Data
 @using PMaP.Models
 @using System.Globalization
 @using System.Net
 @using PMaP.Models.Authenticate
+@using PMaP.Resources.Pages
 @inject IHomeService HomeService
 @inject IJSRuntime JSRuntime
 @inject ILocalStorageService LocalStorageService
 @inject ISessionStorageService sessionStorage
+@inject IStringLocalizer<Index> localizer
 @inject NavigationManager NavigationManager
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
-            <p style="color:#336699;">Home</p>
+            <p style="color:#336699;">@localizer["lblHome"]</p>
         </li>
     </ul>
 </div>
@@ -24,10 +27,10 @@
     <div class="Tabs" style="display: block;">       
 	    <ul class="nav nav-tabs">
 		    <li class="active">
-			    <a href="">General characteristics</a>
+			    <a href="">@localizer["GeneralCharacteristics"]</a>
 		    </li>
 		    <li class="">
-			    <a href="#">Portfolio Composition</a>
+			    <a href="#">@localizer["PortfolioComposition"]</a>
 		    </li>
 	    </ul>
     </div>
@@ -45,43 +48,43 @@
                         <thead>
                             <tr class="heading" style="color:#336699;">
                                 <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Portfolio"))">Portfolio</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Portfolio"))">@localizer["Portfolio"]</span>
                                     <span class="fa @(GetSortStyle("Portfolio"))"></span>
                                 </th>
                                 <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Subportfolio"))">Subportfolio</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Subportfolio"))">@localizer["Subportfolio"]</span>
                                     <span class="fa @(GetSortStyle("Subportfolio"))"></span>
                                 </th>
                                 <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("NominalValue"))">Nominal value</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("NominalValue"))">@localizer["NominalValue"]</span>
                                     <span class="fa @(GetSortStyle("NominalValue"))"></span>
                                 </th>
                                 <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Secured"))">Secured</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Secured"))">@localizer["Secured"]</span>
                                     <span class="fa @(GetSortStyle("Secured"))"></span>
                                 </th>
                                 <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Unsecured"))">Unsecured</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("Unsecured"))">@localizer["Unsecured"]</span>
                                     <span class="fa @(GetSortStyle("Unsecured"))"></span>
                                 </th>
 				                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("DebtType"))">Debt type</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("DebtType"))">@localizer["DebtType"]</span>
                                     <span class="fa @(GetSortStyle("DebtType"))"></span>
                                 </th> 
 				                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("PriceSecured"))">Price secured</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("PriceSecured"))">@localizer["PriceSecured"]</span>
                                     <span class="fa @(GetSortStyle("PriceSecured"))"></span>
                                 </th>
 				                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("UnsecuredPrice"))">Unsecured price</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("UnsecuredPrice"))">@localizer["UnsecuredPrice"]</span>
                                     <span class="fa @(GetSortStyle("UnsecuredPrice"))"></span>
                                 </th>
                                 <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("AssignmentEntity"))">Assignment entity</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("AssignmentEntity"))">@localizer["AssignmentEntity"]</span>
                                     <span class="fa @(GetSortStyle("AssignmentEntity"))"></span>
                                 </th>
                                 <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("AcquisitionYear"))">Acquisition Year</span>
+                                    <span class="sort-link" @onclick="@(() => SortTable("AcquisitionYear"))">@localizer["AcquisitionYear"]</span>
                                     <span class="fa @(GetSortStyle("AcquisitionYear"))"></span>
                                 </th>
                             </tr>
