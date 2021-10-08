@@ -1,6 +1,7 @@
 ﻿@using PMaP.Models.DBModels
 @using System.Globalization
 @inject IJSRuntime JSRuntime
+@inject IStringLocalizer<SummaryTable> localizer
 
 <div class="row">
     <div class="col-md-12 mts">
@@ -13,54 +14,54 @@
                     <thead>
                         <tr class="heading" style="color:#336699">
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">Contract</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("Id"))">@localizer["Contract"]</span>
                                 <span class="fa @(GetContractsSortStyle("Id"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">Participant</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("MainParticipantId"))">@localizer["Participant"]</span>
                                 <span class="fa @(GetContractsSortStyle("MainParticipantId"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">No. guarantors</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("NumParticipants"))">@localizer["NoGuarantors"]</span>
                                 <span class="fa @(GetContractsSortStyle("NumParticipants"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">Balance (OB)</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("TotalAmountOb"))">@localizer["BalanceOB"]</span>
                                 <span class="fa @(GetContractsSortStyle("TotalAmountOb"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityPrincipalBalance"))">Maturity principal balance</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityPrincipalBalance"))">@localizer["MaturityPrincipalBalance"]</span>
                                 <span class="fa @(GetContractsSortStyle("MaturityPrincipalBalance"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingPrincipalBalance"))">Outstanding principal balance</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("OutstandingPrincipalBalance"))">@localizer["OutstandingPrincipalBalance"]</span>
                                 <span class="fa @(GetContractsSortStyle("OutstandingPrincipalBalance"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">Origination date</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginationDate"))">@localizer["OriginationDate"]</span>
                                 <span class="fa @(GetContractsSortStyle("OriginationDate"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">Maturity Date</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("MaturityDate"))">@localizer["MaturityDate"]</span>
                                 <span class="fa @(GetContractsSortStyle("MaturityDate"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("FirstUnpaidInstalmentDate"))">First unpaid installment date</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("FirstUnpaidInstalmentDate"))">@localizer["FirstUnpaidInstallmentDate"]</span>
                                 <span class="fa @(GetContractsSortStyle("FirstUnpaidInstalmentDate"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("JudicialProcess"))">Judicial process</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("JudicialProcess"))">@localizer["JudicialProcess"]</span>
                                 <span class="fa @(GetContractsSortStyle("JudicialProcess"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link">Type of judicial procedure</span>
+                                <span class="sort-link">@localizer["TypeOfJudicialProcedure"]</span>
                             </th>
                             <th>
-                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">Assignment entity</span>
+                                <span class="sort-link" @onclick="@(() => SortContractsTable("OriginalEntity"))">@localizer["AssignmentEntity"]</span>
                                 <span class="fa @(GetContractsSortStyle("OriginalEntity"))"></span>
                             </th>
                             <th>
-                                <span class="sort-link">Origin</span>
+                                <span class="sort-link">@localizer["Origin"]</span>
                             </th>
                         </tr>
                     </thead>

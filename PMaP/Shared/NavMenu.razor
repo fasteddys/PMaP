@@ -1,6 +1,9 @@
-﻿@using PMaP.Data
-@inject NavigationManager NavigationManager
+﻿@using Blazored.SessionStorage
+@using PMaP.Data
 @inject ILocalStorageService LocalStorageService
+@inject ISessionStorageService sessionStorage
+@inject IStringLocalizer<NavMenu> localizer
+@inject NavigationManager NavigationManager
 
 <div class="page-sidebar-wrapper" >
     <div class="page-sidebar navbar-collapse collapse" style="background-color:#e6f0ff">
@@ -8,89 +11,89 @@
             <li class="@(GetMenuStyle(""))">
                 <a href="" title="Home">
                     <i class="fa fa-home" aria-hidden="true" style="color:#336699;"></i>
-                    <span class="title">Home</span>
+                    <span class="title">@localizer["Home"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolioMarket"))">
                 <a href="portfolioMarket" title="Portfolio market">
                     <i class="fa fa-bar-chart" aria-hidden="true" style="color:#336699;"></i>
-                    <span class="title">Portfolio market</span>
+                    <span class="title">@localizer["PortfolioMarket"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolioValuation"))">
                 <a href="portfolioValuation/0/_/_" title="Portfolio evaluation">
                     <i class="fa fa-cog" style="color:#336699;"></i>
-                    <span class="title">Portfolio evaluation</span>
+                    <span class="title">@localizer["PortfolioEvaluation"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolios"))">
                 <a href="portfolios/0" title="Portfolios">
                     <i class="fa fa-suitcase" aria-hidden="true" style="color:#336699;"></i>
-                    <span class="title">Portfolios</span>
+                    <span class="title">@localizer["Portfolios"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("PortfolioProgress"))">
                 <a href="PortfolioProgress" title="Portfolio progress">
                     <i class="fa fa-tasks" style="color:#336699;"></i>
-                    <span class="title">Portfolio progress</span>
+                    <span class="title">@localizer["PortfolioProgress"]</span>
                 </a>
             </li>
             <li class="dropdown">
                 <a href="" title="Actualization">
                     <i class="fa fa-handshake-o" style="color:#336699;"></i>
-                    <span class="title">Actualization</span><span class="caret"></span>
+                    <span class="title">@localizer["Actualization"]</span><span class="caret"></span>
                 </a>
                 <div class="dropdown-content">
-                    <a href="">Debt recoveries</a>
-                    <a href="">Judicial proceedings</a>
-                    <a href="">Concursos / Adjudication</a>
-                    <a href="">Participantes</a>
+                    <a href="">@localizer["DebtRecoveries"]</a>
+                    <a href="">@localizer["JudicialProceedings"]</a>
+                    <a href="">@localizer["ConcourseAdjudication"]</a>
+                    <a href="">@localizer["Participants"]</a>
                 </div>
             </li>
             <li class="dropdown @(GetMenuStyle("certificates"))">
                 <a href="" title="Certificates">
                     <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
-                    <span class="title">Certificates</span>
+                    <span class="title">@localizer["Certificates"]</span>
                     <span class="caret"></span>
                 </a>
                 <div class="dropdown-content">
-                    <a href="">Alta plantillas</a>
-                    <a href="certificates/formGeneration">Form generation</a>
-                    <a href="certificates/certificateGeneration">Certificate generation</a>
+                    <a href="">@localizer["High templates"]</a>
+                    <a href="certificates/formGeneration">@localizer["FormGeneration"]</a>
+                    <a href="certificates/certificateGeneration">@localizer["CertificateGeneration"]</a>
                 </div>
             </li>
             <li class="">
                 <a href="" title="Notifications">
                     <i class="fa fa-envelope-open-o" style="color:#336699;"></i>
-                    <span class="title">Notifications</span>
+                    <span class="title">@localizer["Notifications"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolioRegistration"))">
                 <a href="portfolioRegistration" title="Portfolio registration">
                     <i class="fa fa-upload" style="color:#336699;"></i>
-                    <span class="title">Portfolio registration</span>
+                    <span class="title">@localizer["PortfolioRegistration"]</span>
                 </a>
             </li>
             <li class="dropdown">
                 <a href="" tille="DataTapes">
                     <i class="fa fa-upload" style="color:#336699;"></i>
-                    <span class="title">DataTapes</span><span class="caret"></span>
+                    <span class="title">@localizer["DataTapes"]</span><span class="caret"></span>
                 </a>
                 <div class="dropdown-content">
-                    <a href="#">Contracts</a>
-                    <a href="#">Participants</a>
-                    <a href="#">Colaterals</a>
-                    <a href="#">Procedures</a>
-                    <a href="#">Insolvencies</a>
-                    <a href="#">Liens</a>
-                    <a href="#">Novations</a>
-                    <a href="#">Prices</a>
+                    <a href="#">@localizer["Contracts"]</a>
+                    <a href="#">@localizer["DataTapesParticipants"]</a>
+                    <a href="#">@localizer["Colaterals"]</a>
+                    <a href="#">@localizer["Procedures"]</a>
+                    <a href="#">@localizer["Insolvencies"]</a>
+                    <a href="#">@localizer["Liens"]</a>
+                    <a href="#">@localizer["Novations"]</a>
+                    <a href="#">@localizer["Prices"]</a>
                 </div>
             </li>
             <li class="">
                 <a href="" title="Generation of datatapes">
                     <i class="fa fa-download" style="color:#336699;"></i>
-                    <span class="title">Generation of datatapes</span>
+                    <span class="title">@localizer["GenerationOfDatatapes"]</span>
                 </a>
             </li>
         </ul>
@@ -120,7 +123,7 @@
     {
         if (firstRender)
         {
-            currentLocation = await LocalStorageService.GetItem<string>("currentLocation");
+            currentLocation = await sessionStorage.GetItemAsync<string>("currentLocation");
             StateHasChanged();
         }
     }
@@ -129,7 +132,7 @@
     {
         var locations = e.Location.Split("/");
         currentLocation = locations[3];
-        await LocalStorageService.SetItem("currentLocation", currentLocation);
+        await sessionStorage.SetItemAsync("currentLocation", currentLocation);
         bool languageChanged = await LocalStorageService.GetItem<bool>("languageChanged");
         await LocalStorageService.SetItem("languageChanged", false);
         if (e.IsNavigationIntercepted && previousLocation == currentLocation && !languageChanged)

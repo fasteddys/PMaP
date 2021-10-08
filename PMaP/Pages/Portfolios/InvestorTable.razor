@@ -1,5 +1,6 @@
 ﻿@using PMaP.Models.DBModels
 @inject IJSRuntime JSRuntime
+@inject IStringLocalizer<InvestorTable> localizer
 
 <div class="row">
     <div class="col-md-12 mts">
@@ -11,14 +12,14 @@
                 <table class="table table-striped table-bordered" style="background-color:#e6e6e6;">
                     <thead>
                         <tr class="heading" style="color:#336699;">
-                            <th>Investor name</th>
-                            <th>Social address</th>
-                            <th>Tax Identification</th>
-                            <th>Mail</th>
-                            <th>Telephone 1</th>
-                            <th>Telephone 2</th>
-                            <th>IBAN</th>
-                            <th>Bank</th>
+                            <th>@localizer["InvestorName"]</th>
+                            <th>@localizer["SocialAddress"]</th>
+                            <th>@localizer["TaxIdentification"]</th>
+                            <th>@localizer["Mail"]</th>
+                            <th>@localizer["Telephone1"]</th>
+                            <th>@localizer["Telephone2"]</th>
+                            <th>@localizer["IBAN"]</th>
+                            <th>@localizer["Bank"]</th>
                             @if (isAdd == "0")
                             {
                                 <th></th>

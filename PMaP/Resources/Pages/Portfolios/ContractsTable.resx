@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountingSituation" xml:space="preserve">
+    <value>Situacion contable</value>
+  </data>
+  <data name="ContractID" xml:space="preserve">
+    <value>ID Contrato</value>
+  </data>
+  <data name="ContractType" xml:space="preserve">
+    <value>Tipología</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Divisa</value>
+  </data>
+  <data name="DebtType" xml:space="preserve">
+    <value>Tipo deuda</value>
+  </data>
+  <data name="DefaultDate" xml:space="preserve">
+    <value>Fecha fallido</value>
+  </data>
+  <data name="DefaultInterests" xml:space="preserve">
+    <value>Intereses de demora</value>
+  </data>
+  <data name="EarlyMaturity" xml:space="preserve">
+    <value>Vencimiento anticipado</value>
+  </data>
+  <data name="EarlyMaturityDate" xml:space="preserve">
+    <value>Fecha vencimiento anticipado</value>
+  </data>
+  <data name="FirstUnpaidInstalmentDate" xml:space="preserve">
+    <value>Fecha primer imapago</value>
+  </data>
+  <data name="Insolvency" xml:space="preserve">
+    <value>Concurso</value>
+  </data>
+  <data name="JudicialProcess" xml:space="preserve">
+    <value>Judicializado</value>
+  </data>
+  <data name="LegalProcess" xml:space="preserve">
+    <value>Concursado</value>
+  </data>
+  <data name="LTVOriginal" xml:space="preserve">
+    <value>LTV actual</value>
+  </data>
+  <data name="MainParticipantID" xml:space="preserve">
+    <value>ID Titular principal</value>
+  </data>
+  <data name="MaturityDate" xml:space="preserve">
+    <value>Fecha vencimiento</value>
+  </data>
+  <data name="MaturityPrincipalBalance" xml:space="preserve">
+    <value>Capital vencido</value>
+  </data>
+  <data name="Novation" xml:space="preserve">
+    <value>Novación</value>
+  </data>
+  <data name="NovationDate" xml:space="preserve">
+    <value>Fecha novación</value>
+  </data>
+  <data name="NumGuarantors" xml:space="preserve">
+    <value>Nº fiadores</value>
+  </data>
+  <data name="NumParticipants" xml:space="preserve">
+    <value>Nº participantes</value>
+  </data>
+  <data name="OrdinaryInterests" xml:space="preserve">
+    <value>Intereses ordinarios</value>
+  </data>
+  <data name="OriginalEntity" xml:space="preserve">
+    <value>Banco procedencia</value>
+  </data>
+  <data name="OriginationDate" xml:space="preserve">
+    <value>Fecha firma</value>
+  </data>
+  <data name="OutstandingInstalments" xml:space="preserve">
+    <value>Cuotas pendientes</value>
+  </data>
+  <data name="OutstandingPrincipalBalance" xml:space="preserve">
+    <value>Capital pendiente</value>
+  </data>
+  <data name="PercentOfSyndication" xml:space="preserve">
+    <value>% Sindicación</value>
+  </data>
+  <data name="PerformingStatus" xml:space="preserve">
+    <value>Estado performing</value>
+  </data>
+  <data name="Portfolio" xml:space="preserve">
+    <value>Portfolio</value>
+  </data>
+  <data name="ProceedingType" xml:space="preserve">
+    <value>Proceso Judicial</value>
+  </data>
+  <data name="ProcessDate" xml:space="preserve">
+    <value>Fecha proceso</value>
+  </data>
+  <data name="REO" xml:space="preserve">
+    <value>Adjudicación</value>
+  </data>
+  <data name="REOAmount" xml:space="preserve">
+    <value>Importe Adjudicación</value>
+  </data>
+  <data name="Securitized" xml:space="preserve">
+    <value>Titulizado</value>
+  </data>
+  <data name="SecurityNumber" xml:space="preserve">
+    <value>Num Titulizado</value>
+  </data>
+  <data name="Subportfolio" xml:space="preserve">
+    <value>Subportfolio</value>
+  </data>
+  <data name="Syndicated" xml:space="preserve">
+    <value>Sindicado</value>
+  </data>
+  <data name="TotalAmountOB" xml:space="preserve">
+    <value>Total OB</value>
+  </data>
+  <data name="UnpaidInstalments" xml:space="preserve">
+    <value>Cuotas impagadas</value>
+  </data>
+</root>

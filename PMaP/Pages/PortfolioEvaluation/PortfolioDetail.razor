@@ -1,4 +1,5 @@
 ﻿@using PMaP.Models.ViewModels.PortfolioValuation
+@inject IStringLocalizer<PortfolioDetail> localizer
 
 <div class="row">
     <div class="col">
@@ -10,23 +11,23 @@
             <div class="card-body" style="background-color:#e6f0ff">
                 <div class="row">
                     <div class="col-md-1">
-                        <label>Portfolio</label>
+                        <label>@localizer["Portfolio"]</label>
                         <input type="text" readonly="readonly" class="form-control" @bind="PortfolioValuationAdd.Portfolio.Portfolio1">
                     </div>
                     <div class="col-md-1">
-                        <label>Subportfolio</label>
+                        <label>@localizer["Subportfolio"]</label>
                         <input type="text" readonly="readonly" class="form-control" @bind="PortfolioValuationAdd.Portfolio.Subportfolio">
                     </div>
                     <div class="col-md-1">
-                        <label>Situation</label>
+                        <label>@localizer["Situation"]</label>
                         <input type="text" class="form-control" readonly="readonly" @bind="PortfolioValuationAdd.Situation">
                     </div>
                     <div class="col-md-2">
-                        <label>OB</label>
+                        <label>@localizer["OB"]</label>
                         <input type="text" readonly="readonly" class="form-control text-right" @bind="PortfolioValuationAdd.Portfolio.CutOffOb">
                     </div>
                     <div class="col-md-2">
-                        <label>No. Contracts</label>
+                        <label>@localizer["NoContracts"]</label>
                         <input type="text" readonly="readonly" class="form-control text-right" @bind="PortfolioValuationAdd.NoContracts">
                     </div>
                 </div>

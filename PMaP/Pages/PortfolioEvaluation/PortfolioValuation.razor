@@ -9,11 +9,12 @@
 @using ProtectedLocalStore
 @using System.Globalization
 @using System.Net
+@inject IJSRuntime JSRuntime
 @inject IPortfolioRegistrationService PortfolioRegistrationService
 @inject IPortfolioValuationService PortfolioValuationService
-@inject NavigationManager NavigationManager
 @inject ISessionStorageService sessionStorage
-@inject IJSRuntime JSRuntime
+@inject IStringLocalizer<PortfolioValuation> localizer
+@inject NavigationManager NavigationManager
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
@@ -30,7 +31,7 @@
     <div class="col">
         <div class="col-md-12">
             <div class="col-md-2">
-                <label>Added in portfolio</label>
+                <label>@localizer["AddedInPortfolio"]</label>
                 <select class="form-control" @bind="portfolioValuationModel.ViewModel.AddedInPortfolio">
                     @foreach (var item in portfolioValuationModel.ViewModel.AddedInPortfolioList)
                     {
@@ -48,21 +49,21 @@
             <div class="card card-primary" style="">
                 <div class="card-header" style="background-color:#0066ff">
                     <div class="caption">
-                        <font color="white">Characteristics selection</font>
+                        <font color="white">@localizer["CharacteristicsSelection"]</font>
                     </div>
                 </div>
                 <div class="card-body" style="background-color:#e6f0ff">
                     <div class="row">
                         <div class="col-md-3">          
-                            <label>From</label>
+                            <label>@localizer["From"]</label>
                             <input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.From" @bind:format="yyyy-MM-dd">
                         </div>
                         <div class="col-md-3">          
-                            <label>To</label>
+                            <label>@localizer["To"]</label>
                             <input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.To" @bind:format="yyyy-MM-dd">
                         </div>
                         <div class="col-md-2">  
-                            <label>Debt type</label>
+                            <label>@localizer["DebtType"]</label>
                             <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtType">
                                 @foreach (var item in portfolioValuationModel.ViewModel.DebtTypeList)
                                 {
@@ -71,7 +72,7 @@
                             </select>
                         </div> 
                             <div class="col-md-2">          
-                            <label>Judicialized</label>
+                            <label>@localizer["Judicialized"]</label>
                             <select class="form-control" @bind="portfolioValuationModel.ViewModel.Judicialized">
                                 @foreach (var item in portfolioValuationModel.ViewModel.JudicializedList)
                                 {
@@ -79,8 +80,8 @@
                                 }
                             </select>         
                         </div>
-                        <div class="col-md-2">          
-                            <label>Insolvency</label>
+                        <div class="col-md-2">
+                            <label>@localizer["Insolvency"]</label>
                             <select class="form-control" @bind="portfolioValuationModel.ViewModel.Insolvency">
                                 @foreach (var item in portfolioValuationModel.ViewModel.InsolvencyList)
                                 {
@@ -91,7 +92,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <label>Performing status</label>
+                            <label>@localizer["PerformingStatus"]</label>
                             <select class="form-control" @bind="portfolioValuationModel.ViewModel.PerformingStatus">
                                 @foreach (var item in portfolioValuationModel.ViewModel.PerformingStatusList)
                                 {
@@ -99,8 +100,8 @@
                                 }
                             </select>
                         </div>  
-                        <div class="col-md-2">          
-                            <label>Debt (OB)</label>
+                        <div class="col-md-2">
+                            <label>@localizer["DebtOB"]</label>
                             <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtOB">
                                 @foreach (var item in portfolioValuationModel.ViewModel.DebtOBList)
                                 {
@@ -109,11 +110,11 @@
                             </select>     
                             </div>
                         <div class="col-md-2">
-                            <label>Debtor name</label>
+                            <label>@localizer["DebtorName"]</label>
                             <input type="text" class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorName">
                         </div> 
                         <div class="col-md-2">  	
-                            <label>Debtor type</label>
+                            <label>@localizer["DebtorType"]</label>
                             <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorType">
                                 @foreach (var item in portfolioValuationModel.ViewModel.DebtorTypeList)
                                 {
@@ -122,7 +123,7 @@
                             </select>
                         </div> 
                         <div class="col-md-2">          
-                            <label>Region</label>
+                            <label>@localizer["Region"]</label>
                             <select class="form-control" @bind="portfolioValuationModel.ViewModel.Region">
                                 @foreach (var item in portfolioValuationModel.ViewModel.RegionList)
                                 {
@@ -134,7 +135,7 @@
                     <hr style="height:0.5px; color:#e6e6e6;background-color:#cccccc;">
                     <div class="row">
                         <div class="col-md-12"> 
-                            <h5>Contract type:</h5>
+                            <h5>@localizer["ContractType"]:</h5>
                             @foreach (var item in portfolioValuationModel.ViewModel.ContractTypes)
                             {
                                 bool Checked = false;
@@ -158,7 +159,7 @@
                         </div>
                     </div>
                     <button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary">
-                        <i class="fa fa-cog"></i>&nbsp;&nbsp;Calculate
+                        <i class="fa fa-cog"></i>&nbsp;&nbsp;@localizer["Calculate"]
                     </button>
                 </div>
             </div>
@@ -167,7 +168,7 @@
 </div>
 @if (@showSummary)
 {
-    <Assessment Caption="Summary" Summary="@portfolioValuationModel.Summary" showDetailButton="true" OnDetailsClick="Details" showDetails="@showDetails" />
+    <Assessment Caption="@localizer["Summary"]" Summary="@portfolioValuationModel.Summary" showDetailButton="true" OnDetailsClick="Details" showDetails="@showDetails" />
 }
 @if (@showDetails)
 {
@@ -183,10 +184,10 @@
     {
         <p align="right">
             <button class="btn  btn-primary" @onclick="UpdatePortfolio">
-                <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save
+                <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Save"]
             </button>
             <button class="btn  btn-danger" @onclick="Cancel">
-                <i class="fa fa-close"></i>&nbsp;&nbsp;Cancel
+                <i class="fa fa-close"></i>&nbsp;&nbsp;@localizer["Cancel"]
             </button>
         </p>
     }
@@ -194,10 +195,10 @@
     {
         <p align="right">
             <button class="btn btn-success" @onclick="AddPortfolio">
-                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;Add Portfolio
+                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;@localizer["AddPortfolio"]
             </button>
             <button class="btn  btn-primary" >
-                <i class="fa fa-download"></i>&nbsp;&nbsp;Perimeter
+                <i class="fa fa-download"></i>&nbsp;&nbsp;@localizer["Perimeter"]
             </button>
         </p>
     }
@@ -300,7 +301,7 @@
             showSummary = false;
             showDetails = false;
             showPortfolioDetail = isAdd == "1" ? true : false;
-            pageBreadcrumb = isAdd == "1" ? "Portfolio evaluation » Add contracts" : "Portfolio evaluation";
+            pageBreadcrumb = isAdd == "1" ? localizer["PortfolioEvaluationAddContracts"] : localizer["lblPortfolioEvaluation"];
 
             StateHasChanged();
         }
