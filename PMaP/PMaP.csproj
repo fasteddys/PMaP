@@ -22,6 +22,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Assessment.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Pages\Certificates\CertificateGeneration.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CertificateGeneration.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Pages\Certificates\FormGeneration.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FormGeneration.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Pages\Index.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -46,6 +56,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PortfolioValuation.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Pages\PortfolioProgress.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PortfolioProgress.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Pages\PortfolioRegistration\PortfolioRegistration.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PortfolioRegistration.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Pages\PortfolioRegistration\PortfolioUpdate.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PortfolioUpdate.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Pages\Portfolios\ContractsTable.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -92,6 +117,20 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Assessment.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\Certificates\CertificateGeneration.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\Certificates\CertificateGeneration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CertificateGeneration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\Certificates\FormGeneration.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\Certificates\FormGeneration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormGeneration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Pages\Index.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -127,6 +166,27 @@
     <EmbeddedResource Update="Resources\Pages\PortfolioEvaluation\PortfolioValuation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PortfolioValuation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\PortfolioProgress.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\PortfolioProgress.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PortfolioProgress.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\PortfolioRegistration\PortfolioRegistration.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\PortfolioRegistration\PortfolioRegistration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PortfolioRegistration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\PortfolioRegistration\PortfolioUpdate.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\PortfolioRegistration\PortfolioUpdate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PortfolioUpdate.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Pages\Portfolios\ContractsTable.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

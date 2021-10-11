@@ -2,11 +2,12 @@
 
 @using PMaP.Data
 @inject IHomeService HomeService
+@inject IStringLocalizer<PortfolioProgress> localizer
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
-            <p style="color:#336699;">Evolución de la Cartera</p>
+            <p style="color:#336699;">@localizer["EvolucionDeLaCartera"]</p>
         </li>
     </ul>
 </div>
@@ -17,13 +18,13 @@
     <div class="col">
         <div class="card card-primary">
             <div class="card-header" style="background-color:#0066ff">
-                <div class="caption"><font color="white">Cartera</font></div>
+                <div class="caption"><font color="white">@localizer["Cartera"]</font></div>
             </div>
             <div class="card-body" style="background-color:#e6f0ff">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-2">
-                            <label>Portfolio</label>
+                            <label>@localizer["Portfolio"]</label>
                             <select class="form-control" onchange="submitForm()">
                                 <option>Better</option>
                                 <option>CarVen2</option>
@@ -51,7 +52,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="Portfolio">Subporfolio</label>
+                            <label for="Portfolio">@localizer["Subporfolio"]</label>
                             <select class="form-control" onchange="submitForm()">
                                 <option>Selecionar</option>
                                 <option>SubVenCar</option>
@@ -70,7 +71,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="Portfolio">DataTape</label>
+                            <label for="Portfolio">@localizer["DataTape"]</label>
                             <select class="form-control" onchange="submitForm()">
                                 <option>Cut off</option>
                                 <option>Post-Cut off</option>
@@ -80,19 +81,19 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="Portfolio">F. DataTape</label>
+                            <label for="Portfolio">@localizer["FDataTape"]</label>
                             <select class="form-control" onchange="submitForm()">
                                 <option>2020-12-02</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="Portfolio">F. Proceso</label><input type="text" class="form-control" readonly="readonly" value="">
+                            <label for="Portfolio">@localizer["FProceso"]</label><input type="text" class="form-control" readonly="readonly" value="">
                         </div>
 
                         <div class="col-md-1">
                             <a href="#">
                                 <button class="btn btn-success">
-                                    <i class="fa fa-search"></i>&nbsp;&nbsp;Calcular
+                                    <i class="fa fa-search"></i>&nbsp;&nbsp;@localizer["Calcular"]
                                 </button>
                             </a>
                         </div>
@@ -102,19 +103,19 @@
 
                 <div class="row">
                     <div class="col-md-3">
-                        <h4 class="border-bottom border-info text-left">Información Contratos</h4><br>
-                        <label>Nº Contratos nuevos&nbsp;&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 2">
-                        <label>Nº Contratos eliminados&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
+                        <h4 class="border-bottom border-info text-left">@localizer["InformacionContratos"]</h4><br>
+                        <label>@localizer["NoContratosNuevos"]&nbsp;&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 2">
+                        <label>@localizer["NoContratosEliminados"]&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
                     </div>
                     <div class="col-md-3">
-                        <h4 class="border-bottom border-info text-left">Información Participantes</h4><br>
-                        <label>Nº Participantes nuevos&nbsp;&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
-                        <label>Nº Participantes eliminados&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
+                        <h4 class="border-bottom border-info text-left">@localizer["InformacionParticipantes"]</h4><br>
+                        <label>@localizer["NoParticipantesNuevos"]&nbsp;&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
+                        <label>@localizer["NoParticipantesEliminados"]&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
                     </div>
                     <div class="col-md-3">
-                        <h4 class="border-bottom border-info text-left">Información judicial y concursal</h4><br>
-                        <label>Nº Cambios judiciales&nbsp;&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 2">
-                        <label>Nº Cambios concursales&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
+                        <h4 class="border-bottom border-info text-left">@localizer["InformacionJudicialYConcursal"]</h4><br>
+                        <label>@localizer["NoCambiosJudiciales"]&nbsp;&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 2">
+                        <label>@localizer["NoCambiosConcursales"]&nbsp;&nbsp;</label><input placeholder="" type="text" class="hide-when-small" style="flex: 1">
                     </div>
                 </div>
                 <br><br>
@@ -129,16 +130,16 @@
 
     <ul class="nav nav-tabs">
         <li class="active">
-            <a href="/">Contratos</a>
+            <a href="/">@localizer["Contratos"]</a>
         </li>
         <li class="">
-            <a href="#">Participantes</a>
+            <a href="#">@localizer["Participantes"]</a>
         </li>
         <li class="">
-            <a href="#">Procedimientos judiciales</a>
+            <a href="#">@localizer["ProcedimientosJudiciales"]</a>
         </li>
         <li class="">
-            <a href="#">Concursos</a>
+            <a href="#">@localizer["Concursos"]</a>
         </li>
     </ul>
 </div>
@@ -148,24 +149,24 @@
         <table class="table table-striped table-responsive table-bordered" style="background-color:#e6e6e6;">
             <thead>
                 <tr class="heading" style="color:#336699;">
-                    <th>Check</th>
-                    <th>ID Contrato</th>
-                    <th>Estado performing</th>
-                    <th>Tipo deuda</th>
-                    <th>ID Titular principal</th>
-                    <th>Nº participantes</th>
-                    <th>Nº fiadores</th>
-                    <th>Total OB</th>
-                    <th>Divisa</th>
-                    <th>Capital vencido</th>
-                    <th>Capital pendiente</th>
-                    <th>Intereses ordinarios</th>
-                    <th>Intereses de demora</th>
-                    <th>Cuotas impagadas</th>
-                    <th>Cuotas pendientes</th>
-                    <th>LTV actual</th>
-                    <th>Novación</th>
-                    <th>Fecha novación</th>
+                    <th>@localizer["Check"]</th>
+                    <th>@localizer["IDContrato"]</th>
+                    <th>@localizer["EstadoPerforming"]</th>
+                    <th>@localizer["TipoDeuda"]</th>
+                    <th>@localizer["IDTitularPrincipal"]</th>
+                    <th>@localizer["NoParticipantes"]</th>
+                    <th>@localizer["NoFiadores"]</th>
+                    <th>@localizer["TotalOB"]</th>
+                    <th>@localizer["Divisa"]</th>
+                    <th>@localizer["CapitalVencido"]</th>
+                    <th>@localizer["CapitalPendiente"]</th>
+                    <th>@localizer["InteresesOrdinarios"]</th>
+                    <th>@localizer["InteresesDeDemora"]</th>
+                    <th>@localizer["CuotasImpagadas"]</th>
+                    <th>@localizer["CuotasPendientes"]</th>
+                    <th>@localizer["LTVActual"]</th>
+                    <th>@localizer["Novacion"]</th>
+                    <th>@localizer["FechaNovacion"]</th>
                 </tr>
             </thead>
             <tbody>

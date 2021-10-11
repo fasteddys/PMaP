@@ -2,11 +2,12 @@
 
 @using PMaP.Data
 @inject IHomeService HomeService
+@inject IStringLocalizer<CertificateGeneration> localizer
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
-            <p style="color:#336699;">Certificados</p>
+            <p style="color:#336699;">@localizer["Certificados"]</p>
         </li>
     </ul>
 </div>
@@ -17,13 +18,13 @@
 			<div class="card card-primary" style="width:90%">
 				<div class="card-header" style="background-color:#0066ff">
 					<div class="caption">
-						<font color="white">Datos básicos</font>
+						<font color="white">@localizer["DatosBasicos"]</font>
 					</div>
 				</div>
 				<div class="card-body" style="background-color:#e6f0ff">
 					<div class="row">
 						<div class="col-md-3">
-							<label>Portfolio</label>
+							<label>@localizer["Portfolio"]</label>
 							<select class="form-control">
 								<option>Seleccionar</option>
 								<option>Voyager</option>
@@ -49,7 +50,7 @@
 							</select>
 						</div>
 						<div class="col-md-3">
-							<label for="Portfolio">Subporfolio</label>
+							<label for="Portfolio">@localizer["Subporfolio"]</label>
 							<select class="form-control">
 								<option>Seleccionar</option>
 								<option>Pera</option>
@@ -67,7 +68,7 @@
 							</select>
 						</div>
 						<div class="col-md-3">
-							<label for="Portfolio">Inversor</label>
+							<label for="Portfolio">@localizer["Inversor"]</label>
 							<select class="form-control">
 								<option>Seleccionar</option>
 								<option>Farallon Capital</option>
@@ -83,7 +84,7 @@
 							</select>
 						</div>
 						<div class="col-md-3">
-							<label for="Portfolio">Apoderado</label>
+							<label for="Portfolio">@localizer["Apoderado"]</label>
 							<select class="form-control" onchange="submitForm()">
 								<option>Seleccionar</option>
 								<option>Nombre_1 Apellido_1</option>
@@ -94,15 +95,15 @@
 					</div>
 					<div class="row">
 						<div class="col-md-4">
-							<label>Contrato&nbsp;</label><i class="fa fa-search"></i>
+							<label>@localizer["Contrato"]&nbsp;</label><i class="fa fa-search"></i>
 							<input type="search" class="form-control form-control-sm" placeholder="">
 						</div>
 						<div class="col-md-4">
-							<label>Interviniente&nbsp;</label><i class="fa fa-search"></i>
+							<label>@localizer["Interviniente"]&nbsp;</label><i class="fa fa-search"></i>
 							<input type="search" class="form-control form-control-sm" placeholder="">
 						</div>
 						<div class="col-md-4"> 
-							<label>Tipo interviniente&nbsp;</label>
+							<label>@localizer["TipoInterviniente"]&nbsp;</label>
 							<input type="search" class="form-control form-control-sm" readonly="readonly">
 						</div>
 					</div>
@@ -110,11 +111,11 @@
 			</div>
 			<br /><br />
 			<div class="card-card-primary" style="width:90%"></div>
-			<h5 class="border-bottom border-info text-left">Selección del Certificado</h5>
+			<h5 class="border-bottom border-info text-left">@localizer["SeleccionDelCertificado"]</h5>
 			<br />
 			<div class="row">
 				<div class="col-md-3">
-					<label>Certificado</label>
+					<label>@localizer["Certificado"]</label>
 					<select class="form-control">
 						<option>Seleccionar</option>
 						<option>Certificado de saldo</option>
@@ -122,7 +123,7 @@
 					</select>
 				</div>
 				<div class="col-md-4">
-					<label>Subtipo de certificado</label>
+					<label>@localizer["SubtipoDeCertificado"]</label>
 					<select class="form-control">
 						<option>Seleccionar</option>
 						<option>Cesión - Garantía hipotecaria</option>
@@ -132,7 +133,7 @@
 					</select>
 				</div>
 				<div class="col-md-4">
-					<label for="country">Tipo deuda</label>
+					<label for="country">@localizer["TipoDeuda"]</label>
 					<select id="country" name="country" class="form-control">
 						<option value="australia">Tipo de deuda</option>
 						<option value="australia">Secured</option>
@@ -140,7 +141,7 @@
 					</select>
 				</div>
 				<br /><br />
-				<input type="submit" class="btn btn-primary" value="Visualizar">
+				<input type="submit" class="btn btn-primary" value="@localizer["Visualizar"]">
 				<br /><br />
 			</div>
 		</div>

@@ -1,9 +1,11 @@
 ﻿@page "/portfolioRegistration/portfolioUpdate"
 
+@inject IStringLocalizer<PortfolioUpdate> localizer
+
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
-            <p style="color:#336699;">Herramientas de venta&nbsp;&#187;&nbsp;Conformación perímetros</p>
+            <p style="color:#336699;">@localizer["Herramientas de venta"]&nbsp;&#187;&nbsp;@localizer["ConformacionPerimetros"]</p>
         </li>
     </ul>
 </div>
@@ -12,10 +14,10 @@
     <div class="Tabs" style="display: block;">       
 	    <ul class="nav nav-tabs">
 		    <li class="">
-			    <a href="portfolioRegistration">Alta de la cartera</a>
+			    <a href="portfolioRegistration">@localizer["AltaDeLaCartera"]</a>
 		    </li>
 		    <li class="active">
-			    <a href="portfolioRegistration/portfolioUpdate">Actualización cartera</a>
+			    <a href="portfolioRegistration/portfolioUpdate">@localizer["ActualizacionCartera"]</a>
 		    </li>
 	    </ul>
     </div>
@@ -25,14 +27,14 @@
     <div class="col">
 		<div class="col-md-4">
 		    <div>
-		        <h5 class="border-bottom border-info text-left font-r-sharp bold ">Selección de la cartera</h5>
+		        <h5 class="border-bottom border-info text-left font-r-sharp bold ">@localizer["SeleccionDeLaCartera"]</h5>
 	        </div>
             <div class="card card-primary" style="width:100%">  
 			    <div class="card-header" style="background-color:#0066ff"></div>
 			    <div class="card-body" style="background-color:#e6f0ff">
 			        <div class="row">
                         <div class="col-md-6">   
-                            <label>Portfolio</label>
+                            <label>@localizer["Portfolio"]</label>
 					        <select class="form-control">
 					            <option>Seleccionar</option>
 					            <option>Cartera_A</option>
@@ -42,7 +44,7 @@
 					        </select>
                         </div> 
 				        <div class="col-md-6">          
-                            <label>Subporfolio</label>
+                            <label>@localizer["Subporfolio"]</label>
 						    <select class="form-control">
 						        <option>Seleccionar</option>
 					            <option>subCartera_A1</option>
@@ -56,14 +58,14 @@
 			    </div>
             </div>
 		    <div>
-		    <h5 class="border-bottom border-info text-left font-r-sharp bold ">Actualización de fechas</h5> 
+		    <h5 class="border-bottom border-info text-left font-r-sharp bold ">@localizer["ActualizacionDeFechas"]</h5> 
 		    </div> 
 	        <div class="card-card-primary" style="width:100%">
 			    <div class="card-header" style="background-color:#0066ff"></div>
 			    <div class="card-body" style="background-color:#e6f0ff">
 			        <div class="row">
                         <div class="col-md-5">   
-                            <label>Pre-venta</label>
+                            <label>@localizer["PreVenta"]</label>
 					        <select class="form-control">
 					            <option>Seleccionar</option>
 					            <option>SÌ</option>
@@ -71,13 +73,13 @@
 					        </select>
                         </div> 
 				        <div class="col-md-6">          
-                            <label>Fecha última extracción</label>
+                            <label>@localizer["FechaUltimaExtraccion"]</label>
 						    <input class="form-control" type="date" value="yyyy-mm-dd">
 				        </div>  
 			        </div>
 			        <div class="row">
                         <div class="col-md-5">   
-                            <label>Cut off</label>
+                            <label>@localizer["CutOff"]</label>
 				            <select class="form-control">
 					            <option>Seleccionar</option>
 					            <option>SÌ</option>
@@ -85,13 +87,13 @@
 					        </select>
                         </div> 
 				        <div class="col-md-6">          
-                            <label>Fecha cut off</label>
+                            <label>@localizer["FechaCutOff"]</label>
 						    <input class="form-control" type="date" value="yyyy-mm-dd">
 				        </div>  
 			        </div>
 			        <div class="row">
                         <div class="col-md-5">   
-                            <label>Post-venta</label>
+                            <label>@localizer["PostVenta"]</label>
 				            <select class="form-control">
 					            <option>Seleccionar</option>
 					            <option>SÌ</option>
@@ -99,13 +101,13 @@
 					        </select>
                         </div> 
 				        <div class="col-md-6">          
-                            <label>Fecha última extracción</label>
+                            <label>@localizer["FechaUltimaExtraccion"]</label>
 						    <input class="form-control" type="date" value="yyyy-mm-dd">
 				        </div>  
 			        </div>
 			        <div class="row">
                         <div class="col-md-5">   
-                            <label>Signing</label>
+                            <label>@localizer["Signing"]</label>
 				            <select class="form-control">
 					            <option>Seleccionar</option>
 					            <option>SÌ</option>
@@ -113,13 +115,13 @@
 					        </select>
                         </div> 
 				        <div class="col-md-6">          
-                            <label>Fecha signing</label>
+                            <label>@localizer["FechaSigning"]</label>
 						    <input class="form-control" type="date" value="yyyy-mm-dd">
 				        </div>  
 			        </div>
 			        <div class="row">
                         <div class="col-md-5">   
-                            <label>Closing</label>
+                            <label>@localizer["Closing"]</label>
 				            <select class="form-control">
 					            <option>Seleccionar</option>
 					            <option>SÌ</option>
@@ -127,7 +129,7 @@
 					        </select>
                         </div> 
 				        <div class="col-md-6">          
-                            <label>Fecha closing</label>
+                            <label>@localizer["FechaClosing"]</label>
 						    <input class="form-control" type="date" value="yyyy-mm-dd">
 				        </div>  
 			        </div>
@@ -136,19 +138,19 @@
         </div>
 	    <div class="col-md-8">
 	        <div>
-	        <h5 class="border-bottom border-info text-left font-r-sharp bold ">Actualización datos del perímetro</h5> 
+	        <h5 class="border-bottom border-info text-left font-r-sharp bold ">@localizer["ActualizacionDatosDelPerimetro"]</h5> 
 	        </div> 
 	        <div class="card-card-primary" style="width:100%">  
 		        <div class="card-header" style="background-color:#0066ff"></div>
 		        <div class="card-body" style="background-color:#e6f0ff">
                     <div class="content-wrapper"> 
-					    <button class="btn" style="position: absolute; left: 29px; background-color:#D5D8DC">&nbsp;Examinar...</button>
+					    <button class="btn" style="position: absolute; left: 29px; background-color:#D5D8DC">&nbsp;@localizer["Examinar"]...</button>
                         <input type="search" class="form-control form-control-sm" placeholder="">
 			        </div> 
 					<br><br>
                     <p align="right">
-						<button class="btn btn-primary">Actualizar</button>
-						<button class="btn btn-danger">Cancelar</button>
+						<button class="btn btn-primary">@localizer["Actualizar"]</button>
+						<button class="btn btn-danger">@localizer["Cancelar"]</button>
 				    </p>
 		        </div>
 		        <hr>
@@ -157,18 +159,18 @@
                         <table class="table table-striped table-bordered" style="background-color:#e6e6e6; ">
                             <thead>
                                 <tr class="heading" style="color:#336699">
-                                    <th>Contrato</th>
-                                    <th>Titular</th>
-                                    <th>Nº Fiadores</th>
-                                    <th>Saldo (OB)</th>
-							        <th>Capital vencido</th>
-							        <th>Capital pendiente</th>
-							        <th>Intereses ordinarios</th>
-							        <th>Intereses de demora</th>
-							        <th>Fecha firma</th>
-							        <th>Fecha vencimiento</th>
-                                    <th>Fecha primer imapago</th>
-                                    <th>Entidad de cesión</th>
+                                    <th>@localizer["Contrato"]</th>
+                                    <th>@localizer["Titular"]</th>
+                                    <th>@localizer["NoFiadores"]</th>
+                                    <th>@localizer["SaldoOB"]</th>
+							        <th>@localizer["CapitalVencido"]</th>
+							        <th>@localizer["CapitalPendiente"]</th>
+							        <th>@localizer["InteresesOrdinarios"]</th>
+							        <th>@localizer["InteresesDeDemora"]</th>
+							        <th>@localizer["FechaFirma"]</th>
+							        <th>@localizer["FechaVencimiento"]</th>
+                                    <th>@localizer["FechaPrimerImapago"]</th>
+                                    <th>@localizer["EntidadDeCesion"]</th>
 							        <th></th>
                                 </tr>
                             </thead>

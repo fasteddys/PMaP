@@ -2,11 +2,12 @@
 
 @using PMaP.Data
 @inject IHomeService HomeService
+@inject IStringLocalizer<FormGeneration> localizer
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
-            <p style="color:#336699;">Certificados</p>
+            <p style="color:#336699;">@localizer["Certificados"]</p>
         </li>
     </ul>
 </div>
@@ -15,10 +16,10 @@
     <div class="Tabs" style="display: block;">       
 	    <ul class="nav nav-tabs">
 		    <li class="active">
-			    <a href="#">Crear plantilla nueva</a>
+			    <a href="#">@localizer["CrearPlantillaNueva"]</a>
 		    </li>
 		    <li class="">
-			    <a href="#">Modificar plantilla</a>
+			    <a href="#">@localizer["ModificarPlantilla"]</a>
 		    </li>
 	    </ul>
     </div>
@@ -27,7 +28,7 @@
 <div class="row">
     <div class="col"> 
         <div class="col-md-12">
-            <label for="country">Portfolio</label>
+            <label for="country">@localizer["Portfolio"]</label>
             <select id="country" name="country" class="form-control">
                 <option value="australia">Subportfolio</option>
                 <option value="australia">Higgs</option>
@@ -35,7 +36,7 @@
                 <option value="usa">Explorer</option>
             </select>
         
-            <label for="country">Tipo de certificado</label>
+            <label for="country">@localizer["TipoDeCertificado"]</label>
             <select id="country" name="country" class="form-control">
                 <option value="australia">Tipo de certificado</option>
                 <option value="australia">Certificado de cesión</option>
@@ -43,72 +44,72 @@
                 <option value="canada">Certificado de saldo - Procesos judiciales</option>
             </select>
           
-            <label for="fechven1">Subtipo de certificado</label>
-            <input type="text" id="fechven1" name="fechven1" placeholder="Subtipo de certificado" class="form-control">
+            <label for="fechven1">@localizer["SubtipoDeCertificado"]</label>
+            <input type="text" id="fechven1" name="fechven1" placeholder="@localizer["SubtipoDeCertificado"]" class="form-control">
                 
             <br /><br />
 
             <div class="card-card-primary" style="width:100%"></div>
                   
-            <h5 class="border-bottom border-info text-left">Selección de variables</h5><br>
+            <h5 class="border-bottom border-info text-left">@localizer["SeleccionDeVariables"]</h5><br>
         
-            <label for="fname">Título</label>
-            <input type="text" id="fname" name="firstname" placeholder="Título" class="form-control">
+            <label for="fname">@localizer["Titulo"]</label>
+            <input type="text" id="fname" name="firstname" placeholder="@localizer["Titulo"]" class="form-control">
           
             <div class="col-md-6"> 
-                <label for="country">Apoderado</label>
+                <label for="country">@localizer["Apoderado"]</label>
                 <select id="country" name="country" class="form-control">
                     <option value="australia">Alejo Garcia Grech</option>
                 </select>
             </div>
             <div class="col-md-6"> 
-                <label for="titulo1">DNI apoderado</label>
+                <label for="titulo1">@localizer["DNIApoderado"]</label>
                 <input type="text" id="titulo1" name="titulo1" placeholder="48372616M" readonly="readonly" class="form-control">
             </div>
 
-            <label for="fechven1">Inversor</label>
-            <input type="text" id="fechven1" name="fechven1" placeholder="Inversor" class="form-control">
+            <label for="fechven1">@localizer["Inversor"]</label>
+            <input type="text" id="fechven1" name="fechven1" placeholder="@localizer["Inversor"]" class="form-control">
             
-            <label for="lname">C2. Nombre apoderado</label>
-            <input type="text" id="lname" name="lastname" placeholder="Nombre apoderado" class="form-control">
+            <label for="lname">C2. @localizer["NombreApoderado"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["NombreApoderado"]" class="form-control">
                   
-            <label for="lname">C3. DNI apoderado</label>
-            <input type="text" id="lname" name="lastname" placeholder="DNI apoderado" class="form-control">
+            <label for="lname">C3. @localizer["DNIApoderado"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["DNIApoderado"]" class="form-control">
                   
-            <label for="lname">C4. Dirección</label>
-            <input type="text" id="lname" name="lastname" placeholder="Dirección" class="form-control">
+            <label for="lname">C4. @localizer["Direccion"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["Direccion"]" class="form-control">
                   
-            <label for="lname">C5. CIF</label>
-            <input type="text" id="lname" name="lastname" placeholder="CIF" class="form-control">
+            <label for="lname">C5. @localizer["CIF"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["CIF"]" class="form-control">
 
-            <label for="subject">C6. Información del notario</label>
-            <textarea id="subject" name="subject" placeholder="Ejemplo: Que conforme a la escritura de cesión de créditos con garantía hipotecaria elevada a público ante el Notario de [Madrid/Barcelona], [Don/Dña] XXXXXXXX el pasado XX de XXXXXXXX de 2020, bajo el número XXXX de su protocolo," style="height:100px" class="form-control"></textarea>
+            <label for="subject">C6. @localizer["InformacionDelNotario"]</label>
+            <textarea id="subject" name="subject" placeholder="@localizer["InformacionDelNotarioPlaceHolder"]" style="height:100px" class="form-control"></textarea>
                   
-            <label for="lname">C7. Sociedad</label>
-            <input type="text" id="lname" name="lastname" placeholder="Sociedad" class="form-control">
+            <label for="lname">C7. @localizer["Sociedad"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["Sociedad"]" class="form-control">
 
-            <label for="lname">C8. Originados</label>
-            <input type="text" id="lname" name="lastname" placeholder="Originados" class="form-control">
+            <label for="lname">C8. @localizer["Originados"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["Originados"]" class="form-control">
 
-            <label for="lname">C9. Quitas</label>
-            <input type="text" id="lname" name="lastname" placeholder="Quitas" class="form-control">
+            <label for="lname">C9. @localizer["Quitas"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["Quitas"]" class="form-control">
                   
-            <label for="subject">C10. Texto</label>
-            <textarea id="subject" name="subject" placeholder="Ejemplo: Nº operación indicada corresponde con contrato original: XXXX-XXXX-XX-XXXXXXXXXXX (se informará para contratos migrados)" style="height:100px" class="form-control"></textarea>
+            <label for="subject">C10. @localizer["Texto"]</label>
+            <textarea id="subject" name="subject" placeholder="@localizer["TextoPlaceHolder"]" style="height:100px" class="form-control"></textarea>
                   
-            <label for="lname">C11. Localidad</label>
-            <input type="text" id="lname" name="lastname" placeholder="Localidad" class="form-control">
+            <label for="lname">C11. @localizer["Localidad"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["Localidad"]" class="form-control">
 
-            <label for="lname">C12. Fecha de la venta</label>
-            <input type="text" id="lname" name="lastname" placeholder="Fecha de la venta" class="form-control">
+            <label for="lname">C12. @localizer["FechaDeLaVenta"]</label>
+            <input type="text" id="lname" name="lastname" placeholder="@localizer["FechaDeLaVenta"]" class="form-control">
 
-            <label for="subject">C13. Texto pie de página</label>
-            <textarea id="subject" name="subject" placeholder="Texto pie de página" style="height:100px" class="form-control"></textarea>
+            <label for="subject">C13. @localizer["TextoPieDePagina"]</label>
+            <textarea id="subject" name="subject" placeholder="@localizer["TextoPieDePagina"]" style="height:100px" class="form-control"></textarea>
 
             <br />
-            <input type="submit" class="btn btn-primary" value="Guardar">
-            <input type="submit" class="btn btn-primary" value="Generar plantilla">
-            <input type="submit" class="btn btn-primary" value="Descargar certificados ">
+            <input type="submit" class="btn btn-primary" value="@localizer["Guardar"]">
+            <input type="submit" class="btn btn-primary" value="@localizer["GenerarPlantilla"]">
+            <input type="submit" class="btn btn-primary" value="@localizer["DescargarCertificados"]">
         </div>
     </div>
     <br/>

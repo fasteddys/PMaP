@@ -2,11 +2,12 @@
 
 @using PMaP.Data
 @inject IHomeService HomeService
+@inject IStringLocalizer<PortfolioRegistration> localizer
 
 <div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
-            <p style="color:#336699;">Herramientas de venta&nbsp;&#187;&nbsp;Conformación perímetros</p>
+            <p style="color:#336699;">@localizer["Herramientas de venta"]&nbsp;&#187;&nbsp;@localizer["ConformacionPerimetros"]</p>
         </li>
     </ul>
 </div>
@@ -15,10 +16,10 @@
     <div class="Tabs" style="display: block;">       
 	    <ul class="nav nav-tabs">
 		    <li class="active">
-			    <a href="portfolioRegistration">Alta de la cartera</a>
+			    <a href="portfolioRegistration">@localizer["AltaDeLaCartera"]</a>
 		    </li>
 		    <li class="">
-			    <a href="portfolioRegistration/portfolioUpdate">Actualización cartera</a>
+			    <a href="portfolioRegistration/portfolioUpdate">@localizer["ActualizacionCartera"]</a>
 		    </li>
 	    </ul>
     </div>
@@ -30,32 +31,32 @@
 		<div class="card card-primary" style="width:70%; position:relative;left:10px">
 			<div class="card-header" style="background-color:#0066ff">
 				<div class="caption">
-					<font color="white">Datos básicos de la cartera</font>
+					<font color="white">@localizer["DatosBasicosDeLaCartera"]</font>
 				</div>
 			</div>
 			<div class="card-body" style="background-color:#e6f0ff">
 				<div class="row">
 					<div class="col-md-4">
-						<label>Portfolio (*)</label>
+						<label>@localizer["Portfolio"] (*)</label>
 						<input type="search" class="form-control form-control-sm" placeholder="">
 					</div>
 					<div class="col-md-4">
-						<label for="Portfolio">Subporfolio</label>
+						<label for="Portfolio">@localizer["Subporfolio"]</label>
 						<input type="search" class="form-control form-control-sm" placeholder="">
 					</div>  
 					<div class="col-md-3">          
-							<label for="Portfolio">Fecha alta (*)</label>
-							<input type="search" class="form-control form-control-sm" placeholder="yyyy-mm-dd">
+						<label for="Portfolio">@localizer["FechaAlta"] (*)</label>
+						<input type="search" class="form-control form-control-sm" placeholder="yyyy-mm-dd">
 					</div>
 				</div>
 				<p></p>
 				<div class="content-wrapper"> 
-					<button class="btn" style="position: absolute; left: 15px; background-color:#D5D8DC">&nbsp;Examinar...</button>
+					<button class="btn" style="position: absolute; left: 15px; background-color:#D5D8DC">&nbsp;@localizer["Examinar"]...</button>
 					<input type="search" class="form-control form-control-sm" placeholder=""  style="position: absolute; left: 120px; width:85%;">
 				</div> 
 				<p></p>
 				<div class="row">
-					<button class="btn  btn-primary" style="position: absolute; left: 92%;">Cargar</button>
+					<button class="btn  btn-primary" style="position: absolute; left: 92%;">@localizer["Cargar"]</button>
 					<hr>
 				</div>
 			</div>
