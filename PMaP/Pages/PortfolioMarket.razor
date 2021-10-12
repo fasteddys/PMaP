@@ -16,13 +16,19 @@
     </ul>
 </div>
 
-<div class="row">
-    <div class="col mts">
-        <div class="col-md-12">
-            <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                <div style="width: 1310px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
-            </div>
-            <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+@if (portfolioMarketModel.PortfolioMarkets == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <div class="row">
+        <div class="col mts">
+            <div class="col-md-12">
+                <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+                    <div style="width: 1310px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                </div>
+                <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
                     <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
                         <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
                             <thead>
@@ -99,10 +105,11 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 @code {
     private PortfolioMarketModel portfolioMarketModel = new PortfolioMarketModel();

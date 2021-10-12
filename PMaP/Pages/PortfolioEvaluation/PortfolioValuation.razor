@@ -23,184 +23,192 @@
         </li>
     </ul>
 </div>
-@if (@showPortfolioDetail)
+
+@if (portfolioValuationModel.ViewModel.DebtOBList.Count() == 0)
 {
-    <PortfolioDetail PortfolioValuationAdd="@portfolioValuationModel.ViewModel.PortfolioValuationAdd" />
+    <div class="spinner"></div>
 }
-<div class="row">
-    <div class="col">
-        <div class="col-md-12">
-            <div class="col-md-2">
-                <label>@localizer["AddedInPortfolio"]</label>
-                <select class="form-control" @bind="portfolioValuationModel.ViewModel.AddedInPortfolio">
-                    @foreach (var item in portfolioValuationModel.ViewModel.AddedInPortfolioList)
-                    {
-                        <option value="@item.Value">@item.Text</option>
-                    }
-                </select>     
-            </div>
-        </div>
-    </div>  
-</div>
-<br/>
-<div class="row">
-    <div class="col">
-        <div class="col-md-12">
-            <div class="card card-primary" style="">
-                <div class="card-header" style="background-color:#0066ff">
-                    <div class="caption">
-                        <font color="white">@localizer["CharacteristicsSelection"]</font>
-                    </div>
+else
+{
+    @if (@showPortfolioDetail)
+    {
+        <PortfolioDetail PortfolioValuationAdd="@portfolioValuationModel.ViewModel.PortfolioValuationAdd" />
+    }
+    <div class="row">
+        <div class="col">
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label>@localizer["AddedInPortfolio"]</label>
+                    <select class="form-control" @bind="portfolioValuationModel.ViewModel.AddedInPortfolio">
+                        @foreach (var item in portfolioValuationModel.ViewModel.AddedInPortfolioList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>     
                 </div>
-                <div class="card-body" style="background-color:#e6f0ff">
-                    <div class="row">
-                        <div class="col-md-3">          
-                            <label>@localizer["From"]</label>
-                            <input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.From" @bind:format="yyyy-MM-dd">
-                        </div>
-                        <div class="col-md-3">          
-                            <label>@localizer["To"]</label>
-                            <input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.To" @bind:format="yyyy-MM-dd">
-                        </div>
-                        <div class="col-md-2">  
-                            <label>@localizer["DebtType"]</label>
-                            <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtType">
-                                @foreach (var item in portfolioValuationModel.ViewModel.DebtTypeList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>
-                        </div> 
-                            <div class="col-md-2">          
-                            <label>@localizer["Judicialized"]</label>
-                            <select class="form-control" @bind="portfolioValuationModel.ViewModel.Judicialized">
-                                @foreach (var item in portfolioValuationModel.ViewModel.JudicializedList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>         
-                        </div>
-                        <div class="col-md-2">
-                            <label>@localizer["Insolvency"]</label>
-                            <select class="form-control" @bind="portfolioValuationModel.ViewModel.Insolvency">
-                                @foreach (var item in portfolioValuationModel.ViewModel.InsolvencyList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>     						
+            </div>
+        </div>  
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col">
+            <div class="col-md-12">
+                <div class="card card-primary" style="">
+                    <div class="card-header" style="background-color:#0066ff">
+                        <div class="caption">
+                            <font color="white">@localizer["CharacteristicsSelection"]</font>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <label>@localizer["PerformingStatus"]</label>
-                            <select class="form-control" @bind="portfolioValuationModel.ViewModel.PerformingStatus">
-                                @foreach (var item in portfolioValuationModel.ViewModel.PerformingStatusList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>
-                        </div>  
-                        <div class="col-md-2">
-                            <label>@localizer["DebtOB"]</label>
-                            <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtOB">
-                                @foreach (var item in portfolioValuationModel.ViewModel.DebtOBList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>     
+                    <div class="card-body" style="background-color:#e6f0ff">
+                        <div class="row">
+                            <div class="col-md-3">          
+                                <label>@localizer["From"]</label>
+                                <input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.From" @bind:format="yyyy-MM-dd">
                             </div>
-                        <div class="col-md-2">
-                            <label>@localizer["DebtorName"]</label>
-                            <input type="text" class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorName">
-                        </div> 
-                        <div class="col-md-2">  	
-                            <label>@localizer["DebtorType"]</label>
-                            <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorType">
-                                @foreach (var item in portfolioValuationModel.ViewModel.DebtorTypeList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>
-                        </div> 
-                        <div class="col-md-2">          
-                            <label>@localizer["Region"]</label>
-                            <select class="form-control" @bind="portfolioValuationModel.ViewModel.Region">
-                                @foreach (var item in portfolioValuationModel.ViewModel.RegionList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>     
+                            <div class="col-md-3">          
+                                <label>@localizer["To"]</label>
+                                <input class="form-control must-field" type="date" @bind="portfolioValuationModel.ViewModel.To" @bind:format="yyyy-MM-dd">
+                            </div>
+                            <div class="col-md-2">  
+                                <label>@localizer["DebtType"]</label>
+                                <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtType">
+                                    @foreach (var item in portfolioValuationModel.ViewModel.DebtTypeList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div> 
+                                <div class="col-md-2">          
+                                <label>@localizer["Judicialized"]</label>
+                                <select class="form-control" @bind="portfolioValuationModel.ViewModel.Judicialized">
+                                    @foreach (var item in portfolioValuationModel.ViewModel.JudicializedList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>         
+                            </div>
+                            <div class="col-md-2">
+                                <label>@localizer["Insolvency"]</label>
+                                <select class="form-control" @bind="portfolioValuationModel.ViewModel.Insolvency">
+                                    @foreach (var item in portfolioValuationModel.ViewModel.InsolvencyList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>     						
+                            </div>
                         </div>
-                    </div>
-                    <hr style="height:0.5px; color:#e6e6e6;background-color:#cccccc;">
-                    <div class="row">
-                        <div class="col-md-12"> 
-                            <h5>@localizer["ContractType"]:</h5>
-                            @foreach (var item in portfolioValuationModel.ViewModel.ContractTypes)
-                            {
-                                bool Checked = false;
-                                if (SelectedValues.Contains(item.Id))  
-                                {
-                                    Checked = true;
-                                }
-                                <div class="checkbox" Height="15" Width="15">
-                                    <div class="col-md-3">
-                                        <label>
-                                            <input type="checkbox"
-                                                Height="15"
-                                                Width="15"
-                                                checked="@Checked"
-                                                @onchange="e => { CheckboxClicked(item.Id, e.Value); }" />
-                                            @item.Name
-                                        </label>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>@localizer["PerformingStatus"]</label>
+                                <select class="form-control" @bind="portfolioValuationModel.ViewModel.PerformingStatus">
+                                    @foreach (var item in portfolioValuationModel.ViewModel.PerformingStatusList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div>  
+                            <div class="col-md-2">
+                                <label>@localizer["DebtOB"]</label>
+                                <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtOB">
+                                    @foreach (var item in portfolioValuationModel.ViewModel.DebtOBList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>     
                                 </div>
-                            }
+                            <div class="col-md-2">
+                                <label>@localizer["DebtorName"]</label>
+                                <input type="text" class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorName">
+                            </div> 
+                            <div class="col-md-2">  	
+                                <label>@localizer["DebtorType"]</label>
+                                <select class="form-control" @bind="portfolioValuationModel.ViewModel.DebtorType">
+                                    @foreach (var item in portfolioValuationModel.ViewModel.DebtorTypeList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div> 
+                            <div class="col-md-2">          
+                                <label>@localizer["Region"]</label>
+                                <select class="form-control" @bind="portfolioValuationModel.ViewModel.Region">
+                                    @foreach (var item in portfolioValuationModel.ViewModel.RegionList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>     
+                            </div>
                         </div>
+                        <hr style="height:0.5px; color:#e6e6e6;background-color:#cccccc;">
+                        <div class="row">
+                            <div class="col-md-12"> 
+                                <h5>@localizer["ContractType"]:</h5>
+                                @foreach (var item in portfolioValuationModel.ViewModel.ContractTypes)
+                                {
+                                    bool Checked = false;
+                                    if (SelectedValues.Contains(item.Id))  
+                                    {
+                                        Checked = true;
+                                    }
+                                    <div class="checkbox" Height="15" Width="15">
+                                        <div class="col-md-3">
+                                            <label>
+                                                <input type="checkbox"
+                                                    Height="15"
+                                                    Width="15"
+                                                    checked="@Checked"
+                                                    @onchange="e => { CheckboxClicked(item.Id, e.Value); }" />
+                                                @item.Name
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary">
+                            <i class="fa fa-cog"></i>&nbsp;&nbsp;@localizer["Calculate"]
+                        </button>
                     </div>
-                    <button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary">
-                        <i class="fa fa-cog"></i>&nbsp;&nbsp;@localizer["Calculate"]
-                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@if (@showSummary)
-{
-    <Assessment Caption="@localizer["Summary"]" Summary="@portfolioValuationModel.Summary" showDetailButton="true" OnDetailsClick="Details" showDetails="@showDetails" />
-}
-@if (@showDetails)
-{
-    <DetailsTable
-        ContractList="@ContractList"
-        FilteredContractList="@FilteredContractList"
-        Participants="@portfolioValuationModel.Participants"
-        OnViewContract="View"
-        OnRemoveContract="Remove"
-    />
-    <br />
-    @if (isAdd == "1")
+    @if (@showSummary)
     {
-        <p align="right">
-            <button class="btn  btn-primary" @onclick="UpdatePortfolio">
-                <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Save"]
-            </button>
-            <button class="btn  btn-danger" @onclick="Cancel">
-                <i class="fa fa-close"></i>&nbsp;&nbsp;@localizer["Cancel"]
-            </button>
-        </p>
+        <Assessment Caption="@localizer["Summary"]" Summary="@portfolioValuationModel.Summary" showDetailButton="true" OnDetailsClick="Details" showDetails="@showDetails" />
     }
-    else
+    @if (@showDetails)
     {
-        <p align="right">
-            <button class="btn btn-success" @onclick="AddPortfolio">
-                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;@localizer["AddPortfolio"]
-            </button>
-            <button class="btn  btn-primary" >
-                <i class="fa fa-download"></i>&nbsp;&nbsp;@localizer["Perimeter"]
-            </button>
-        </p>
+        <DetailsTable
+            ContractList="@ContractList"
+            FilteredContractList="@FilteredContractList"
+            Participants="@portfolioValuationModel.Participants"
+            OnViewContract="View"
+            OnRemoveContract="Remove"
+        />
+        <br />
+        @if (isAdd == "1")
+        {
+            <p align="right">
+                <button class="btn  btn-primary" @onclick="UpdatePortfolio">
+                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Save"]
+                </button>
+                <button class="btn  btn-danger" @onclick="Cancel">
+                    <i class="fa fa-close"></i>&nbsp;&nbsp;@localizer["Cancel"]
+                </button>
+            </p>
+        }
+        else
+        {
+            <p align="right">
+                <button class="btn btn-success" @onclick="AddPortfolio">
+                    <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;@localizer["AddPortfolio"]
+                </button>
+                <button class="btn  btn-primary" >
+                    <i class="fa fa-download"></i>&nbsp;&nbsp;@localizer["Perimeter"]
+                </button>
+            </p>
+        }
     }
 }
 

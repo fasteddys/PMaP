@@ -24,251 +24,298 @@
     </ul>
 </div>
 
-<EditForm Model=@portfolioModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
-    <DataAnnotationsValidator />
-    <div class="row">
-        <div class="col">
-            <div class="col-md-12">
-                <div class="card card-primary">
-                    <div class="card-header" style="background-color:#0066ff">
-                        <div class="caption"><font color="white">@localizer["Portfolio"]</font></div>
-                    </div>
-                    <div class="card-body" style="background-color:#e6f0ff">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label>@localizer["Portfolio"]</label>
-                                @if (@isAdd == "1")
-                                {
-                                    <InputText type="text" class="form-control" @bind-Value="@portfolioModel.Portfolio" />
-                                    <ValidationMessage For=@(() => portfolioModel.Portfolio) />
-                                }
-                                else
-                                {
-                                    <select class="form-control" value="@portfolioModel.ViewModel.Portfolio" @onchange="GetSubportfolios">
-                                        @foreach (var item in portfolioModel.ViewModel.PortfolioList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    </select>
-                                }
-                            </div>
-                            <div class="col-md-2">
-                                <label>@localizer["Subporfolio"]</label>
-                                @if (@isAdd == "1")
-                                {
-                                    <input type="text" class="form-control" @bind="@portfolioModel.ViewModel.Subportfolio">
-                                }
-                                else
-                                {
-                                    <select class="form-control" @bind="portfolioModel.ViewModel.Subportfolio">
-                                        @foreach (var item in portfolioModel.ViewModel.SubportfolioList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    </select>
-                                }
-                            </div>
-                            @if (isDateInputDisabled)
-                            {
-                                <div class="col-md-2">
-                                    <label>@localizer["DateAddedUpdate"]</label>
-                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                                <div class="col-md-2">
-                                    <label>@localizer["FCutOff"]</label>
-                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                                <div class="col-md-2">
-                                    <label>@localizer["FSingning"]</label>
-                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                                <div class="col-md-2">
-                                    <label>@localizer["FClosing"]</label>
-                                    <input class="form-control" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="col-md-2">
-                                    <label>@localizer["DateAddedUpdate"]</label>
-                                    <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                                <div class="col-md-2">
-                                    <label>@localizer["FCutOff"]</label>
-                                    <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                                <div class="col-md-2">
-                                    <label>@localizer["FSingning"]</label>
-                                    <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                                <div class="col-md-2">
-                                    <label>@localizer["FClosing"]</label>
-                                    <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
-                                </div>
-                            }
-                        </div>
-                        <br><br>
-                        <p align="right">
-                            <button type="button" class="btn @(GetSearchStyle())" @onclick="Search" disabled="@isSearchButtonDisabled">
-                                <i class="fa fa-search"></i>&nbsp;&nbsp;@localizer["Search"]
-                            </button>
-                            <button type="button" class="btn @(GetAddStyle())" @onclick="Add" disabled="@isAddButtonDisabled">
-                                <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;@localizer["AddContracts"]
-                            </button>
-                        </p>
-                        <br><br>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br /><br />
-    <div class="row"> 
-        <div class="col">
-            <div class="col-md-12">
-                <div class="card card-primary">
-                    <div class="card-header" style="background-color:#0066ff">
-                        <div class="caption"><font color="white">@localizer["Characteristics"]</font></div>
-                    </div>
-                </div>
-                <div class="card-body" style="background-color:#e6f0ff">
-                    <div class="row">  
-                        <div class="col-md-2">          
-                            <label>@localizer["OperationType"]</label>
-                            <input placeholder="" type="text" readonly="readonly" class="form-control" @bind="@portfolioModel.ViewModel.OperationType">
-                        </div>
-                        <div class="col-md-1">
-                            <label>@localizer["Situation"]</label>
-                            <input placeholder="" type="text" class="form-control" readonly="readonly" @bind="@portfolioModel.ViewModel.Situation">
-                        </div>
-                        <div class="col-md-2">          
-                            <label>@localizer["OBCutOff"]</label>
-                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBCutOff">
-                        </div>
-                        <div class="col-md-2">          
-                            <label>@localizer["OBSingning"]</label>
-                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBSingning">
-                        </div>
-                        <div class="col-md-2">          
-                            <label>@localizer["OBClosing"]</label>
-                            <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBClosing">
-                        </div>
-                        <div class="col-md-2"> 
-                            <label>@localizer["Contract"] &nbsp;</label><i class="fa fa-search"></i> 
-                            <InputNumber id="Contract" class="form-control form-control-sm" placeholder="" disabled="@isDisabled" @bind-Value="@portfolioModel.ViewModel.Contract" @onkeyup="SearchContract" />
-                        </div>
-                        <div class="col-md-1"> 
-                            <label>@localizer["Holder"]&nbsp;</label><i class="fa fa-search"></i> 
-                            <input id="Holder" type="search" class="form-control form-control-sm" placeholder="" disabled="@isDisabled">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @if (@displayAssessment || isAdd == "1")
-    {
-        <Assessment Caption="@localizer["Assessment"]" Summary="@portfolioModel.Summary" showPrices="false" />
-    }
-
-    @if (@displayEntityList || isAdd == "1")
-    {
+@if (portfolioModel.ViewModel.PortfolioList.Count() == 0 && isAdd != "1")
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <EditForm Model=@portfolioModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
+        <DataAnnotationsValidator />
         <div class="row">
             <div class="col">
                 <div class="col-md-12">
-                    <hr style="height:1px; color:#0066ff;background-color:#0066ff;">
-                    <div class="Tabs" style="display: block;">
-                        <ul class="nav nav-tabs">
-                            @if (isAdd == "1")
-                            {
-                                <li class="@classSummary">
-                                    <a href="" @onclick="@GetSummary" @onclick:preventDefault>@localizer["Summary"]</a>
-                                </li>
-                            }
-                            <li class="@classContracts">
-                                <a href="" @onclick="@GetContracts" @onclick:preventDefault>@localizer["Contracts"]</a>
-                            </li>
-                            <li class="@classParticipants">
-                                <a href="" @onclick="@GetParticipants" @onclick:preventDefault>@localizer["Participants"]</a>
-                            </li>
-                            <li class="@classCollaterals">
-                                <a href="" @onclick="@GetCollaterals" @onclick:preventDefault>@localizer["Collaterals"]</a>
-                            </li>
-                                <li class="@classProcedure">
-                                <a href="" @onclick="@GetProcedures" @onclick:preventDefault>@localizer["Procedures"]</a>
-                            </li>
-                            <li class="@classInsolvencies">
-                                <a href="" @onclick="@GetInsolvencies" @onclick:preventDefault>@localizer["Insolvencies"]</a>
-                            </li>
-                            <li class="@classLiens">
-                                <a href="" @onclick="@GetLiens" @onclick:preventDefault>@localizer["Liens"]</a>
-                            </li>
-                            <li class="@classNovations">
-                                <a href="" @onclick="@GetNovations" @onclick:preventDefault>@localizer["Novations"]</a>
-                            </li>
-                            <li class="@classInvestor">
-                                <a href="" @onclick="@GetInvestors" @onclick:preventDefault>@localizer["Investor"]</a>
-                            </li>
-                        </ul>
+                    <div class="card card-primary">
+                        <div class="card-header" style="background-color:#0066ff">
+                            <div class="caption"><font color="white">@localizer["Portfolio"]</font></div>
+                        </div>
+                        <div class="card-body" style="background-color:#e6f0ff">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>@localizer["Portfolio"]</label>
+                                    @if (@isAdd == "1")
+                                    {
+                                        <InputText type="text" class="form-control" @bind-Value="@portfolioModel.Portfolio" />
+                                        <ValidationMessage For=@(() => portfolioModel.Portfolio) />
+                                    }
+                                    else
+                                    {
+                                        <select class="form-control" value="@portfolioModel.ViewModel.Portfolio" @onchange="GetSubportfolios">
+                                            @foreach (var item in portfolioModel.ViewModel.PortfolioList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+                                    }
+                                </div>
+                                <div class="col-md-2">
+                                    <label>@localizer["Subporfolio"]</label>
+                                    @if (@isAdd == "1")
+                                    {
+                                        <input type="text" class="form-control" @bind="@portfolioModel.ViewModel.Subportfolio">
+                                    }
+                                    else
+                                    {
+                                        <select class="form-control" @bind="portfolioModel.ViewModel.Subportfolio">
+                                            @foreach (var item in portfolioModel.ViewModel.SubportfolioList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+                                    }
+                                </div>
+                                @if (isDateInputDisabled)
+                                {
+                                    <div class="col-md-2">
+                                        <label>@localizer["DateAddedUpdate"]</label>
+                                        <input class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>@localizer["FCutOff"]</label>
+                                        <input class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>@localizer["FSingning"]</label>
+                                        <input class="form-control" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>@localizer["FClosing"]</label>
+                                        <input class="form-control" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-2">
+                                        <label>@localizer["DateAddedUpdate"]</label>
+                                        <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateAdded" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>@localizer["FCutOff"]</label>
+                                        <input type="date" class="form-control" @bind="@portfolioModel.ViewModel.DateCutOff" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>@localizer["FSingning"]</label>
+                                        <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateSigning" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>@localizer["FClosing"]</label>
+                                        <input class="form-control" type="date" @bind="@portfolioModel.ViewModel.DateClosing" @bind:format="yyyy-MM-dd" disabled="@isDateInputDisabled">
+                                    </div>
+                                }
+                            </div>
+                            <br><br>
+                            <p align="right">
+                                <button type="button" class="btn @(GetSearchStyle())" @onclick="Search" disabled="@isSearchButtonDisabled">
+                                    @if (loading)
+                                    {
+                                        <span class="spinner-border spinner-border-sm mr-1"></span>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-search"></i>
+                                    }
+                                    &nbsp;&nbsp;@localizer["Search"]
+                                </button>
+                                <button type="button" class="btn @(GetAddStyle())" @onclick="Add" disabled="@isAddButtonDisabled">
+                                    <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;@localizer["AddContracts"]
+                                </button>
+                            </p>
+                            <br><br>
+                        </div>
                     </div>
-
-                    @if (@portfolioModel.ActiveTab == "summary")
-                    {
-                        <SummaryTable Contracts="@portfolioModel.Contracts" />
-                    }
-                    @if (@portfolioModel.ActiveTab == "contracts")
-                    {
-                        <ContractsTable isAdd="@isAdd" Contracts="@portfolioModel.Contracts" OnRemoveContract="Remove" />
-                    }
-                    @if (@portfolioModel.ActiveTab == "participants")
-                    {
-                        <ParticipantsTable Participants="@portfolioModel.Participants" />
-                    }
-                    @if (@portfolioModel.ActiveTab == "procedures")
-                    {
-                        <ProceduresTable Procedures="@portfolioModel.Procedures" />
-                    }
-                    @if (@portfolioModel.ActiveTab == "investor")
-                    {
-                        <InvestorTable isAdd="@isAdd" Investors="@portfolioModel.Investors" />
-                    }
                 </div>
             </div>
         </div>
-        <br />
-        @if (isAdd == "1")
+        <br /><br />
+        <div class="row"> 
+            <div class="col">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header" style="background-color:#0066ff">
+                            <div class="caption"><font color="white">@localizer["Characteristics"]</font></div>
+                        </div>
+                    </div>
+                    <div class="card-body" style="background-color:#e6f0ff">
+                        <div class="row">  
+                            <div class="col-md-2">          
+                                <label>@localizer["OperationType"]</label>
+                                <input placeholder="" type="text" readonly="readonly" class="form-control" @bind="@portfolioModel.ViewModel.OperationType">
+                            </div>
+                            <div class="col-md-1">
+                                <label>@localizer["Situation"]</label>
+                                <input placeholder="" type="text" class="form-control" readonly="readonly" @bind="@portfolioModel.ViewModel.Situation">
+                            </div>
+                            <div class="col-md-2">          
+                                <label>@localizer["OBCutOff"]</label>
+                                <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBCutOff">
+                            </div>
+                            <div class="col-md-2">          
+                                <label>@localizer["OBSingning"]</label>
+                                <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBSingning">
+                            </div>
+                            <div class="col-md-2">          
+                                <label>@localizer["OBClosing"]</label>
+                                <input placeholder="" type="text" readonly="readonly" class="form-control text-right" @bind="@portfolioModel.ViewModel.OBClosing">
+                            </div>
+                            <div class="col-md-2"> 
+                                <label>@localizer["Contract"] &nbsp;</label><i class="fa fa-search"></i> 
+                                <InputNumber id="Contract" class="form-control form-control-sm" placeholder="" disabled="@isDisabled" @bind-Value="@portfolioModel.ViewModel.Contract" @onkeyup="SearchContract" />
+                            </div>
+                            <div class="col-md-1"> 
+                                <label>@localizer["Holder"]&nbsp;</label><i class="fa fa-search"></i> 
+                                <input id="Holder" type="search" class="form-control form-control-sm" placeholder="" disabled="@isDisabled">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (@displayAssessment || isAdd == "1")
         {
-            <p align="right">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Save"]
-                </button>
-                <button class="btn btn-danger" @onclick="Cancel">
-                    <i class="fa fa-close"></i>&nbsp;&nbsp;@localizer["Cancel"]
-                </button>
-            </p>
+            <Assessment Caption="@localizer["Assessment"]" Summary="@portfolioModel.Summary" showPrices="false" />
         }
-        else
+
+        @if (@displayEntityList || isAdd == "1")
         {
-            <p align="right">
-                <button type="button" class="btn @(GetSaveStyle())" @onclick="UpdatePortfolio" disabled="@isSaveCancelButtonDisabled">
-                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Save"]
-                </button>
-                <button type="button" class="btn @(GetCancelStyle())" @onclick="Search" disabled="@isSaveCancelButtonDisabled">
-                    <i class="fa fa-close"></i>&nbsp;&nbsp;@localizer["Cancel"]
-                </button>
-                <button type="button" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?"))" disabled="@isDiscardPortfolioDisabled">
-                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;@localizer["Discard"]
-                </button>
-                <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
-                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;@localizer["Certificate"]
-                </button>
-                <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
-                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Communications"]
-                </button>
-            </p>
+            <div class="row">
+                <div class="col">
+                    <div class="col-md-12">
+                        <hr style="height:1px; color:#0066ff;background-color:#0066ff;">
+                        <div class="Tabs" style="display: block;">
+                            <ul class="nav nav-tabs">
+                                @if (isAdd == "1")
+                                {
+                                    <li class="@classSummary">
+                                        <a href="" @onclick="@GetSummary" @onclick:preventDefault>@localizer["Summary"]</a>
+                                    </li>
+                                }
+                                <li class="@classContracts">
+                                    <a href="" @onclick="@GetContracts" @onclick:preventDefault>@localizer["Contracts"]</a>
+                                </li>
+                                <li class="@classParticipants">
+                                    <a href="" @onclick="@GetParticipants" @onclick:preventDefault>@localizer["Participants"]</a>
+                                </li>
+                                <li class="@classCollaterals">
+                                    <a href="" @onclick="@GetCollaterals" @onclick:preventDefault>@localizer["Collaterals"]</a>
+                                </li>
+                                    <li class="@classProcedure">
+                                    <a href="" @onclick="@GetProcedures" @onclick:preventDefault>@localizer["Procedures"]</a>
+                                </li>
+                                <li class="@classInsolvencies">
+                                    <a href="" @onclick="@GetInsolvencies" @onclick:preventDefault>@localizer["Insolvencies"]</a>
+                                </li>
+                                <li class="@classLiens">
+                                    <a href="" @onclick="@GetLiens" @onclick:preventDefault>@localizer["Liens"]</a>
+                                </li>
+                                <li class="@classNovations">
+                                    <a href="" @onclick="@GetNovations" @onclick:preventDefault>@localizer["Novations"]</a>
+                                </li>
+                                <li class="@classInvestor">
+                                    <a href="" @onclick="@GetInvestors" @onclick:preventDefault>@localizer["Investor"]</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        @if (@portfolioModel.ActiveTab == "summary")
+                        {
+                            <SummaryTable Contracts="@portfolioModel.Contracts" />
+                        }
+                        @if (@portfolioModel.ActiveTab == "contracts")
+                        {
+                            <ContractsTable isAdd="@isAdd" Contracts="@portfolioModel.Contracts" OnRemoveContract="Remove" />
+                        }
+                        @if (@portfolioModel.ActiveTab == "participants")
+                        {
+                            <ParticipantsTable Participants="@portfolioModel.Participants" />
+                        }
+                        @if (@portfolioModel.ActiveTab == "procedures")
+                        {
+                            <ProceduresTable Procedures="@portfolioModel.Procedures" />
+                        }
+                        @if (@portfolioModel.ActiveTab == "investor")
+                        {
+                            <InvestorTable isAdd="@isAdd" Investors="@portfolioModel.Investors" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <br />
+            @if (isAdd == "1")
+            {
+                <p align="right">
+                    <button type="submit" class="btn btn-primary">
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        else
+                        {
+                            <i class="fa fa-envelope"></i>
+                        }
+                        &nbsp;&nbsp;@localizer["Save"]
+                    </button>
+                    <button class="btn btn-danger" @onclick="Cancel">
+                        <i class="fa fa-close"></i>&nbsp;&nbsp;@localizer["Cancel"]
+                    </button>
+                </p>
+            }
+            else
+            {
+                <p align="right">
+                    <button type="button" class="btn @(GetSaveStyle())" @onclick="UpdatePortfolio" disabled="@isSaveCancelButtonDisabled">
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        else
+                        {
+                            <i class="fa fa-envelope"></i>
+                        }
+                        &nbsp;&nbsp;@localizer["Save"]
+                    </button>
+                    <button type="button" class="btn @(GetCancelStyle())" @onclick="Search" disabled="@isSaveCancelButtonDisabled">
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        else
+                        {
+                            <i class="fa fa-close"></i>
+                        }
+                        &nbsp;&nbsp;@localizer["Cancel"]
+                    </button>
+                    <button type="button" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?"))" disabled="@isDiscardPortfolioDisabled">
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        else
+                        {
+                            <i class="fa fa-file-pdf-o"></i>
+                        }
+                        &nbsp;&nbsp;@localizer["Discard"]
+                    </button>
+                    <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
+                        <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;@localizer["Certificate"]
+                    </button>
+                    <button type="button" class="btn btn-disabled" disabled="@(portfolioModel.ViewModel.DateClosing == null)">
+                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Communications"]
+                    </button>
+                </p>
+            }
         }
-    }
-</EditForm>
+    </EditForm>
+}
 
 <div class="modal fade" id="myModal" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
     <div class="modal-dialog">
@@ -381,6 +428,8 @@
     private bool isSaveCancelButtonDisabled { get; set; } = true;
     private List<Contract> contractsToDelete = new List<Contract>();
 
+    private bool loading;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -427,6 +476,7 @@
 
     private async void Search()
     {
+        loading = true;
         portfolioModel = await PortfolioService.Characteristics(portfolioModel);
         if (portfolioModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
         {
@@ -453,12 +503,14 @@
             isDiscardPortfolioDisabled = false;
             isAddButtonDisabled = false;
         }
+        loading = false;
 
         StateHasChanged();
     }
 
     private async void UpdatePortfolio()
     {
+        loading = true;
         var portfolio = portfolioModel.Portfolios.FirstOrDefault();
         if (portfolio != null)
         {
@@ -476,6 +528,7 @@
                 await ShowMessage(deletePortfolioContractsResponse.ResponseCode, deletePortfolioContractsResponse.Message);
             }
         }
+        loading = false;
     }
 
     private async Task GetAssessment()
@@ -617,6 +670,7 @@
 
     private async void ValidFormSubmitted(EditContext editContext)
     {
+        loading = true;
         portfolioModel.ViewModel.Portfolio = portfolioModel.Portfolio;
         var addPortfolioResponse = await PortfolioRegistrationService.AddPortfolio(portfolioModel);
         if (addPortfolioResponse.ResponseCode == (int)HttpStatusCode.Unauthorized)
@@ -631,6 +685,7 @@
         {
             await ShowMessage(addPortfolioResponse.ResponseCode, addPortfolioResponse.Message);
         }
+        loading = false;
     }
 
     private void InvalidFormSubmitted(EditContext editContext)
@@ -640,6 +695,7 @@
 
     private async Task DiscardPortfolio()
     {
+        loading = true;
         if (isDiscarded == true)
         {
             NavigationManager.NavigateTo("/portfolios/0", true);
@@ -662,6 +718,7 @@
                 await ShowMessage(discardPortfolioResponse.ResponseCode, discardPortfolioResponse.Message);
             }
         }
+        loading = false;
     }
 
     private void Reload()

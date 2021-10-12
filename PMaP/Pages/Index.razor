@@ -36,85 +36,92 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col mts">
-        <div class="col-md-12">
-            <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                <div style="width: 950px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
-            </div>
-            <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
-                <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
-                    <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
-                        <thead>
-                            <tr class="heading" style="color:#336699;">
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Portfolio"))">@localizer["Portfolio"]</span>
-                                    <span class="fa @(GetSortStyle("Portfolio"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Subportfolio"))">@localizer["Subportfolio"]</span>
-                                    <span class="fa @(GetSortStyle("Subportfolio"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("NominalValue"))">@localizer["NominalValue"]</span>
-                                    <span class="fa @(GetSortStyle("NominalValue"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Secured"))">@localizer["Secured"]</span>
-                                    <span class="fa @(GetSortStyle("Secured"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("Unsecured"))">@localizer["Unsecured"]</span>
-                                    <span class="fa @(GetSortStyle("Unsecured"))"></span>
-                                </th>
-				                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("DebtType"))">@localizer["DebtType"]</span>
-                                    <span class="fa @(GetSortStyle("DebtType"))"></span>
-                                </th> 
-				                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("PriceSecured"))">@localizer["PriceSecured"]</span>
-                                    <span class="fa @(GetSortStyle("PriceSecured"))"></span>
-                                </th>
-				                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("UnsecuredPrice"))">@localizer["UnsecuredPrice"]</span>
-                                    <span class="fa @(GetSortStyle("UnsecuredPrice"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("AssignmentEntity"))">@localizer["AssignmentEntity"]</span>
-                                    <span class="fa @(GetSortStyle("AssignmentEntity"))"></span>
-                                </th>
-                                <th>
-                                    <span class="sort-link" @onclick="@(() => SortTable("AcquisitionYear"))">@localizer["AcquisitionYear"]</span>
-                                    <span class="fa @(GetSortStyle("AcquisitionYear"))"></span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (model != null && model.Documents != null && model.Documents.Count() > 0)
-                            {
-                                foreach (var item in model.Documents)
+@if (model == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <div class="row">
+        <div class="col mts">
+            <div class="col-md-12">
+                <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+                    <div style="width: 950px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+                </div>
+                <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+                    <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
+                        <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
+                            <thead>
+                                <tr class="heading" style="color:#336699;">
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Portfolio"))">@localizer["Portfolio"]</span>
+                                        <span class="fa @(GetSortStyle("Portfolio"))"></span>
+                                    </th>
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Subportfolio"))">@localizer["Subportfolio"]</span>
+                                        <span class="fa @(GetSortStyle("Subportfolio"))"></span>
+                                    </th>
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("NominalValue"))">@localizer["NominalValue"]</span>
+                                        <span class="fa @(GetSortStyle("NominalValue"))"></span>
+                                    </th>
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Secured"))">@localizer["Secured"]</span>
+                                        <span class="fa @(GetSortStyle("Secured"))"></span>
+                                    </th>
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("Unsecured"))">@localizer["Unsecured"]</span>
+                                        <span class="fa @(GetSortStyle("Unsecured"))"></span>
+                                    </th>
+				                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("DebtType"))">@localizer["DebtType"]</span>
+                                        <span class="fa @(GetSortStyle("DebtType"))"></span>
+                                    </th> 
+				                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("PriceSecured"))">@localizer["PriceSecured"]</span>
+                                        <span class="fa @(GetSortStyle("PriceSecured"))"></span>
+                                    </th>
+				                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("UnsecuredPrice"))">@localizer["UnsecuredPrice"]</span>
+                                        <span class="fa @(GetSortStyle("UnsecuredPrice"))"></span>
+                                    </th>
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("AssignmentEntity"))">@localizer["AssignmentEntity"]</span>
+                                        <span class="fa @(GetSortStyle("AssignmentEntity"))"></span>
+                                    </th>
+                                    <th>
+                                        <span class="sort-link" @onclick="@(() => SortTable("AcquisitionYear"))">@localizer["AcquisitionYear"]</span>
+                                        <span class="fa @(GetSortStyle("AcquisitionYear"))"></span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (model != null && model.Documents != null && model.Documents.Count() > 0)
                                 {
-                                    <tr>
-                                        <td>@item.Portfolio</td>
-                                        <td>@item.Subportfolio</td>
-                                        <td>@(item.NominalValue?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.Secured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.Unsecured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@item.DebtType</td>
-                                        <td>@(item.PriceSecured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@(item.UnsecuredPrice?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
-                                        <td>@item.AssignmentEntity</td>
-                                        <td>@item.AcquisitionYear</td>
-                                    </tr>
+                                    foreach (var item in model.Documents)
+                                    {
+                                        <tr>
+                                            <td>@item.Portfolio</td>
+                                            <td>@item.Subportfolio</td>
+                                            <td>@(item.NominalValue?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                            <td>@(item.Secured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                            <td>@(item.Unsecured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                            <td>@item.DebtType</td>
+                                            <td>@(item.PriceSecured?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                            <td>@(item.UnsecuredPrice?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                            <td>@item.AssignmentEntity</td>
+                                            <td>@item.AcquisitionYear</td>
+                                        </tr>
+                                    }
                                 }
-                            }
-                        </tbody>
-	                </table>                       
+                            </tbody>
+	                    </table>                       
+                    </div>
                 </div>
             </div>
-        </div>
-	</div>
-</div>
+	    </div>
+    </div>
+}
 
 @code {
     private HomeModel model;
