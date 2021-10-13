@@ -40,6 +40,7 @@ namespace PMaP.Models.ViewModels.PortfolioValuation
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsSelected { get; set; }
+        public string Value { get; set; }
     }
 
     public class PortfolioValuationAdd

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
 using PMaP.Models;
 using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.PortfolioValuation;
+using PMaP.Pages.PortfolioEvaluation;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,11 +23,13 @@ namespace PMaP.Data
     {
         private IConfiguration Configuration { get; }
         private IHttpService _httpService;
+        private IStringLocalizer<PortfolioValuation> _localizer;
 
-        public PortfolioValuationService(IConfiguration configuration, IHttpService httpService)
+        public PortfolioValuationService(IConfiguration configuration, IHttpService httpService, IStringLocalizer<PortfolioValuation> localizer)
         {
             Configuration = configuration;
             _httpService = httpService;
+            _localizer = localizer;
         }
 
         public async Task<PortfolioValuationModel> Index(string portfolio, string subportfolio, string isAdd = "0")
@@ -131,83 +135,83 @@ namespace PMaP.Data
             List<SelectListItem> selectListItems = new List<SelectListItem>();
             SelectListItem listItem = new SelectListItem
             {
-                Text = "Select",
+                Text = _localizer["Select"],
                 Value = ""
             };
 
             selectListItems.Add(listItem);
-            selectListItems.Add(new SelectListItem { Text = "Secured", Value = "Secured" });
-            selectListItems.Add(new SelectListItem { Text = "Unsecured", Value = "Unsecured" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Secured"], Value = "Secured" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Unsecured"], Value = "Unsecured" });
             model.ViewModel.DebtTypeList = selectListItems;
 
             selectListItems = new List<SelectListItem>();
             selectListItems.Add(listItem);
-            selectListItems.Add(new SelectListItem { Text = "Yes", Value = "1" });
-            selectListItems.Add(new SelectListItem { Text = "No", Value = "0" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Yes"], Value = "1" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["No"], Value = "0" });
             model.ViewModel.JudicializedList = model.ViewModel.InsolvencyList = selectListItems;
 
             selectListItems = new List<SelectListItem>();
             selectListItems.Add(listItem);
-            selectListItems.Add(new SelectListItem { Text = "Performing", Value = "PL" });
-            selectListItems.Add(new SelectListItem { Text = "Sub-performing", Value = "SPL" });
-            selectListItems.Add(new SelectListItem { Text = "Non-performing", Value = "NPL" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Performing"], Value = "PL" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["SubPerforming"], Value = "SPL" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["NonPerforming"], Value = "NPL" });
             model.ViewModel.PerformingStatusList = selectListItems;
 
             selectListItems = new List<SelectListItem>();
             selectListItems.Add(listItem);
-            selectListItems.Add(new SelectListItem { Text = "Menor/igual de 1k €", Value = "1000" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 1k €", Value = "4999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 5k €", Value = "9999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 10k €", Value = "49999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 50k €", Value = "99999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 100k €", Value = "149999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 150k €", Value = "199999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 200k €", Value = "299999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 300k €", Value = "499999" });
-            selectListItems.Add(new SelectListItem { Text = "Mayor de 500k €", Value = "500000" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MenorIgualDe1k"], Value = "1000" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe1k"], Value = "4999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe5k"], Value = "9999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe10k"], Value = "49999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe50k"], Value = "99999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe100k"], Value = "149999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe150k"], Value = "199999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe200k"], Value = "299999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe300k"], Value = "499999" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["MayorDe500k"], Value = "500000" });
             model.ViewModel.DebtOBList = selectListItems;
 
             selectListItems = new List<SelectListItem>();
             selectListItems.Add(listItem);
-            selectListItems.Add(new SelectListItem { Text = "Particulares", Value = "TIT" });
-            selectListItems.Add(new SelectListItem { Text = "Empresas", Value = "FIA" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Particulares"], Value = "TIT" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Empresas"], Value = "FIA" });
             model.ViewModel.DebtorTypeList = selectListItems;
 
             selectListItems = new List<SelectListItem>();
             selectListItems.Add(listItem);
-            selectListItems.Add(new SelectListItem { Text = "Norte", Value = "Norte" });
-            selectListItems.Add(new SelectListItem { Text = "Noreste", Value = "Noreste" });
-            selectListItems.Add(new SelectListItem { Text = "Noroeste", Value = "Noroeste" });
-            selectListItems.Add(new SelectListItem { Text = "Centro", Value = "Centro" });
-            selectListItems.Add(new SelectListItem { Text = "Centro-oeste", Value = "Centro-oeste" });
-            selectListItems.Add(new SelectListItem { Text = "Centro-este", Value = "Centro-este" });
-            selectListItems.Add(new SelectListItem { Text = "Sur", Value = "Sur" });
-            selectListItems.Add(new SelectListItem { Text = "Sureste", Value = "Sureste" });
-            selectListItems.Add(new SelectListItem { Text = "Suroeste", Value = "Suroeste" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Norte"], Value = "Norte" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Noreste"], Value = "Noreste" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Noroeste"], Value = "Noroeste" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Centro"], Value = "Centro" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["CentroOeste"], Value = "Centro-oeste" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["CentroEste"], Value = "Centro-este" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Sur"], Value = "Sur" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Sureste"], Value = "Sureste" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Suroeste"], Value = "Suroeste" });
             model.ViewModel.RegionList = selectListItems;
 
             selectListItems = new List<SelectListItem>();
             selectListItems.Add(listItem);
-            selectListItems.Add(new SelectListItem { Text = "Yes", Value = "1" });
-            selectListItems.Add(new SelectListItem { Text = "No", Value = "0" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["Yes"], Value = "1" });
+            selectListItems.Add(new SelectListItem { Text = _localizer["No"], Value = "0" });
             model.ViewModel.AddedInPortfolioList = selectListItems;
 
             List<ContractType> contractTypes = new List<ContractType>();
-            contractTypes.Add(new ContractType { Id = 1, Name = "Prestamo Hipotecario" });
-            contractTypes.Add(new ContractType { Id = 2, Name = "Contrato de Hipoteca de Maximo" });
-            contractTypes.Add(new ContractType { Id = 3, Name = "Credito con Garantia Hipotecaria" });
-            contractTypes.Add(new ContractType { Id = 4, Name = "Prestamo" });
-            contractTypes.Add(new ContractType { Id = 5, Name = "Préstamo Consumo" });
-            contractTypes.Add(new ContractType { Id = 6, Name = "Tarjetas" });
-            contractTypes.Add(new ContractType { Id = 7, Name = "Leasing mobiliario" });
-            contractTypes.Add(new ContractType { Id = 8, Name = "Otros productos" });
-            contractTypes.Add(new ContractType { Id = 9, Name = "Préstamo Empresas" });
-            contractTypes.Add(new ContractType { Id = 10, Name = "Avales y garantias" });
-            contractTypes.Add(new ContractType { Id = 11, Name = "Leasing inmobiliario" });
-            contractTypes.Add(new ContractType { Id = 12, Name = "REOs" });
-            contractTypes.Add(new ContractType { Id = 13, Name = "Créditos Empresas" });
-            contractTypes.Add(new ContractType { Id = 14, Name = "Préstamo Particulares" });
-            contractTypes.Add(new ContractType { Id = 15, Name = "Confirming" });
+            contractTypes.Add(new ContractType { Id = 1, Name = _localizer["PrestamoHipotecario"], Value = "PH" });
+            contractTypes.Add(new ContractType { Id = 2, Name = _localizer["ContratoDeHipotecaDeMaximo"], Value = "CDHDM" });
+            contractTypes.Add(new ContractType { Id = 3, Name = _localizer["CreditoConGarantiaHipotecaria"], Value = "CCGH" });
+            contractTypes.Add(new ContractType { Id = 4, Name = _localizer["Prestamo"], Value = "P" });
+            contractTypes.Add(new ContractType { Id = 5, Name = _localizer["PrestamoConsumo"], Value = "PC" });
+            contractTypes.Add(new ContractType { Id = 6, Name = _localizer["Tarjetas"], Value = "T" });
+            contractTypes.Add(new ContractType { Id = 7, Name = _localizer["LeasingMobiliario"], Value = "LM" });
+            contractTypes.Add(new ContractType { Id = 8, Name = _localizer["OtrosProductos"], Value = "OP" });
+            contractTypes.Add(new ContractType { Id = 9, Name = _localizer["PrestamoEmpresas"], Value = "PE" });
+            contractTypes.Add(new ContractType { Id = 10, Name = _localizer["AvalesYGarantias"], Value = "AYG" });
+            contractTypes.Add(new ContractType { Id = 11, Name = _localizer["LeasingInmobiliario"], Value = "LI" });
+            contractTypes.Add(new ContractType { Id = 12, Name = _localizer["REOs"], Value = "R" });
+            contractTypes.Add(new ContractType { Id = 13, Name = _localizer["CreditosEmpresas"], Value = "CE" });
+            contractTypes.Add(new ContractType { Id = 14, Name = _localizer["PrestamoParticulares"], Value = "PP" });
+            contractTypes.Add(new ContractType { Id = 15, Name = _localizer["Confirming"], Value = "C" });
             model.ViewModel.ContractTypes = contractTypes;
         }
     }

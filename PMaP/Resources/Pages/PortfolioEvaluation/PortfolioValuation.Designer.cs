@@ -79,6 +79,15 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Avales y garantias.
+        /// </summary>
+        public static string AvalesYGarantias {
+            get {
+                return ResourceManager.GetString("AvalesYGarantias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calcular.
         /// </summary>
         public static string Calculate {
@@ -97,6 +106,33 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Centro.
+        /// </summary>
+        public static string Centro {
+            get {
+                return ResourceManager.GetString("Centro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Centro-este.
+        /// </summary>
+        public static string CentroEste {
+            get {
+                return ResourceManager.GetString("CentroEste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Centro-oeste.
+        /// </summary>
+        public static string CentroOeste {
+            get {
+                return ResourceManager.GetString("CentroOeste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selección características.
         /// </summary>
         public static string CharacteristicsSelection {
@@ -106,11 +142,47 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirming.
+        /// </summary>
+        public static string Confirming {
+            get {
+                return ResourceManager.GetString("Confirming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipo de deuda.
         /// </summary>
         public static string ContractType {
             get {
                 return ResourceManager.GetString("ContractType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contrato de Hipoteca de Maximo.
+        /// </summary>
+        public static string ContratoDeHipotecaDeMaximo {
+            get {
+                return ResourceManager.GetString("ContratoDeHipotecaDeMaximo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credito con Garantia Hipotecaria.
+        /// </summary>
+        public static string CreditoConGarantiaHipotecaria {
+            get {
+                return ResourceManager.GetString("CreditoConGarantiaHipotecaria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Créditos Empresas.
+        /// </summary>
+        public static string CreditosEmpresas {
+            get {
+                return ResourceManager.GetString("CreditosEmpresas", resourceCulture);
             }
         }
         
@@ -151,6 +223,15 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empresas.
+        /// </summary>
+        public static string Empresas {
+            get {
+                return ResourceManager.GetString("Empresas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Desde.
         /// </summary>
         public static string From {
@@ -187,6 +268,186 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leasing inmobiliario.
+        /// </summary>
+        public static string LeasingInmobiliario {
+            get {
+                return ResourceManager.GetString("LeasingInmobiliario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leasing mobiliario.
+        /// </summary>
+        public static string LeasingMobiliario {
+            get {
+                return ResourceManager.GetString("LeasingMobiliario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 100k €.
+        /// </summary>
+        public static string MayorDe100k {
+            get {
+                return ResourceManager.GetString("MayorDe100k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 10k €.
+        /// </summary>
+        public static string MayorDe10k {
+            get {
+                return ResourceManager.GetString("MayorDe10k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 150k €.
+        /// </summary>
+        public static string MayorDe150k {
+            get {
+                return ResourceManager.GetString("MayorDe150k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 1k €.
+        /// </summary>
+        public static string MayorDe1k {
+            get {
+                return ResourceManager.GetString("MayorDe1k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 200k €.
+        /// </summary>
+        public static string MayorDe200k {
+            get {
+                return ResourceManager.GetString("MayorDe200k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 300k €.
+        /// </summary>
+        public static string MayorDe300k {
+            get {
+                return ResourceManager.GetString("MayorDe300k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 500k €.
+        /// </summary>
+        public static string MayorDe500k {
+            get {
+                return ResourceManager.GetString("MayorDe500k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 50k €.
+        /// </summary>
+        public static string MayorDe50k {
+            get {
+                return ResourceManager.GetString("MayorDe50k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mayor de 5k €.
+        /// </summary>
+        public static string MayorDe5k {
+            get {
+                return ResourceManager.GetString("MayorDe5k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menor/igual de 1k €.
+        /// </summary>
+        public static string MenorIgualDe1k {
+            get {
+                return ResourceManager.GetString("MenorIgualDe1k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incumplido.
+        /// </summary>
+        public static string NonPerforming {
+            get {
+                return ResourceManager.GetString("NonPerforming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Noreste.
+        /// </summary>
+        public static string Noreste {
+            get {
+                return ResourceManager.GetString("Noreste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Noroeste.
+        /// </summary>
+        public static string Noroeste {
+            get {
+                return ResourceManager.GetString("Noroeste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Norte.
+        /// </summary>
+        public static string Norte {
+            get {
+                return ResourceManager.GetString("Norte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Otros productos.
+        /// </summary>
+        public static string OtrosProductos {
+            get {
+                return ResourceManager.GetString("OtrosProductos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Particulares.
+        /// </summary>
+        public static string Particulares {
+            get {
+                return ResourceManager.GetString("Particulares", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ejecutando.
+        /// </summary>
+        public static string Performing {
+            get {
+                return ResourceManager.GetString("Performing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Estado del performing.
         /// </summary>
         public static string PerformingStatus {
@@ -214,11 +475,65 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prestamo.
+        /// </summary>
+        public static string Prestamo {
+            get {
+                return ResourceManager.GetString("Prestamo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Préstamo Consumo.
+        /// </summary>
+        public static string PrestamoConsumo {
+            get {
+                return ResourceManager.GetString("PrestamoConsumo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Préstamo Empresas.
+        /// </summary>
+        public static string PrestamoEmpresas {
+            get {
+                return ResourceManager.GetString("PrestamoEmpresas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prestamo Hipotecario.
+        /// </summary>
+        public static string PrestamoHipotecario {
+            get {
+                return ResourceManager.GetString("PrestamoHipotecario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Préstamo Particulares.
+        /// </summary>
+        public static string PrestamoParticulares {
+            get {
+                return ResourceManager.GetString("PrestamoParticulares", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Región.
         /// </summary>
         public static string Region {
             get {
                 return ResourceManager.GetString("Region", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REOs.
+        /// </summary>
+        public static string REOs {
+            get {
+                return ResourceManager.GetString("REOs", resourceCulture);
             }
         }
         
@@ -232,6 +547,33 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Asegurado.
+        /// </summary>
+        public static string Secured {
+            get {
+                return ResourceManager.GetString("Secured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seleccione.
+        /// </summary>
+        public static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rendimiento inferior.
+        /// </summary>
+        public static string SubPerforming {
+            get {
+                return ResourceManager.GetString("SubPerforming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resumen.
         /// </summary>
         public static string Summary {
@@ -241,11 +583,65 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sur.
+        /// </summary>
+        public static string Sur {
+            get {
+                return ResourceManager.GetString("Sur", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sureste.
+        /// </summary>
+        public static string Sureste {
+            get {
+                return ResourceManager.GetString("Sureste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suroeste.
+        /// </summary>
+        public static string Suroeste {
+            get {
+                return ResourceManager.GetString("Suroeste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tarjetas.
+        /// </summary>
+        public static string Tarjetas {
+            get {
+                return ResourceManager.GetString("Tarjetas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hasta.
         /// </summary>
         public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inseguro.
+        /// </summary>
+        public static string Unsecured {
+            get {
+                return ResourceManager.GetString("Unsecured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sí.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

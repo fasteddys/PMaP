@@ -123,17 +123,41 @@
   <data name="AddPortfolio" xml:space="preserve">
     <value>Añadir Cartera</value>
   </data>
+  <data name="AvalesYGarantias" xml:space="preserve">
+    <value>Avales y garantias</value>
+  </data>
   <data name="Calculate" xml:space="preserve">
     <value>Calcular</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
+  <data name="Centro" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="CentroEste" xml:space="preserve">
+    <value>Centro-este</value>
+  </data>
+  <data name="CentroOeste" xml:space="preserve">
+    <value>Centro-oeste</value>
+  </data>
   <data name="CharacteristicsSelection" xml:space="preserve">
     <value>Selección características</value>
   </data>
+  <data name="Confirming" xml:space="preserve">
+    <value>Confirming</value>
+  </data>
   <data name="ContractType" xml:space="preserve">
     <value>Tipo de deuda</value>
+  </data>
+  <data name="ContratoDeHipotecaDeMaximo" xml:space="preserve">
+    <value>Contrato de Hipoteca de Maximo</value>
+  </data>
+  <data name="CreditoConGarantiaHipotecaria" xml:space="preserve">
+    <value>Credito con Garantia Hipotecaria</value>
+  </data>
+  <data name="CreditosEmpresas" xml:space="preserve">
+    <value>Créditos Empresas</value>
   </data>
   <data name="DebtOB" xml:space="preserve">
     <value>Deuda (OB)</value>
@@ -147,6 +171,9 @@
   <data name="DebtType" xml:space="preserve">
     <value>Tipo deuda</value>
   </data>
+  <data name="Empresas" xml:space="preserve">
+    <value>Empresas</value>
+  </data>
   <data name="From" xml:space="preserve">
     <value>Desde</value>
   </data>
@@ -159,6 +186,66 @@
   <data name="lblPortfolioEvaluation" xml:space="preserve">
     <value>Valoración de Carteras</value>
   </data>
+  <data name="LeasingInmobiliario" xml:space="preserve">
+    <value>Leasing inmobiliario</value>
+  </data>
+  <data name="LeasingMobiliario" xml:space="preserve">
+    <value>Leasing mobiliario</value>
+  </data>
+  <data name="MayorDe100k" xml:space="preserve">
+    <value>Mayor de 100k €</value>
+  </data>
+  <data name="MayorDe10k" xml:space="preserve">
+    <value>Mayor de 10k €</value>
+  </data>
+  <data name="MayorDe150k" xml:space="preserve">
+    <value>Mayor de 150k €</value>
+  </data>
+  <data name="MayorDe1k" xml:space="preserve">
+    <value>Mayor de 1k €</value>
+  </data>
+  <data name="MayorDe200k" xml:space="preserve">
+    <value>Mayor de 200k €</value>
+  </data>
+  <data name="MayorDe300k" xml:space="preserve">
+    <value>Mayor de 300k €</value>
+  </data>
+  <data name="MayorDe500k" xml:space="preserve">
+    <value>Mayor de 500k €</value>
+  </data>
+  <data name="MayorDe50k" xml:space="preserve">
+    <value>Mayor de 50k €</value>
+  </data>
+  <data name="MayorDe5k" xml:space="preserve">
+    <value>Mayor de 5k €</value>
+  </data>
+  <data name="MenorIgualDe1k" xml:space="preserve">
+    <value>Menor/igual de 1k €</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NonPerforming" xml:space="preserve">
+    <value>Incumplido</value>
+  </data>
+  <data name="Noreste" xml:space="preserve">
+    <value>Noreste</value>
+  </data>
+  <data name="Noroeste" xml:space="preserve">
+    <value>Noroeste</value>
+  </data>
+  <data name="Norte" xml:space="preserve">
+    <value>Norte</value>
+  </data>
+  <data name="OtrosProductos" xml:space="preserve">
+    <value>Otros productos</value>
+  </data>
+  <data name="Particulares" xml:space="preserve">
+    <value>Particulares</value>
+  </data>
+  <data name="Performing" xml:space="preserve">
+    <value>Ejecutando</value>
+  </data>
   <data name="PerformingStatus" xml:space="preserve">
     <value>Estado del performing</value>
   </data>
@@ -168,16 +255,61 @@
   <data name="PortfolioEvaluationAddContracts" xml:space="preserve">
     <value>Valoración de Carteras » Añadir contratos</value>
   </data>
+  <data name="Prestamo" xml:space="preserve">
+    <value>Prestamo</value>
+  </data>
+  <data name="PrestamoConsumo" xml:space="preserve">
+    <value>Préstamo Consumo</value>
+  </data>
+  <data name="PrestamoEmpresas" xml:space="preserve">
+    <value>Préstamo Empresas</value>
+  </data>
+  <data name="PrestamoHipotecario" xml:space="preserve">
+    <value>Prestamo Hipotecario</value>
+  </data>
+  <data name="PrestamoParticulares" xml:space="preserve">
+    <value>Préstamo Particulares</value>
+  </data>
   <data name="Region" xml:space="preserve">
     <value>Región</value>
+  </data>
+  <data name="REOs" xml:space="preserve">
+    <value>REOs</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Guardar</value>
   </data>
+  <data name="Secured" xml:space="preserve">
+    <value>Asegurado</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Seleccione</value>
+  </data>
+  <data name="SubPerforming" xml:space="preserve">
+    <value>Rendimiento inferior</value>
+  </data>
   <data name="Summary" xml:space="preserve">
     <value>Resumen</value>
   </data>
+  <data name="Sur" xml:space="preserve">
+    <value>Sur</value>
+  </data>
+  <data name="Sureste" xml:space="preserve">
+    <value>Sureste</value>
+  </data>
+  <data name="Suroeste" xml:space="preserve">
+    <value>Suroeste</value>
+  </data>
+  <data name="Tarjetas" xml:space="preserve">
+    <value>Tarjetas</value>
+  </data>
   <data name="To" xml:space="preserve">
     <value>Hasta</value>
+  </data>
+  <data name="Unsecured" xml:space="preserve">
+    <value>Inseguro</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sí</value>
   </data>
 </root>
