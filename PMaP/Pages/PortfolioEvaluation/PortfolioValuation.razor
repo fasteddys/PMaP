@@ -242,7 +242,7 @@ else
  
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 id="title" class="modal-title">Success</h4>
+                <h4 id="title" class="modal-title">@localizer["Success"]</h4>
                 <button type="button" data-dismiss="modal" @onclick="Cancel">x</button>
             </div>
  
@@ -372,7 +372,9 @@ else
         var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
         if (inPortfolio != null)
         {
-            await JSRuntime.InvokeVoidAsync("showDialog", "Warning!", "Contract/s already added to a portfolio.");
+            string title = localizer["Warning"];
+            string message = localizer["WarningMessage"];
+            await JSRuntime.InvokeVoidAsync("showDialog", title, message);
             return;
         }
         await sessionStorage.SetItemAsync("portfolioValuationViewModel", portfolioValuationModel.ViewModel);
@@ -396,7 +398,9 @@ else
         var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
         if (inPortfolio != null)
         {
-            await JSRuntime.InvokeVoidAsync("showDialog", "Warning!", "Contract/s already added to a portfolio.");
+            string titleWarning = localizer["Warning"];
+            string message = localizer["WarningMessage"];
+            await JSRuntime.InvokeVoidAsync("showDialog", titleWarning, message);
             return;
         }
         foreach (var contract in portfolioValuationModel.Contracts)
@@ -412,17 +416,18 @@ else
         }
         if (updatePortfolioResponse.ResponseCode == 200)
         {
-            await JSRuntime.InvokeVoidAsync("showDialogSuccess", updatePortfolioResponse.Message);
+            string message = localizer["SuccessMessage"];
+            await JSRuntime.InvokeVoidAsync("showDialogSuccess", message);
             return;
         }
         string title;
         switch (updatePortfolioResponse.ResponseCode)
         {
             case 400:
-                title = "Warning!";
+                title = localizer["Warning"];
                 break;
             case 500:
-                title = "Error!";
+                title = localizer["Error"];
                 break;
             default:
                 title = "";

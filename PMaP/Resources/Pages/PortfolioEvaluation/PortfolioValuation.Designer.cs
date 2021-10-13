@@ -232,6 +232,15 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ¡Error!.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Desde.
         /// </summary>
         public static string From {
@@ -574,6 +583,24 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ¡Éxito!.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Se agregó correctamente el contrato o los contratos a la cartera..
+        /// </summary>
+        public static string SuccessMessage {
+            get {
+                return ResourceManager.GetString("SuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resumen.
         /// </summary>
         public static string Summary {
@@ -633,6 +660,24 @@ namespace PMaP.Resources.Pages.PortfolioEvaluation {
         public static string Unsecured {
             get {
                 return ResourceManager.GetString("Unsecured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ¡Advertencia!.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contrato o los contratos ya se agregaron a una cartera..
+        /// </summary>
+        public static string WarningMessage {
+            get {
+                return ResourceManager.GetString("WarningMessage", resourceCulture);
             }
         }
         
