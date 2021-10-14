@@ -132,6 +132,9 @@
   <data name="Check" xml:space="preserve">
     <value>Check</value>
   </data>
+  <data name="Closing" xml:space="preserve">
+    <value>Closing</value>
+  </data>
   <data name="Concursos" xml:space="preserve">
     <value>Contests</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="CuotasPendientes" xml:space="preserve">
     <value>Pending fees</value>
+  </data>
+  <data name="CutOff" xml:space="preserve">
+    <value>Cut off</value>
   </data>
   <data name="DataTape" xml:space="preserve">
     <value>DataTape</value>
@@ -222,8 +228,20 @@
   <data name="Portfolio" xml:space="preserve">
     <value>Portfolio</value>
   </data>
+  <data name="PostCutOff" xml:space="preserve">
+    <value>Post-Cut off</value>
+  </data>
+  <data name="PostSigning" xml:space="preserve">
+    <value>Post-Signing</value>
+  </data>
   <data name="ProcedimientosJudiciales" xml:space="preserve">
     <value>Judicial proceedings</value>
+  </data>
+  <data name="Selecionar" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Signing" xml:space="preserve">
+    <value>Signing</value>
   </data>
   <data name="Subporfolio" xml:space="preserve">
     <value>Sub-portfolio</value>

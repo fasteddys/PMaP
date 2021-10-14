@@ -189,6 +189,9 @@
   <data name="InteresesOrdinarios" xml:space="preserve">
     <value>Ordinary interests</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="NoFiadores" xml:space="preserve">
     <value>No. of surety</value>
   </data>
@@ -204,6 +207,9 @@
   <data name="SaldoOB" xml:space="preserve">
     <value>Balance (OB)</value>
   </data>
+  <data name="Seleccionar" xml:space="preserve">
+    <value>Select</value>
+  </data>
   <data name="SeleccionDeLaCartera" xml:space="preserve">
     <value>Portfolio selection</value>
   </data>
@@ -215,5 +221,8 @@
   </data>
   <data name="Titular" xml:space="preserve">
     <value>Holder</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

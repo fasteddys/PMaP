@@ -120,6 +120,15 @@
   <data name="Apoderado" xml:space="preserve">
     <value>Apoderado</value>
   </data>
+  <data name="CertificadoDeCesion" xml:space="preserve">
+    <value>Certificado de cesión</value>
+  </data>
+  <data name="CertificadoDeSaldo" xml:space="preserve">
+    <value>Certificado de saldo</value>
+  </data>
+  <data name="CertificadoDeSaldoProcesosJudiciales" xml:space="preserve">
+    <value>Certificado de saldo - Procesos judiciales</value>
+  </data>
   <data name="Certificados" xml:space="preserve">
     <value>Certificados</value>
   </data>

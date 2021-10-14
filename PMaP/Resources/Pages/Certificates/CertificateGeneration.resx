@@ -123,8 +123,23 @@
   <data name="Certificado" xml:space="preserve">
     <value>Certificado</value>
   </data>
+  <data name="CertificadoDeCesion" xml:space="preserve">
+    <value>Certificado de cesión</value>
+  </data>
+  <data name="CertificadoDeSaldo" xml:space="preserve">
+    <value>Certificado de saldo</value>
+  </data>
   <data name="Certificados" xml:space="preserve">
     <value>Certificados</value>
+  </data>
+  <data name="CesionGarantiaHipotecaria" xml:space="preserve">
+    <value>Cesión - Garantía hipotecaria</value>
+  </data>
+  <data name="CesionPoliza" xml:space="preserve">
+    <value>Cesión - Póliza</value>
+  </data>
+  <data name="CesionSinDesgloseDeDeuda" xml:space="preserve">
+    <value>Cesión - Sin desglose de deuda</value>
   </data>
   <data name="Contrato" xml:space="preserve">
     <value>Contrato</value>
@@ -141,6 +156,15 @@
   <data name="Portfolio" xml:space="preserve">
     <value>Portfolio</value>
   </data>
+  <data name="SaldoConDesgloseDeDeuda" xml:space="preserve">
+    <value>Saldo - Con desglose de deuda</value>
+  </data>
+  <data name="Secured" xml:space="preserve">
+    <value>Asegurado</value>
+  </data>
+  <data name="Seleccionar" xml:space="preserve">
+    <value>Seleccionar</value>
+  </data>
   <data name="SeleccionDelCertificado" xml:space="preserve">
     <value>Selección del Certificado</value>
   </data>
@@ -150,11 +174,17 @@
   <data name="SubtipoDeCertificado" xml:space="preserve">
     <value>Subtipo de certificado</value>
   </data>
+  <data name="TipoDeDeuda" xml:space="preserve">
+    <value>Tipo de deuda</value>
+  </data>
   <data name="TipoDeuda" xml:space="preserve">
     <value>Tipo deuda</value>
   </data>
   <data name="TipoInterviniente" xml:space="preserve">
     <value>Tipo interviniente</value>
+  </data>
+  <data name="Unsecured" xml:space="preserve">
+    <value>Inseguro</value>
   </data>
   <data name="Visualizar" xml:space="preserve">
     <value>Visualizar</value>

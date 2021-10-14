@@ -277,6 +277,15 @@ namespace PMaP.Resources.Pages.PortfolioRegistration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nº Fiadores.
         /// </summary>
         public static string NoFiadores {
@@ -322,6 +331,15 @@ namespace PMaP.Resources.Pages.PortfolioRegistration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seleccionar.
+        /// </summary>
+        public static string Seleccionar {
+            get {
+                return ResourceManager.GetString("Seleccionar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selección de la cartera.
         /// </summary>
         public static string SeleccionDeLaCartera {
@@ -354,6 +372,15 @@ namespace PMaP.Resources.Pages.PortfolioRegistration {
         public static string Titular {
             get {
                 return ResourceManager.GetString("Titular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sì.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

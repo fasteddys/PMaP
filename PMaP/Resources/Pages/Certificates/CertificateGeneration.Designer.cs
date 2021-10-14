@@ -79,11 +79,56 @@ namespace PMaP.Resources.Pages.Certificates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Certificado de cesión.
+        /// </summary>
+        public static string CertificadoDeCesion {
+            get {
+                return ResourceManager.GetString("CertificadoDeCesion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificado de saldo.
+        /// </summary>
+        public static string CertificadoDeSaldo {
+            get {
+                return ResourceManager.GetString("CertificadoDeSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Certificados.
         /// </summary>
         public static string Certificados {
             get {
                 return ResourceManager.GetString("Certificados", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cesión - Garantía hipotecaria.
+        /// </summary>
+        public static string CesionGarantiaHipotecaria {
+            get {
+                return ResourceManager.GetString("CesionGarantiaHipotecaria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cesión - Póliza.
+        /// </summary>
+        public static string CesionPoliza {
+            get {
+                return ResourceManager.GetString("CesionPoliza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cesión - Sin desglose de deuda.
+        /// </summary>
+        public static string CesionSinDesgloseDeDeuda {
+            get {
+                return ResourceManager.GetString("CesionSinDesgloseDeDeuda", resourceCulture);
             }
         }
         
@@ -133,6 +178,33 @@ namespace PMaP.Resources.Pages.Certificates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saldo - Con desglose de deuda.
+        /// </summary>
+        public static string SaldoConDesgloseDeDeuda {
+            get {
+                return ResourceManager.GetString("SaldoConDesgloseDeDeuda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Asegurado.
+        /// </summary>
+        public static string Secured {
+            get {
+                return ResourceManager.GetString("Secured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seleccionar.
+        /// </summary>
+        public static string Seleccionar {
+            get {
+                return ResourceManager.GetString("Seleccionar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selección del Certificado.
         /// </summary>
         public static string SeleccionDelCertificado {
@@ -160,6 +232,15 @@ namespace PMaP.Resources.Pages.Certificates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tipo de deuda.
+        /// </summary>
+        public static string TipoDeDeuda {
+            get {
+                return ResourceManager.GetString("TipoDeDeuda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipo deuda.
         /// </summary>
         public static string TipoDeuda {
@@ -174,6 +255,15 @@ namespace PMaP.Resources.Pages.Certificates {
         public static string TipoInterviniente {
             get {
                 return ResourceManager.GetString("TipoInterviniente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inseguro.
+        /// </summary>
+        public static string Unsecured {
+            get {
+                return ResourceManager.GetString("Unsecured", resourceCulture);
             }
         }
         

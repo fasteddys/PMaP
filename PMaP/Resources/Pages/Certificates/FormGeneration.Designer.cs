@@ -70,6 +70,33 @@ namespace PMaP.Resources.Pages.Certificates {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Certificado de cesión.
+        /// </summary>
+        public static string CertificadoDeCesion {
+            get {
+                return ResourceManager.GetString("CertificadoDeCesion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificado de saldo.
+        /// </summary>
+        public static string CertificadoDeSaldo {
+            get {
+                return ResourceManager.GetString("CertificadoDeSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificado de saldo - Procesos judiciales.
+        /// </summary>
+        public static string CertificadoDeSaldoProcesosJudiciales {
+            get {
+                return ResourceManager.GetString("CertificadoDeSaldoProcesosJudiciales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Certificados.
         /// </summary>
         public static string Certificados {

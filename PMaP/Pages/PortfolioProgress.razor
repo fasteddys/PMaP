@@ -25,7 +25,7 @@
                     <div class="col-md-12">
                         <div class="col-md-2">
                             <label>@localizer["Portfolio"]</label>
-                            <select class="form-control" onchange="submitForm()">
+                            <select class="form-control">
                                 <option>Better</option>
                                 <option>CarVen2</option>
                                 <option>CarVen3</option>
@@ -53,8 +53,8 @@
                         </div>
                         <div class="col-md-2">
                             <label for="Portfolio">@localizer["Subporfolio"]</label>
-                            <select class="form-control" onchange="submitForm()">
-                                <option>Selecionar</option>
+                            <select class="form-control">
+                                <option>@localizer["Selecionar"]</option>
                                 <option>SubVenCar</option>
                                 <option>Pera</option>
                                 <option>Sandi</option>
@@ -72,17 +72,17 @@
                         </div>
                         <div class="col-md-2">
                             <label for="Portfolio">@localizer["DataTape"]</label>
-                            <select class="form-control" onchange="submitForm()">
-                                <option>Cut off</option>
-                                <option>Post-Cut off</option>
-                                <option>Signing</option>
-                                <option>Post-Signing</option>
-                                <option>Closing</option>
+                            <select class="form-control">
+                                <option>@localizer["CutOff"]</option>
+                                <option>@localizer["PostCutOff"]</option>
+                                <option>@localizer["Signing"]</option>
+                                <option>@localizer["PostSigning"]</option>
+                                <option>@localizer["Closing"]</option>
                             </select>
                         </div>
                         <div class="col-md-2">
                             <label for="Portfolio">@localizer["FDataTape"]</label>
-                            <select class="form-control" onchange="submitForm()">
+                            <select class="form-control">
                                 <option>2020-12-02</option>
                             </select>
                         </div>
@@ -91,11 +91,9 @@
                         </div>
 
                         <div class="col-md-1">
-                            <a href="#">
-                                <button class="btn btn-success">
-                                    <i class="fa fa-search"></i>&nbsp;&nbsp;@localizer["Calcular"]
-                                </button>
-                            </a>
+                            <button class="btn btn-success">
+                                <i class="fa fa-search"></i>&nbsp;&nbsp;@localizer["Calcular"]
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -119,15 +117,14 @@
                     </div>
                 </div>
                 <br><br>
-            </div>  <!-- /.card body -->
-        </div> <!-- /.card-primary -->
-    </div>    <!-- /.coll -->
-</div>  <!-- /.row -->
+            </div>
+        </div>
+    </div>
+</div>
 <br>
 <br>
 
 <div class="Tabs" style="display: block;">
-
     <ul class="nav nav-tabs">
         <li class="active">
             <a href="/">@localizer["Contratos"]</a>
@@ -232,12 +229,8 @@
                 </tr>
             </tbody>
         </table>
-
-    </div>  <!-- /.scroll -->
-
-
-</div> <!-- /.coll -->
-
+    </div>
+</div>
 
 @code {
     protected override async Task OnAfterRenderAsync(bool firstRender)

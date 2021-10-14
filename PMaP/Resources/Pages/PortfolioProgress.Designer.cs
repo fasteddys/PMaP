@@ -106,6 +106,15 @@ namespace PMaP.Resources.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cierre.
+        /// </summary>
+        public static string Closing {
+            get {
+                return ResourceManager.GetString("Closing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Concursos.
         /// </summary>
         public static string Concursos {
@@ -138,6 +147,15 @@ namespace PMaP.Resources.Pages {
         public static string CuotasPendientes {
             get {
                 return ResourceManager.GetString("CuotasPendientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cortar.
+        /// </summary>
+        public static string CutOff {
+            get {
+                return ResourceManager.GetString("CutOff", resourceCulture);
             }
         }
         
@@ -376,11 +394,47 @@ namespace PMaP.Resources.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Post-corte.
+        /// </summary>
+        public static string PostCutOff {
+            get {
+                return ResourceManager.GetString("PostCutOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firma posterior.
+        /// </summary>
+        public static string PostSigning {
+            get {
+                return ResourceManager.GetString("PostSigning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Procedimientos judiciales.
         /// </summary>
         public static string ProcedimientosJudiciales {
             get {
                 return ResourceManager.GetString("ProcedimientosJudiciales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selecionar.
+        /// </summary>
+        public static string Selecionar {
+            get {
+                return ResourceManager.GetString("Selecionar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firma.
+        /// </summary>
+        public static string Signing {
+            get {
+                return ResourceManager.GetString("Signing", resourceCulture);
             }
         }
         
