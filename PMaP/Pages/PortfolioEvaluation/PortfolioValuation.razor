@@ -165,8 +165,16 @@ else
                                 }
                             </div>
                         </div>
-                        <button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary">
-                            <i class="fa fa-cog"></i>&nbsp;&nbsp;@localizer["Calculate"]
+                        <button class="btn btn-primary" style="position:relative;left:90%" @onclick="Summary" disabled="@loading">
+                            @if (loading)
+                            {
+                                <span class="spinner-border spinner-border-sm mr-1"></span>
+                            }
+                            else
+                            {
+                                <i class="fa fa-cog"></i>
+                            }
+                            &nbsp;&nbsp;@localizer["Calculate"]
                         </button>
                     </div>
                 </div>
@@ -175,7 +183,14 @@ else
     </div>
     @if (@showSummary)
     {
-        <Assessment Caption="@localizer["Summary"]" Summary="@portfolioValuationModel.Summary" showDetailButton="true" OnDetailsClick="Details" showDetails="@showDetails" />
+        <Assessment
+            Caption="@localizer["Summary"]"
+            Summary="@portfolioValuationModel.Summary"
+            showDetailButton="true"
+            OnDetailsClick="Details"
+            showDetails="@showDetails"
+            loading="@loading"
+        />
     }
     @if (@showDetails)
     {
@@ -190,10 +205,18 @@ else
         @if (isAdd == "1")
         {
             <p align="right">
-                <button class="btn  btn-primary" @onclick="UpdatePortfolio">
-                    <i class="fa fa-envelope"></i>&nbsp;&nbsp;@localizer["Save"]
+                <button class="btn  btn-primary" @onclick="UpdatePortfolio" disabled="@loading">
+                    @if (loading)
+                    {
+                        <span class="spinner-border spinner-border-sm mr-1"></span>
+                    }
+                    else
+                    {
+                        <i class="fa fa-envelope"></i>
+                    }
+                    &nbsp;&nbsp;@localizer["Save"]
                 </button>
-                <button class="btn  btn-danger" @onclick="Cancel">
+                <button class="btn btn-danger" @onclick="Cancel">
                     <i class="fa fa-close"></i>&nbsp;&nbsp;@localizer["Cancel"]
                 </button>
             </p>
@@ -201,11 +224,27 @@ else
         else
         {
             <p align="right">
-                <button class="btn btn-success" @onclick="AddPortfolio">
-                    <i class="fa fa-plus-square-o"></i>&nbsp;&nbsp;@localizer["AddPortfolio"]
+                <button class="btn btn-success" @onclick="AddPortfolio" disabled="@loading">
+                    @if (loading)
+                    {
+                        <span class="spinner-border spinner-border-sm mr-1"></span>
+                    }
+                    else
+                    {
+                        <i class="fa fa-plus-square-o"></i>
+                    }
+                    &nbsp;&nbsp;@localizer["AddPortfolio"]
                 </button>
-                <button class="btn  btn-primary" >
-                    <i class="fa fa-download"></i>&nbsp;&nbsp;@localizer["Perimeter"]
+                <button class="btn btn-primary" disabled="@loading">
+                    @if (loading)
+                    {
+                        <span class="spinner-border spinner-border-sm mr-1"></span>
+                    }
+                    else
+                    {
+                        <i class="fa fa-download"></i>
+                    }
+                    &nbsp;&nbsp;@localizer["Perimeter"]
                 </button>
             </p>
         }
@@ -293,6 +332,8 @@ else
     private List<Contract> ContractList = new List<Contract>();
     private List<Contract> FilteredContractList = new List<Contract>();
 
+    private bool loading;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -336,6 +377,7 @@ else
 
     private async void Summary()
     {
+        loading = true;
         portfolioValuationModel.ViewModel.ContractTypes.ForEach(x => x.IsSelected = false);
         portfolioValuationModel.ViewModel.ContractTypes.Where(x => SelectedValues.Contains(x.Id)).ToList().ForEach(x => x.IsSelected = true);
         portfolioValuationModel.ViewModel.ReflectExcludedContractIds = false;
@@ -347,6 +389,7 @@ else
         }
         showSummary = true;
         showDetails = false;
+        loading = false;
         StateHasChanged();
     }
 
@@ -354,6 +397,7 @@ else
     {
         if (!showDetails)
         {
+            loading = true;
             portfolioValuationModel.ViewModel.ExcludedContractIds = new List<int>();
             portfolioValuationModel.ViewModel.ExcludePossitiveOB = true;
             portfolioValuationModel = await PortfolioValuationService.Details(portfolioValuationModel);
@@ -362,6 +406,7 @@ else
                 NavigationManager.NavigateTo("/account/login");
             }
             ContractList = FilteredContractList = portfolioValuationModel.Contracts;
+            loading = false;
         }
         showDetails = showDetails ? false : true;
         StateHasChanged();
@@ -369,12 +414,15 @@ else
 
     private async void AddPortfolio()
     {
+        loading = true;
         var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
         if (inPortfolio != null)
         {
             string title = localizer["Warning"];
             string message = localizer["WarningMessage"];
             await JSRuntime.InvokeVoidAsync("showDialog", title, message);
+            loading = false;
+            StateHasChanged();
             return;
         }
         await sessionStorage.SetItemAsync("portfolioValuationViewModel", portfolioValuationModel.ViewModel);
@@ -395,12 +443,15 @@ else
 
     private async void UpdatePortfolio()
     {
+        loading = true;
         var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
         if (inPortfolio != null)
         {
             string titleWarning = localizer["Warning"];
             string message = localizer["WarningMessage"];
             await JSRuntime.InvokeVoidAsync("showDialog", titleWarning, message);
+            loading = false;
+            StateHasChanged();
             return;
         }
         foreach (var contract in portfolioValuationModel.Contracts)
@@ -418,6 +469,8 @@ else
         {
             string message = localizer["SuccessMessage"];
             await JSRuntime.InvokeVoidAsync("showDialogSuccess", message);
+            loading = false;
+            StateHasChanged();
             return;
         }
         string title;
@@ -434,6 +487,8 @@ else
                 break;
         }
         await JSRuntime.InvokeVoidAsync("showDialog", title, updatePortfolioResponse.Message);
+        loading = false;
+        StateHasChanged();
     }
 
     private void Cancel()
