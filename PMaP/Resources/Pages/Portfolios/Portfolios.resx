@@ -120,6 +120,9 @@
   <data name="AddContracts" xml:space="preserve">
     <value>Añadir</value>
   </data>
+  <data name="AddMessage" xml:space="preserve">
+    <value>Agregado exitosamente la cartera.</value>
+  </data>
   <data name="Assessment" xml:space="preserve">
     <value>Valoración</value>
   </data>
@@ -138,6 +141,12 @@
   <data name="Communications" xml:space="preserve">
     <value>Comunicaciones</value>
   </data>
+  <data name="Confimation" xml:space="preserve">
+    <value>Confirmación</value>
+  </data>
+  <data name="ConfimationMessage" xml:space="preserve">
+    <value>¿Quieres descartar esta cartera?</value>
+  </data>
   <data name="Contract" xml:space="preserve">
     <value>Contrato</value>
   </data>
@@ -149,6 +158,12 @@
   </data>
   <data name="Discard" xml:space="preserve">
     <value>Descarte</value>
+  </data>
+  <data name="DiscardMessage" xml:space="preserve">
+    <value>Descartó con éxito la cartera.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>¡Error!</value>
   </data>
   <data name="FClosing" xml:space="preserve">
     <value>F. Closing</value>
@@ -210,7 +225,16 @@
   <data name="Subporfolio" xml:space="preserve">
     <value>Subporfolio</value>
   </data>
+  <data name="Success" xml:space="preserve">
+    <value>¡Éxito!</value>
+  </data>
   <data name="Summary" xml:space="preserve">
     <value>Resumen</value>
+  </data>
+  <data name="UpdateMessage" xml:space="preserve">
+    <value>Actualización exitosa de la cartera.</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>¡Advertencia!</value>
   </data>
 </root>

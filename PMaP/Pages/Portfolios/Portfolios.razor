@@ -115,7 +115,10 @@ else
                             </div>
                             <br><br>
                             <p align="right">
-                                <button type="button" class="btn @(GetSearchStyle())" @onclick="Search" disabled="@isSearchButtonDisabled">
+                                @{
+                                    bool disabled = isSearchButtonDisabled || loading;
+                                }
+                                <button type="button" class="btn @(GetSearchStyle())" @onclick="Search" disabled="@disabled">
                                     @if (loading)
                                     {
                                         <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -253,7 +256,7 @@ else
             @if (isAdd == "1")
             {
                 <p align="right">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" disabled="@loading">
                         @if (loading)
                         {
                             <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -272,7 +275,10 @@ else
             else
             {
                 <p align="right">
-                    <button type="button" class="btn @(GetSaveStyle())" @onclick="UpdatePortfolio" disabled="@isSaveCancelButtonDisabled">
+                    @{
+                        disabled = isSaveCancelButtonDisabled || loading;
+                    }
+                    <button type="button" class="btn @(GetSaveStyle())" @onclick="UpdatePortfolio" disabled="@disabled">
                         @if (loading)
                         {
                             <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -283,7 +289,10 @@ else
                         }
                         &nbsp;&nbsp;@localizer["Save"]
                     </button>
-                    <button type="button" class="btn @(GetCancelStyle())" @onclick="Search" disabled="@isSaveCancelButtonDisabled">
+                    @{
+                        disabled = isSaveCancelButtonDisabled || loading;
+                    }
+                    <button type="button" class="btn @(GetCancelStyle())" @onclick="Search" disabled="@disabled">
                         @if (loading)
                         {
                             <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -294,7 +303,10 @@ else
                         }
                         &nbsp;&nbsp;@localizer["Cancel"]
                     </button>
-                    <button type="button" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, "Do you want to discard this portfolio?"))" disabled="@isDiscardPortfolioDisabled">
+                    @{
+                        disabled = isDiscardPortfolioDisabled || loading;
+                    }
+                    <button type="button" class="btn @(GetDiscardStyle())" @onclick="@(() => ShowMessage(1, localizer["ConfimationMessage"]))" disabled="@disabled">
                         @if (loading)
                         {
                             <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -347,7 +359,7 @@ else
  
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 id="title" class="modal-title">Success</h4>
+                <h4 id="title" class="modal-title">@localizer["Success"]</h4>
                 <button type="button" data-dismiss="modal" @onclick="Reload">x</button>
             </div>
  
@@ -370,7 +382,7 @@ else
  
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 id="title" class="modal-title">Success</h4>
+                <h4 id="title" class="modal-title">@localizer["Success"]</h4>
                 <button type="button" data-dismiss="modal" @onclick="Search">x</button>
             </div>
  
@@ -521,7 +533,8 @@ else
             }
             if (deletePortfolioContractsResponse.ResponseCode == 200)
             {
-                await JSRuntime.InvokeVoidAsync("showDialogUpdateSuccess", deletePortfolioContractsResponse.Message);
+                string message = localizer["UpdateMessage"];
+                await JSRuntime.InvokeVoidAsync("showDialogUpdateSuccess", message);
             }
             else
             {
@@ -679,7 +692,8 @@ else
         }
         if (addPortfolioResponse.ResponseCode == 200)
         {
-            await JSRuntime.InvokeVoidAsync("showDialogSuccess", addPortfolioResponse.Message);
+            string message = localizer["AddMessage"];
+            await JSRuntime.InvokeVoidAsync("showDialogSuccess", message);
         }
         else
         {
@@ -711,7 +725,8 @@ else
             }
             if (discardPortfolioResponse.ResponseCode == 200)
             {
-                await JSRuntime.InvokeVoidAsync("showDialogSuccess", discardPortfolioResponse.Message);
+                string message = localizer["DiscardMessage"];
+                await JSRuntime.InvokeVoidAsync("showDialogSuccess", message);
             }
             else
             {
@@ -733,19 +748,19 @@ else
         switch (code)
         {
             case 1:
-                title = "Confimation";
+                title = localizer["Confimation"];
                 isConfirm = true;
                 break;
             case 200:
-                title = "Success";
+                title = localizer["Success"];
                 isDiscarded = true;
                 isConfirm = true;
                 break;
             case 400:
-                title = "Warning!";
+                title = localizer["Warning"];
                 break;
             case 500:
-                title = "Error!";
+                title = localizer["Error"];
                 break;
             default:
                 title = "";

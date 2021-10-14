@@ -70,6 +70,15 @@ namespace PMaP.Resources.Pages.Portfolios {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agregado exitosamente la cartera..
+        /// </summary>
+        public static string AddMessage {
+            get {
+                return ResourceManager.GetString("AddMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Valoración.
         /// </summary>
         public static string Assessment {
@@ -124,6 +133,24 @@ namespace PMaP.Resources.Pages.Portfolios {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmación.
+        /// </summary>
+        public static string Confimation {
+            get {
+                return ResourceManager.GetString("Confimation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ¿Quieres descartar esta cartera?.
+        /// </summary>
+        public static string ConfimationMessage {
+            get {
+                return ResourceManager.GetString("ConfimationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contrato.
         /// </summary>
         public static string Contract {
@@ -156,6 +183,24 @@ namespace PMaP.Resources.Pages.Portfolios {
         public static string Discard {
             get {
                 return ResourceManager.GetString("Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descartó con éxito la cartera..
+        /// </summary>
+        public static string DiscardMessage {
+            get {
+                return ResourceManager.GetString("DiscardMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ¡Error!.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -340,11 +385,38 @@ namespace PMaP.Resources.Pages.Portfolios {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ¡Éxito!.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resumen.
         /// </summary>
         public static string Summary {
             get {
                 return ResourceManager.GetString("Summary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actualización exitosa de la cartera..
+        /// </summary>
+        public static string UpdateMessage {
+            get {
+                return ResourceManager.GetString("UpdateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ¡Advertencia!.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }
