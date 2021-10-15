@@ -223,7 +223,7 @@ namespace PMaP.Resources.Pages.Portfolios {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to F. Singning.
+        ///   Looks up a localized string similar to F. Signing.
         /// </summary>
         public static string FSingning {
             get {
