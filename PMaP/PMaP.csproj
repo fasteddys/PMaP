@@ -37,6 +37,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Index.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Pages\Login.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Login.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Pages\PortfolioEvaluation\DetailsTable.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -102,6 +107,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SummaryTable.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Shared\Dialog.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Dialog.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Shared\NavMenu.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -137,6 +147,13 @@
     <EmbeddedResource Update="Resources\Pages\Index.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\Login.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Pages\Login.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Login.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Pages\PortfolioEvaluation\DetailsTable.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -229,6 +246,13 @@
     <EmbeddedResource Update="Resources\Pages\Portfolios\SummaryTable.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SummaryTable.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Shared\Dialog.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Shared\Dialog.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Dialog.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Shared\NavMenu.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

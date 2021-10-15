@@ -251,52 +251,7 @@ else
     }
 }
 
-<div class="modal fade" id="myModal" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
- 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 id="title" class="modal-title"></h4>
-                <button type="button" data-dismiss="modal">x</button>
-            </div>
- 
-            <!-- Modal body -->
-            <div class="modal-body">
-                <span id="message"></span>
-            </div>
- 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button id="btnOK" type="button" class="btn btn-light" data-dismiss="modal">OK</button>
-                <button id="btnOKConfirm" type="button" class="btn btn-light" data-dismiss="modal" @onclick="Cancel">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="myModalSuccess" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
- 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 id="title" class="modal-title">@localizer["Success"]</h4>
-                <button type="button" data-dismiss="modal" @onclick="Cancel">x</button>
-            </div>
- 
-            <!-- Modal body -->
-            <div class="modal-body">
-                <span id="messageSuccess"></span>
-            </div>
- 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal" @onclick="Cancel">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
+<Dialog Caption="@Caption" Message="@Message" OnClose="OnDialogClose" Type="Dialog.Category.Okay" />
 
 @code {
     [Parameter]
@@ -332,7 +287,10 @@ else
     private List<Contract> ContractList = new List<Contract>();
     private List<Contract> FilteredContractList = new List<Contract>();
 
-    private bool loading;
+    private bool loading, toNavigateToPortfolio;
+
+    private string Caption { get; set; }
+    private string Message { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -349,6 +307,7 @@ else
 
             showSummary = false;
             showDetails = false;
+            toNavigateToPortfolio = false;
             showPortfolioDetail = isAdd == "1" ? true : false;
             pageBreadcrumb = isAdd == "1" ? localizer["PortfolioEvaluationAddContracts"] : localizer["lblPortfolioEvaluation"];
 
@@ -418,9 +377,10 @@ else
         var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
         if (inPortfolio != null)
         {
-            string title = localizer["Warning"];
-            string message = localizer["WarningMessage"];
-            await JSRuntime.InvokeVoidAsync("showDialog", title, message);
+            Caption = localizer["Warning"];
+            Message = localizer["WarningMessage"];
+            await JSRuntime.InvokeVoidAsync("openDialog");
+
             loading = false;
             StateHasChanged();
             return;
@@ -447,9 +407,10 @@ else
         var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
         if (inPortfolio != null)
         {
-            string titleWarning = localizer["Warning"];
-            string message = localizer["WarningMessage"];
-            await JSRuntime.InvokeVoidAsync("showDialog", titleWarning, message);
+            Caption = localizer["Warning"];
+            Message = localizer["WarningMessage"];
+            await JSRuntime.InvokeVoidAsync("openDialog");
+
             loading = false;
             StateHasChanged();
             return;
@@ -467,9 +428,12 @@ else
         }
         if (updatePortfolioResponse.ResponseCode == 200)
         {
-            string message = localizer["SuccessMessage"];
-            await JSRuntime.InvokeVoidAsync("showDialogSuccess", message);
+            Caption = localizer["Success"];
+            Message = localizer["SuccessMessage"];
+            await JSRuntime.InvokeVoidAsync("openDialog");
+
             loading = false;
+            toNavigateToPortfolio = true;
             StateHasChanged();
             return;
         }
@@ -486,7 +450,10 @@ else
                 title = "";
                 break;
         }
-        await JSRuntime.InvokeVoidAsync("showDialog", title, updatePortfolioResponse.Message);
+        Caption = title;
+        Message = updatePortfolioResponse.Message;
+        await JSRuntime.InvokeVoidAsync("openDialog");
+
         loading = false;
         StateHasChanged();
     }
@@ -494,5 +461,13 @@ else
     private void Cancel()
     {
         NavigationManager.NavigateTo("/portfolios/0");
+    }
+
+    private void OnDialogClose(bool isOk)
+    {
+        if (toNavigateToPortfolio)
+        {
+            Cancel();
+        }
     }
 }

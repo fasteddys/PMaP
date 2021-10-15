@@ -1,0 +1,69 @@
+﻿@inject IStringLocalizer<Dialog> localizer
+
+<div class="modal fade" id="myModal" style="background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Caption</h4>
+                <button type="button" data-dismiss="modal" @onclick="@Cancel">x</button>
+            </div>
+            <div class="modal-body">
+                <p>@Message</p>
+            </div>
+            <div class="modal-footer">
+                @switch (Type)
+                {
+                    case Category.Okay:
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick=@Ok>@localizer["OK"]</button>
+                        break;
+                    case Category.SaveNot:
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick=@Ok>@localizer["Save"]</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" @onclick="@Cancel">@localizer["DontSave"]</button>
+                        break;
+                    case Category.UpdateNot:
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick=@Ok>@localizer["Update"]</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" @onclick="@Cancel">@localizer["DontUpdate"]</button>
+                        break;
+                    case Category.DeleteNot:
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick=@Ok>@localizer["Delete"]</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" @onclick="@Cancel">@localizer["DontDelete"]</button>
+                        break;
+                    case Category.DiscardNot:
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick=@Ok>@localizer["Discard"]</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" @onclick="@Cancel">@localizer["DontDiscard"]</button>
+                        break;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Caption { get; set; }
+    [Parameter]
+    public string Message { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+    [Parameter]
+    public Category Type { get; set; }
+    
+    private Task Cancel()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+
+    private Task Ok()
+    {
+        return OnClose.InvokeAsync(true);
+    }
+
+    public enum Category
+    {
+        Okay,
+        SaveNot,
+        UpdateNot,
+        DeleteNot,
+        DiscardNot
+    }
+}
