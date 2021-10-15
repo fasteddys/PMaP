@@ -304,7 +304,7 @@ namespace PMaP.Resources.Pages.Portfolios {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OB Singning.
+        ///   Looks up a localized string similar to OB Signing.
         /// </summary>
         public static string OBSingning {
             get {
