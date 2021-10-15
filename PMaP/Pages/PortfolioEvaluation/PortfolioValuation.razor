@@ -1,6 +1,5 @@
 ﻿@page "/portfolioValuation/{isAdd}/{portfolio}/{subportfolio}"
 
-@using Blazored.SessionStorage
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using PMaP.Data
 @using PMaP.Models
@@ -10,9 +9,9 @@
 @using System.Globalization
 @using System.Net
 @inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorageService
 @inject IPortfolioRegistrationService PortfolioRegistrationService
 @inject IPortfolioValuationService PortfolioValuationService
-@inject ISessionStorageService sessionStorage
 @inject IStringLocalizer<PortfolioValuation> localizer
 @inject NavigationManager NavigationManager
 
@@ -385,7 +384,7 @@ else
             StateHasChanged();
             return;
         }
-        await sessionStorage.SetItemAsync("portfolioValuationViewModel", portfolioValuationModel.ViewModel);
+        await LocalStorageService.SetItem("portfolioValuationViewModel", portfolioValuationModel.ViewModel);
         NavigationManager.NavigateTo("/portfolios/1");
     }
 

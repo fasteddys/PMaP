@@ -1,6 +1,5 @@
 ﻿@page "/"
 
-@using Blazored.SessionStorage
 @using Microsoft.Extensions.Localization
 @using PMaP.Data
 @using PMaP.Models
@@ -11,7 +10,6 @@
 @inject IHomeService HomeService
 @inject IJSRuntime JSRuntime
 @inject ILocalStorageService LocalStorageService
-@inject ISessionStorageService sessionStorage
 @inject IStringLocalizer<Index> localizer
 @inject NavigationManager NavigationManager
 

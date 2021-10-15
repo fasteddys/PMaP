@@ -1,6 +1,5 @@
 ﻿@page "/portfolios/{isAdd}"
 
-@using Blazored.SessionStorage
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using PMaP.Data
 @using PMaP.Models
@@ -12,9 +11,9 @@
 @using System.Threading
 @using static PMaP.Shared.Dialog
 @inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorageService
 @inject IPortfolioRegistrationService PortfolioRegistrationService
 @inject IPortfolioService PortfolioService
-@inject ISessionStorageService sessionStorage
 @inject IStringLocalizer<Portfolios> localizer
 @inject NavigationManager NavigationManager
 
@@ -405,7 +404,7 @@ else
                 isSearchButtonDisabled = true;
                 isAddButtonDisabled = true;
 
-                var portfolioValuationViewModel = await sessionStorage.GetItemAsync<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
+                var portfolioValuationViewModel = await LocalStorageService.GetItem<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
                 portfolioValuationViewModel.IsAdd = isAdd;
                 portfolioValuationViewModel.ReflectExcludedContractIds = true;
                 portfolioValuationViewModel.ExcludePossitiveOB = true;

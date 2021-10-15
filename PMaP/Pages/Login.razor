@@ -1,6 +1,5 @@
 ﻿@page "/account/login"
 
-@using Blazored.SessionStorage
 @using PMaP.Data
 @using System.Net
 @using PMaP.Models.Authenticate
@@ -8,7 +7,6 @@
 @inject IAccountService AccountService
 @inject IJSRuntime JSRuntime
 @inject IMainLayoutService MainLayoutService
-@inject ISessionStorageService sessionStorage
 @inject IStringLocalizer<Login> localizer
 @inject NavigationManager NavigationManager
 
@@ -71,7 +69,6 @@
             var authenticateResponse = await AccountService.Authenticate(model);
             if (authenticateResponse.RespCode == (int)HttpStatusCode.OK)
             {
-                await sessionStorage.SetItemAsync("auth", authenticateResponse);
                 NavigationManager.NavigateTo("");
             }
             if (authenticateResponse.RespCode != (int)HttpStatusCode.OK)

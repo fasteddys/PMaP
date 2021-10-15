@@ -1,7 +1,5 @@
-﻿@using Blazored.SessionStorage
-@using PMaP.Data
+﻿@using PMaP.Data
 @inject ILocalStorageService LocalStorageService
-@inject ISessionStorageService sessionStorage
 @inject IStringLocalizer<NavMenu> localizer
 @inject NavigationManager NavigationManager
 
@@ -123,7 +121,12 @@
     {
         if (firstRender)
         {
-            currentLocation = await sessionStorage.GetItemAsync<string>("currentLocation");
+            currentLocation = await LocalStorageService.GetItem<string>("currentLocation");
+            string location = await LocalStorageService.GetItem<string>("Location");
+            if (!string.IsNullOrEmpty(location))
+            {
+                NavigationManager.NavigateTo(location);
+            }
             StateHasChanged();
         }
     }
@@ -132,12 +135,16 @@
     {
         var locations = e.Location.Split("/");
         currentLocation = locations[3];
-        await sessionStorage.SetItemAsync("currentLocation", currentLocation);
+        await LocalStorageService.SetItem("currentLocation", currentLocation);
         bool languageChanged = await LocalStorageService.GetItem<bool>("languageChanged");
         await LocalStorageService.SetItem("languageChanged", false);
-        if (e.IsNavigationIntercepted && previousLocation == currentLocation && !languageChanged)
+        if (!languageChanged)
         {
-            NavigationManager.NavigateTo(e.Location, true);
+            await LocalStorageService.SetItem("Location", e.Location);
+            if (e.IsNavigationIntercepted && previousLocation == currentLocation)
+            {
+                NavigationManager.NavigateTo(e.Location, true);
+            }
         }
         previousLocation = locations[3];
         StateHasChanged();
