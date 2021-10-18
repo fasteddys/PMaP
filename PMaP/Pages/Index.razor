@@ -13,33 +13,33 @@
 @inject IStringLocalizer<Index> localizer
 @inject NavigationManager NavigationManager
 
-<div class="col-md-12">
-    <ul class="page-breadcrumb breadcrumb">
-        <li>
-            <p style="color:#336699;">@localizer["lblHome"]</p>
-        </li>
-    </ul>
-</div>
-
-<div class="col-md-12">
-    <div class="Tabs" style="display: block;">       
-	    <ul class="nav nav-tabs">
-		    <li class="active">
-			    <a href="">@localizer["GeneralCharacteristics"]</a>
-		    </li>
-		    <li class="">
-			    <a href="#">@localizer["PortfolioComposition"]</a>
-		    </li>
-	    </ul>
-    </div>
-</div>
-
 @if (model == null)
 {
     <div class="spinner"></div>
 }
 else
 {
+    <div class="col-md-12">
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <p style="color:#336699;">@localizer["lblHome"]</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-md-12">
+        <div class="Tabs" style="display: block;">       
+	        <ul class="nav nav-tabs">
+		        <li class="active">
+			        <a href="">@localizer["GeneralCharacteristics"]</a>
+		        </li>
+		        <li class="">
+			        <a href="#">@localizer["PortfolioComposition"]</a>
+		        </li>
+	        </ul>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col mts">
             <div class="col-md-12">
