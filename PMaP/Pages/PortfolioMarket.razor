@@ -22,89 +22,157 @@
 }
 else
 {
+    <EditForm Model=@portfolioMarketModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
+        <div class="row">
+            <div class="col">
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <label>@localizer["YearsFrom"]</label>
+                        <InputNumber class="form-control" @bind-Value="@portfolioMarketModel.ViewModel.YearFrom" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>@localizer["YearsTo"]</label>
+                        <InputNumber class="form-control" @bind-Value="@portfolioMarketModel.ViewModel.YearTo" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>@localizer["ValuesFrom"]</label>
+                        <InputNumber class="form-control" @bind-Value="@portfolioMarketModel.ViewModel.ValueFrom" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>@localizer["ValuesTo"]</label>
+                        <InputNumber class="form-control" @bind-Value="@portfolioMarketModel.ViewModel.ValueTo" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary" style="margin-top: 22.5px;">@localizer["Filter"]</button>
+                        <button type="submit" class="btn btn-secondary" style="margin-top: 22.5px;" @onclick="Clear">@localizer["Clear"]</button>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </EditForm>
+    <br />
     <div class="row">
         <div class="col mts">
             <div class="col-md-12">
-                <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
-                    <div style="width: 1310px; overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
-                </div>
-                <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
-                    <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
-                        <table class="table table-striped table-bordered table-condensed" style="background-color:#e6e6e6;">
-                            <thead>
-                                <tr class="heading" style="color:#336699;">
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Holder"))">@localizer["Holder"]</span>
-                                        <span class="fa @(GetSortStyle("Holder"))"></span>
-                                    </th>
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Project"))">@localizer["Project"]</span>
-                                        <span class="fa @(GetSortStyle("Project"))"></span>
-                                    </th>
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Investor"))">@localizer["Investor"]</span>
-                                        <span class="fa @(GetSortStyle("Investor"))"></span>
-                                    </th>
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Year"))">@localizer["Year"]</span>
-                                        <span class="fa @(GetSortStyle("Year"))"></span>
-                                    </th>
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Typology"))">@localizer["Typology"]</span>
-                                        <span class="fa @(GetSortStyle("Typology"))"></span>
-                                    </th>
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("DebtType"))">@localizer["DebtType"]</span>
-                                        <span class="fa @(GetSortStyle("DebtType"))"></span>
-                                    </th>
-                                    <th>
-                                        <span class="sort-link" @onclick="@(() => SortTable("Value"))">@localizer["Value"]</span>
-                                        <span class="fa @(GetSortStyle("Value"))"></span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <input @onchange="OnHolderChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnProjectChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OninvestorChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnYearChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnTypologyChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnDebtTypeChanged" />
-                                    </td>
-                                    <td>
-                                        <input @onchange="OnValueChanged" />
-                                    </td>
-                                </tr>
-                                @if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count() > 0)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    <span>@localizer["Holder"]</span>
+                                    <span class="fa @(GetSortStyle("Holder"))" @onclick="@(() => SortTable("Holder"))"></span>
+                                </th>
+                                <th>
+                                    <span>@localizer["Project"]</span>
+                                    <span class="fa @(GetSortStyle("Project"))" @onclick="@(() => SortTable("Project"))"></span>
+                                </th>
+                                <th>
+                                    <span>@localizer["Investor"]</span>
+                                    <span class="fa @(GetSortStyle("Investor"))" @onclick="@(() => SortTable("Investor"))"></span>
+                                </th>
+                                <th>
+                                    <span>@localizer["Year"]</span>
+                                    <span class="fa @(GetSortStyle("YearFrom"))" @onclick="@(() => SortTable("YearFrom"))"></span>
+                                </th>
+                                <th>
+                                    <span>@localizer["Typology"]</span>
+                                    <span class="fa @(GetSortStyle("Typology"))" @onclick="@(() => SortTable("Typology"))"></span>
+                                </th>
+                                <th>
+                                    <span>@localizer["DebtType"]</span>
+                                    <span class="fa @(GetSortStyle("DebtType"))" @onclick="@(() => SortTable("DebtType"))"></span>
+                                </th>
+                                <th>
+                                    <span>@localizer["Value"]</span>
+                                    <span class="fa @(GetSortStyle("Value"))" @onclick="@(() => SortTable("Value"))"></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody style="background-color: white;">
+                            @*<tr>
+                                <td>
+                                    <input @onchange="OnHolderChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnProjectChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OninvestorChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnYearChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnTypologyChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnDebtTypeChanged" />
+                                </td>
+                                <td>
+                                    <input @onchange="OnValueChanged" />
+                                </td>
+                            </tr>*@
+                            @if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count() > 0)
+                            {
+                                foreach (var item in portfolioMarketModel.PortfolioMarkets)
                                 {
-                                    foreach (var item in portfolioMarketModel.PortfolioMarkets)
-                                    {
-                                        <tr>
-                                            <td>@item.Holder</td>
-                                            <td>@item.Project</td>
-                                            <td>@item.Investor</td>
-                                            <td>@item.Year</td>
-                                            <td>@item.Typology</td>
-                                            <td>@item.DebtType</td>
-                                            <td>@item.Value</td>
-                                        </tr>
-                                    }
+                                    string[] investors = item.Investor.Split("/");
+                                    string[] investorIcons = item.InvestorLogo?.Split(";");
+                                    <tr>
+                                        <td><img class="img-circle" src="@item.HolderLogo" style="width: 30px;" /> @item.Holder</td>
+                                        <td>@item.Project</td>
+                                        <td>
+                                            @for (int i = 0; i < investors.Length; i++)
+                                            {
+                                                @if (investorIcons != null && !string.IsNullOrEmpty(investorIcons[i]))
+                                                {
+                                                    <img class="img-circle" src="@investorIcons[i]" style="width: 30px;" />
+                                                }
+                                                @investors[i]
+                                                @if ((i + 1) < investors.Length)
+                                                {
+                                                    <span>/</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @(item.YearFrom?.ToString() + (item.YearTo != null ? "-" + item.YearTo?.ToString().Substring(2) : ""))
+                                            @{
+                                                string status = localizer["Open"];
+                                                string statusClass = "badge badge-primary";
+                                                if (item.Status != null && item.Status == 1)
+                                                {
+                                                    status = localizer["Closed"];
+                                                    statusClass = "badge badge-secondary";
+                                                }
+                                            }
+                                            <span class="@statusClass">@status</span>
+                                        </td>
+                                        <td>@item.Typology</td>
+                                        <td>
+                                            @{
+                                                string debtTypeClass = "";
+                                                if (item.DebtType.ToLower() == "secured")
+                                                {
+                                                    debtTypeClass = "bg-success";
+                                                }
+                                                if (item.DebtType.ToLower() == "unsecured")
+                                                {
+                                                    debtTypeClass = "bg-danger";
+                                                }
+                                                if (item.DebtType.ToLower() == "secured & unsecured")
+                                                {
+                                                    debtTypeClass = "bg-warning";
+                                                }
+                                            }
+                                            <span class="text-white @debtTypeClass" style="border-radius: 5px; padding: 5px;">@item.DebtType</span>
+                                        </td>
+                                        <td>@(item.Value?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                    </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -131,7 +199,7 @@ else
     {
         if (currentSortColumn != columnName)
         {
-            return string.Empty;
+            return "fa-unsorted";
         }
         if (isSortedAscending)
         {
@@ -233,8 +301,20 @@ else
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Value=" + Value;
         if (!string.IsNullOrEmpty(year))
             queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "Year=" + year;
-        
+        if (portfolioMarketModel.ViewModel.YearFrom != null)
+            queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "YearFrom=" + portfolioMarketModel.ViewModel.YearFrom;
+        if (portfolioMarketModel.ViewModel.YearTo != null)
+            queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "YearTo=" + portfolioMarketModel.ViewModel.YearTo;
+        if (portfolioMarketModel.ViewModel.ValueFrom != null)
+            queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "ValueFrom=" + portfolioMarketModel.ViewModel.ValueFrom;
+        if (portfolioMarketModel.ViewModel.ValueTo != null)
+            queryStrings += (!string.IsNullOrEmpty(queryStrings) ? "&" : "?") + "ValueTo=" + portfolioMarketModel.ViewModel.ValueTo;
+
+        var viewModel = portfolioMarketModel.ViewModel;
         portfolioMarketModel = await PortfolioMarketService.Portfolios(queryStrings);
+        portfolioMarketModel.ViewModel = viewModel;
+
+        currentSortColumn = null;
 
         StateHasChanged();
     }
@@ -247,5 +327,24 @@ else
     private async void OnScroll(EventArgs e)
     {
         await JSRuntime.InvokeVoidAsync("onScroll");
+    }
+
+    private async void ValidFormSubmitted(EditContext editContext)
+    {
+        await PortfolioFilteringList();
+    }
+
+    private void InvalidFormSubmitted(EditContext editContext)
+    {
+        
+    }
+
+    private void Clear()
+    {
+        portfolioMarketModel.ViewModel.YearFrom = null;
+        portfolioMarketModel.ViewModel.YearTo = null;
+        portfolioMarketModel.ViewModel.ValueFrom = null;
+        portfolioMarketModel.ViewModel.ValueTo = null;
+        StateHasChanged();
     }
 }

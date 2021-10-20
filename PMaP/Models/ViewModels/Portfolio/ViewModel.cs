@@ -20,6 +20,10 @@ namespace PMaP.Models.ViewModels.Portfolio
         public DateTime? DateCutOff { get; set; }
         public DateTime? DateSigning { get; set; }
         public DateTime? DateClosing { get; set; }
+        public int? YearFrom { get; set; }
+        public int? YearTo { get; set; }
+        public decimal? ValueFrom { get; set; }
+        public decimal? ValueTo { get; set; }
 
         public string OperationType { get; set; }
         public string Situation { get; set; }
