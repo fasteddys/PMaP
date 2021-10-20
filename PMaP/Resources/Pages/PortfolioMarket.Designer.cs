@@ -61,11 +61,38 @@ namespace PMaP.Resources.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Despejar.
+        /// </summary>
+        public static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cerrado.
+        /// </summary>
+        public static string Closed {
+            get {
+                return ResourceManager.GetString("Closed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipo de deuda.
         /// </summary>
         public static string DebtType {
             get {
                 return ResourceManager.GetString("DebtType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filtrar.
+        /// </summary>
+        public static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
             }
         }
         
@@ -97,6 +124,15 @@ namespace PMaP.Resources.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abierto.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Proyecto.
         /// </summary>
         public static string Project {
@@ -124,11 +160,47 @@ namespace PMaP.Resources.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Valores de.
+        /// </summary>
+        public static string ValuesFrom {
+            get {
+                return ResourceManager.GetString("ValuesFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valores para.
+        /// </summary>
+        public static string ValuesTo {
+            get {
+                return ResourceManager.GetString("ValuesTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Año.
         /// </summary>
         public static string Year {
             get {
                 return ResourceManager.GetString("Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Años desde.
+        /// </summary>
+        public static string YearsFrom {
+            get {
+                return ResourceManager.GetString("YearsFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Años para.
+        /// </summary>
+        public static string YearsTo {
+            get {
+                return ResourceManager.GetString("YearsTo", resourceCulture);
             }
         }
     }

@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
   <data name="DebtType" xml:space="preserve">
     <value>Debt Type</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
   </data>
   <data name="Holder" xml:space="preserve">
     <value>Holder</value>
@@ -129,6 +138,9 @@
   <data name="lblPortfolioMarket" xml:space="preserve">
     <value>Portfolio market</value>
   </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>Project</value>
   </data>
@@ -138,7 +150,19 @@
   <data name="Value" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="ValuesFrom" xml:space="preserve">
+    <value>Values from</value>
+  </data>
+  <data name="ValuesTo" xml:space="preserve">
+    <value>Values to</value>
+  </data>
   <data name="Year" xml:space="preserve">
     <value>Year</value>
+  </data>
+  <data name="YearsFrom" xml:space="preserve">
+    <value>Years from</value>
+  </data>
+  <data name="YearsTo" xml:space="preserve">
+    <value>Years to</value>
   </data>
 </root>
