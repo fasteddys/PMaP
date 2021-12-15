@@ -54,9 +54,17 @@
         if (firstRender)
         {
             AuthenticateResponse authenticateResponse = await MainLayoutService.GetUser();
-            if (authenticateResponse != null && !string.IsNullOrEmpty(authenticateResponse.Token))
+            if (authenticateResponse != null)
+                authenticateResponse = await AccountService.GetById(authenticateResponse.Id);
+            if (authenticateResponse != null && authenticateResponse.Profile != null)
             {
-                NavigationManager.NavigateTo("");
+                string navigate = "notFound";
+                if (authenticateResponse.Profile.Privileges != null)
+                {
+                    var privileges = authenticateResponse.Profile.Privileges.Split(";");
+                    navigate = privileges.First();
+                }
+                NavigationManager.NavigateTo(navigate);
             }
         }
     }
@@ -69,7 +77,13 @@
             var authenticateResponse = await AccountService.Authenticate(model);
             if (authenticateResponse.RespCode == (int)HttpStatusCode.OK)
             {
-                NavigationManager.NavigateTo("");
+                string navigate = "notFound";
+                if (authenticateResponse.Profile != null && authenticateResponse.Profile.Privileges != null)
+                {
+                    var privileges = authenticateResponse.Profile.Privileges.Split(";");
+                    navigate = privileges.First();
+                }
+                NavigationManager.NavigateTo(navigate, true);
             }
             if (authenticateResponse.RespCode != (int)HttpStatusCode.OK)
             {

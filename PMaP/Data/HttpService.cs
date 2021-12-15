@@ -108,24 +108,32 @@ namespace PMaP.Data
 
         private async Task<T> sendRequest<T>(HttpRequestMessage request)
         {
-            await addJwtHeader(request);
+            try
+            {
+                await addJwtHeader(request);
 
-            // send request
-            var response = await _httpClient.SendAsync(request);
+                // send request
+                var response = await _httpClient.SendAsync(request);
 
-            // auto logout on 401 response
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                // auto logout on 401 response
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _navigationManager.NavigateTo("account/login");
+                    return default;
+                }
+
+                //await handleErrors(response);
+
+                var options = new JsonSerializerOptions();
+                options.PropertyNameCaseInsensitive = true;
+                options.Converters.Add(new StringConverter());
+                return await response.Content.ReadFromJsonAsync<T>(options);
+            }
+            catch (Exception)
             {
                 _navigationManager.NavigateTo("account/login");
-                return default;
+                throw;
             }
-
-            //await handleErrors(response);
-
-            var options = new JsonSerializerOptions();
-            options.PropertyNameCaseInsensitive = true;
-            options.Converters.Add(new StringConverter());
-            return await response.Content.ReadFromJsonAsync<T>(options);
         }
 
         private async Task addJwtHeader(HttpRequestMessage request)

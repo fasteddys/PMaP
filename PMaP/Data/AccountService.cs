@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PMaP.Models.Authenticate;
+using PMaP.Models.DBModels;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace PMaP.Data
     public interface IAccountService
     {
         Task<AuthenticateResponse> Authenticate(AuthenticateRequest request);
+        Task<AuthenticateResponse> GetById(int id);
     }
 
     public class AccountService : IAccountService
@@ -28,8 +30,17 @@ namespace PMaP.Data
             AuthenticateResponse authenticateResponse = await _httpService.Post<AuthenticateResponse>(_configuration.GetConnectionString("pmapApiUrl") + "/api/users/authenticate", request);
             if (authenticateResponse.RespCode == (int)HttpStatusCode.OK)
             {
+                var profile = authenticateResponse.Profile;
+                authenticateResponse.Profile = new Profile();
                 await _localStorageService.SetItem("user", authenticateResponse);
+                authenticateResponse.Profile = profile;
             }
+            return authenticateResponse;
+        }
+
+        public async Task<AuthenticateResponse> GetById(int id)
+        {
+            AuthenticateResponse authenticateResponse = await _httpService.Get<AuthenticateResponse>(_configuration.GetConnectionString("pmapApiUrl") + "/api/users/" + id);
             return authenticateResponse;
         }
     }

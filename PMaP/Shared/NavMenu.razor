@@ -1,4 +1,6 @@
 ﻿@using PMaP.Data
+@using PMaP.Models.Authenticate
+@inject IAccountService AccountService
 @inject ILocalStorageService LocalStorageService
 @inject IStringLocalizer<NavMenu> localizer
 @inject NavigationManager NavigationManager
@@ -6,94 +8,127 @@
 <div class="page-sidebar-wrapper" >
     <div class="page-sidebar navbar-collapse collapse" style="background-color:#e6f0ff">
         <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-            <li class="@(GetMenuStyle(""))">
-                <a href="" title="Home">
-                    <i class="fa fa-home" aria-hidden="true" style="color:#336699;"></i>
-                    <span class="title">@localizer["Home"]</span>
-                </a>
-            </li>
-            <li class="@(GetMenuStyle("portfolioMarket"))">
-                <a href="portfolioMarket" title="Portfolio market">
-                    <i class="fa fa-bar-chart" aria-hidden="true" style="color:#336699;"></i>
-                    <span class="title">@localizer["PortfolioMarket"]</span>
-                </a>
-            </li>
-            <li class="@(GetMenuStyle("portfolioValuation"))">
-                <a href="portfolioValuation/0/_/_" title="Portfolio evaluation">
-                    <i class="fa fa-cog" style="color:#336699;"></i>
-                    <span class="title">@localizer["PortfolioEvaluation"]</span>
-                </a>
-            </li>
-            <li class="@(GetMenuStyle("portfolios"))">
-                <a href="portfolios/0" title="Portfolios">
-                    <i class="fa fa-suitcase" aria-hidden="true" style="color:#336699;"></i>
-                    <span class="title">@localizer["Portfolios"]</span>
-                </a>
-            </li>
-            <li class="@(GetMenuStyle("PortfolioProgress"))">
-                <a href="PortfolioProgress" title="Portfolio progress">
-                    <i class="fa fa-tasks" style="color:#336699;"></i>
-                    <span class="title">@localizer["PortfolioProgress"]</span>
-                </a>
-            </li>
-            <li class="dropdown">
-                <a href="" title="Actualization">
-                    <i class="fa fa-handshake-o" style="color:#336699;"></i>
-                    <span class="title">@localizer["Actualization"]</span><span class="caret"></span>
-                </a>
-                <div class="dropdown-content">
-                    <a href="">@localizer["DebtRecoveries"]</a>
-                    <a href="">@localizer["JudicialProceedings"]</a>
-                    <a href="">@localizer["ConcourseAdjudication"]</a>
-                    <a href="">@localizer["Participants"]</a>
-                </div>
-            </li>
-            <li class="dropdown @(GetMenuStyle("certificates"))">
-                <a href="" title="Certificates">
-                    <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
-                    <span class="title">@localizer["Certificates"]</span>
-                    <span class="caret"></span>
-                </a>
-                <div class="dropdown-content">
-                    <a href="">@localizer["High templates"]</a>
-                    <a href="certificates/formGeneration">@localizer["FormGeneration"]</a>
-                    <a href="certificates/certificateGeneration">@localizer["CertificateGeneration"]</a>
-                </div>
-            </li>
-            <li class="">
-                <a href="" title="Notifications">
-                    <i class="fa fa-envelope-open-o" style="color:#336699;"></i>
-                    <span class="title">@localizer["Notifications"]</span>
-                </a>
-            </li>
-            <li class="@(GetMenuStyle("portfolioRegistration"))">
-                <a href="portfolioRegistration" title="Portfolio registration">
-                    <i class="fa fa-upload" style="color:#336699;"></i>
-                    <span class="title">@localizer["PortfolioRegistration"]</span>
-                </a>
-            </li>
-            <li class="dropdown">
-                <a href="" tille="DataTapes">
-                    <i class="fa fa-upload" style="color:#336699;"></i>
-                    <span class="title">@localizer["DataTapes"]</span><span class="caret"></span>
-                </a>
-                <div class="dropdown-content">
-                    <a href="#">@localizer["Contracts"]</a>
-                    <a href="#">@localizer["DataTapesParticipants"]</a>
-                    <a href="#">@localizer["Colaterals"]</a>
-                    <a href="#">@localizer["Procedures"]</a>
-                    <a href="#">@localizer["Insolvencies"]</a>
-                    <a href="#">@localizer["Liens"]</a>
-                    <a href="#">@localizer["Novations"]</a>
-                    <a href="#">@localizer["Prices"]</a>
-                </div>
-            </li>
-            <li class="">
-                <a href="" title="Generation of datatapes">
-                    <i class="fa fa-download" style="color:#336699;"></i>
-                    <span class="title">@localizer["GenerationOfDatatapes"]</span>
-                </a>
-            </li>
+            @if (privileges.Contains(""))
+            {
+                <li class="@(GetMenuStyle(""))">
+                    <a href="" title="Home">
+                        <i class="fa fa-home" aria-hidden="true" style="color:#336699;"></i>
+                        <span class="title">@localizer["Home"]</span>
+                    </a>
+                </li>
+            }
+            @if (privileges.Contains("portfolioMarket"))
+            {
+                <li class="@(GetMenuStyle("portfolioMarket"))">
+                    <a href="portfolioMarket" title="Portfolio market">
+                        <i class="fa fa-bar-chart" aria-hidden="true" style="color:#336699;"></i>
+                        <span class="title">@localizer["PortfolioMarket"]</span>
+                    </a>
+                </li>
+            }
+            @if (privileges.Contains("portfolioValuation"))
+            {
+                <li class="@(GetMenuStyle("portfolioValuation"))">
+                    <a href="portfolioValuation/0/_/_" title="Portfolio evaluation">
+                        <i class="fa fa-cog" style="color:#336699;"></i>
+                        <span class="title">@localizer["PortfolioEvaluation"]</span>
+                    </a>
+                </li>
+            }
+            @if (privileges.Contains("portfolios"))
+            {
+                <li class="@(GetMenuStyle("portfolios"))">
+                    <a href="portfolios/0" title="Portfolios">
+                        <i class="fa fa-suitcase" aria-hidden="true" style="color:#336699;"></i>
+                        <span class="title">@localizer["Portfolios"]</span>
+                    </a>
+                </li>
+            }
+            @if (privileges.Contains("PortfolioProgress"))
+            {
+                <li class="@(GetMenuStyle("PortfolioProgress"))">
+                    <a href="PortfolioProgress" title="Portfolio progress">
+                        <i class="fa fa-tasks" style="color:#336699;"></i>
+                        <span class="title">@localizer["PortfolioProgress"]</span>
+                    </a>
+                </li>
+            }
+            @if (privileges.Contains("Actualization"))
+            {
+                <li class="dropdown">
+                    <a href="" title="Actualization">
+                        <i class="fa fa-handshake-o" style="color:#336699;"></i>
+                        <span class="title">@localizer["Actualization"]</span><span class="caret"></span>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="">@localizer["DebtRecoveries"]</a>
+                        <a href="">@localizer["JudicialProceedings"]</a>
+                        <a href="">@localizer["ConcourseAdjudication"]</a>
+                        <a href="">@localizer["Participants"]</a>
+                    </div>
+                </li>
+            }
+            @if (privileges.Contains("certificates"))
+            {
+                <li class="dropdown @(GetMenuStyle("certificates"))">
+                    <a href="" title="Certificates">
+                        <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
+                        <span class="title">@localizer["Certificates"]</span>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="">@localizer["High templates"]</a>
+                        <a href="certificates/formGeneration">@localizer["FormGeneration"]</a>
+                        <a href="certificates/certificateGeneration">@localizer["CertificateGeneration"]</a>
+                    </div>
+                </li>
+            }
+            @if (privileges.Contains("Notifications"))
+            {
+                <li class="">
+                    <a href="" title="Notifications">
+                        <i class="fa fa-envelope-open-o" style="color:#336699;"></i>
+                        <span class="title">@localizer["Notifications"]</span>
+                    </a>
+                </li>
+            }
+            @if (privileges.Contains("portfolioRegistration"))
+            {
+                <li class="@(GetMenuStyle("portfolioRegistration"))">
+                    <a href="portfolioRegistration" title="Portfolio registration">
+                        <i class="fa fa-upload" style="color:#336699;"></i>
+                        <span class="title">@localizer["PortfolioRegistration"]</span>
+                    </a>
+                </li>
+            }
+            @if (privileges.Contains("DataTapes"))
+            {
+                <li class="dropdown">
+                    <a href="" tille="DataTapes">
+                        <i class="fa fa-upload" style="color:#336699;"></i>
+                        <span class="title">@localizer["DataTapes"]</span><span class="caret"></span>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#">@localizer["Contracts"]</a>
+                        <a href="#">@localizer["DataTapesParticipants"]</a>
+                        <a href="#">@localizer["Colaterals"]</a>
+                        <a href="#">@localizer["Procedures"]</a>
+                        <a href="#">@localizer["Insolvencies"]</a>
+                        <a href="#">@localizer["Liens"]</a>
+                        <a href="#">@localizer["Novations"]</a>
+                        <a href="#">@localizer["Prices"]</a>
+                    </div>
+                </li>
+            }
+            @if (privileges.Contains("GenerationOfDatatapes"))
+            {
+                <li class="">
+                    <a href="" title="Generation of datatapes">
+                        <i class="fa fa-download" style="color:#336699;"></i>
+                        <span class="title">@localizer["GenerationOfDatatapes"]</span>
+                    </a>
+                </li>
+            }
         </ul>
     </div>
 </div>
@@ -106,6 +141,8 @@
     private string previousLocation = "";
     private string currentLocation = "";
 
+    private string[] privileges = new string[] { };
+    
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
@@ -122,26 +159,48 @@
         if (firstRender)
         {
             currentLocation = await LocalStorageService.GetItem<string>("currentLocation");
-            string location = await LocalStorageService.GetItem<string>("Location");
-            if (!string.IsNullOrEmpty(location))
+
+            privileges = new string[] { };
+            var user = await LocalStorageService.GetItem<AuthenticateResponse>("user");
+            if (user != null)
+                user = await AccountService.GetById(user.Id);
+            if (user != null && user.Profile != null && user.Profile.Privileges != null)
             {
-                NavigationManager.NavigateTo(location);
+                privileges = user.Profile.Privileges.Split(";");
             }
+            if (!privileges.Contains(currentLocation))
+            {
+                NavigationManager.NavigateTo(privileges.First(), true);
+            }
+
             StateHasChanged();
         }
     }
 
     async void LocationChanged(object sender, LocationChangedEventArgs e)
     {
+        privileges = new string[] { };
+        var user = await LocalStorageService.GetItem<AuthenticateResponse>("user");
+        if (user != null)
+            user = await AccountService.GetById(user.Id);
+        if (user != null && user.Profile != null && user.Profile.Privileges != null)
+        {
+            privileges = user.Profile.Privileges.Split(";");
+        }
+        
         var locations = e.Location.Split("/");
         currentLocation = locations[3];
+        if (privileges != null && privileges.Length > 0 && !privileges.Contains(currentLocation) && currentLocation != "account")
+        {
+            NavigationManager.NavigateTo(privileges.First(), true);
+        }
         await LocalStorageService.SetItem("currentLocation", currentLocation);
         bool languageChanged = await LocalStorageService.GetItem<bool>("languageChanged");
         await LocalStorageService.SetItem("languageChanged", false);
         if (!languageChanged)
         {
             await LocalStorageService.SetItem("Location", e.Location);
-            if (e.IsNavigationIntercepted && previousLocation == currentLocation)
+            if (previousLocation == currentLocation)
             {
                 NavigationManager.NavigateTo(e.Location, true);
             }

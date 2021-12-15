@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using PMaP.Models.Authenticate;
+﻿using PMaP.Models.Authenticate;
 using System.Threading.Tasks;
 
 namespace PMaP.Data

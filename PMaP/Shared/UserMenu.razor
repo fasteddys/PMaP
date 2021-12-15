@@ -20,5 +20,8 @@
     private async void Logout()
     {
         await LocalStorageService.RemoveItem("user");
+        await LocalStorageService.RemoveItem("currentLocation");
+        await LocalStorageService.RemoveItem("languageChanged");
+        await LocalStorageService.RemoveItem("Location");
     }
 }
