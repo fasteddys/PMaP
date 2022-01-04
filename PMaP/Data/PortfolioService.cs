@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using PMaP.Models;
+using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.Portfolio;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
@@ -32,104 +35,177 @@ namespace PMaP.Data
 
         public async Task<PortfolioModel> Portfolios(string queryStrings)
         {
-            PortfolioModel model = new PortfolioModel();
-
-            model = await _httpService.Get<PortfolioModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolio" + queryStrings) ?? new PortfolioModel();
-
-            List<SelectListItem> portfolioList = new List<SelectListItem>();
-            portfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
-            List<SelectListItem> subportfolioList = new List<SelectListItem>();
-            subportfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
-            if (model.ResponseCode == 200 && model.Portfolios != null && model.Portfolios.Count() > 0)
+            try
             {
-                var portfolios = model.Portfolios.GroupBy(x => x.Portfolio1).Select(x => x.First()).OrderBy(x => x.Portfolio1).ToList();
-                foreach (var item in portfolios)
+                var model = await _httpService.Get<IEnumerable<Portfolio>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio/GetAllQuery" + queryStrings) ?? new List<Portfolio>();
+
+                List<SelectListItem> portfolioList = new List<SelectListItem>();
+                portfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
+                List<SelectListItem> subportfolioList = new List<SelectListItem>();
+                subportfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
+                if (model != null && model.Count() > 0)
                 {
-                    portfolioList.Add(new SelectListItem() { Text = item.Portfolio1, Value = item.Portfolio1 });
+                    var portfolios = model.GroupBy(x => x.Portfolio1).Select(x => x.First()).OrderBy(x => x.Portfolio1).ToList();
+                    foreach (var item in portfolios)
+                    {
+                        portfolioList.Add(new SelectListItem() { Text = item.Portfolio1, Value = item.Portfolio1 });
+                    }
+
                 }
 
-            }
-
-            return new PortfolioModel
-            {
-                ResponseCode = model.ResponseCode,
-                ViewModel = new ViewModel
+                return new PortfolioModel
                 {
-                    PortfolioList = portfolioList,
-                    SubportfolioList = subportfolioList
-                },
-                Portfolios = model.Portfolios
-            };
+                    ResponseCode = (int)HttpStatusCode.OK,
+                    ViewModel = new ViewModel
+                    {
+                        PortfolioList = portfolioList,
+                        SubportfolioList = subportfolioList
+                    },
+                    Portfolios = model.ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                return new PortfolioModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
 
         public async Task<PortfolioModel> Characteristics(PortfolioModel model)
         {
-            _portfolioId = 0;
-            ViewModel viewModel = model.ViewModel;
-            
-            string portfolioViewModel = model.ViewModel.PortfolioList.Find(x => x.Text == model.ViewModel.Portfolio)?.Value;
-            string subportfolio = model.ViewModel.SubportfolioList.Find(x => x.Text == model.ViewModel.Subportfolio)?.Value;
-            var response = await _httpService.Get<PortfolioModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolio?portfolio=" + (portfolioViewModel?.ToLower() != "select" ? portfolioViewModel : "") + "&subportfolio=" + (subportfolio?.ToLower() != "select" ? subportfolio : ""));
-            if (response != null)
+            try
             {
-                response.ViewModel = viewModel;
+                PortfolioModel response = new PortfolioModel();
+                _portfolioId = 0;
+                ViewModel viewModel = model.ViewModel;
 
-                response.ViewModel.OperationType = response.ViewModel.OBCutOff = response.ViewModel.OBSingning = response.ViewModel.OBClosing = "";
-                response.ViewModel.DateAdded = response.ViewModel.DateCutOff = response.ViewModel.DateSigning = response.ViewModel.DateClosing = null;
-                if (response.ResponseCode == 200 && response.Portfolios != null && response.Portfolios.Count() > 0)
+                string portfolioViewModel = model.ViewModel.PortfolioList.Find(x => x.Text == model.ViewModel.Portfolio)?.Value;
+                string subportfolio = model.ViewModel.SubportfolioList.Find(x => x.Text == model.ViewModel.Subportfolio)?.Value;
+                var httpResponse = await _httpService.Get<IEnumerable<Portfolio>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio/GetAllQuery?portfolio=" + (portfolioViewModel?.ToLower() != "select" ? portfolioViewModel : "") + "&subportfolio=" + (subportfolio?.ToLower() != "select" ? subportfolio : ""));
+                if (httpResponse != null)
                 {
-                    var portfolio = response.Portfolios.First();
-                    response.ViewModel.OperationType = portfolio.OperationType;
-                    response.ViewModel.OBCutOff = portfolio.CutOffOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
-                    response.ViewModel.OBSingning = portfolio.SigningOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
-                    response.ViewModel.OBClosing = portfolio.ClosingOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
-                    response.ViewModel.DateAdded = portfolio.CreationDate;
-                    response.ViewModel.DateCutOff = portfolio.CutOffDate;
-                    response.ViewModel.DateSigning = portfolio.SigningDate;
-                    response.ViewModel.DateClosing = portfolio.ClosingDate;
+                    response.ViewModel = viewModel;
+
+                    response.ViewModel.OperationType = response.ViewModel.OBCutOff = response.ViewModel.OBSingning = response.ViewModel.OBClosing = "";
+                    response.ViewModel.DateAdded = response.ViewModel.DateCutOff = response.ViewModel.DateSigning = response.ViewModel.DateClosing = null;
+                    if (httpResponse != null && httpResponse.Count() > 0)
+                    {
+                        var portfolio = httpResponse.First();
+                        response.ViewModel.OperationType = portfolio.OperationType;
+                        response.ViewModel.OBCutOff = portfolio.CutOffOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                        response.ViewModel.OBSingning = portfolio.SigningOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                        response.ViewModel.OBClosing = portfolio.ClosingOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                        response.ViewModel.DateAdded = portfolio.CreationDate;
+                        response.ViewModel.DateCutOff = portfolio.CutOffDate;
+                        response.ViewModel.DateSigning = portfolio.SigningDate;
+                        response.ViewModel.DateClosing = portfolio.ClosingDate;
+                        _portfolioId = portfolio.Id;
+                    }
+
+                    response.ResponseCode = (int)HttpStatusCode.OK;
+                    response.Portfolios = httpResponse.ToList();
+                    return response;
+                }
+
+                model.ViewModel = viewModel;
+
+                model.ViewModel.OperationType = model.ViewModel.OBCutOff = model.ViewModel.OBSingning = model.ViewModel.OBClosing = "";
+                model.ViewModel.DateAdded = model.ViewModel.DateCutOff = model.ViewModel.DateSigning = model.ViewModel.DateClosing = null;
+                if (httpResponse != null && httpResponse != null && httpResponse.Count() > 0)
+                {
+                    var portfolio = httpResponse.First();
+                    model.ViewModel.OperationType = portfolio.OperationType;
+                    model.ViewModel.OBCutOff = portfolio.CutOffOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                    model.ViewModel.OBSingning = portfolio.SigningOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                    model.ViewModel.OBClosing = portfolio.ClosingOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
+                    model.ViewModel.DateAdded = portfolio.CreationDate;
+                    model.ViewModel.DateCutOff = portfolio.CutOffDate;
+                    model.ViewModel.DateSigning = portfolio.SigningDate;
+                    model.ViewModel.DateClosing = portfolio.ClosingDate;
                     _portfolioId = portfolio.Id;
                 }
 
-                return response;
+                model.ResponseCode = (int)HttpStatusCode.OK;
+                return model;
             }
-            
-            model.ViewModel = viewModel;
-
-            model.ViewModel.OperationType = model.ViewModel.OBCutOff = model.ViewModel.OBSingning = model.ViewModel.OBClosing = "";
-            model.ViewModel.DateAdded = model.ViewModel.DateCutOff = model.ViewModel.DateSigning = model.ViewModel.DateClosing = null;
-            if (response != null && response.ResponseCode == 200 && response.Portfolios != null && response.Portfolios.Count() > 0)
+            catch (Exception ex)
             {
-                var portfolio = response.Portfolios.First();
-                model.ViewModel.OperationType = portfolio.OperationType;
-                model.ViewModel.OBCutOff = portfolio.CutOffOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
-                model.ViewModel.OBSingning = portfolio.SigningOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
-                model.ViewModel.OBClosing = portfolio.ClosingOb?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES"));
-                model.ViewModel.DateAdded = portfolio.CreationDate;
-                model.ViewModel.DateCutOff = portfolio.CutOffDate;
-                model.ViewModel.DateSigning = portfolio.SigningDate;
-                model.ViewModel.DateClosing = portfolio.ClosingDate;
-                _portfolioId = portfolio.Id;
+                return new PortfolioModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
             }
-
-            return model;
         }
 
         public async Task<ContractsModel> Assessment()
         {
-            ContractsModel model = new ContractsModel { Summary = new Summary() };
-
-            var response = await _httpService.Get<ContractsModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/contract/portfolio/" + _portfolioId + "/assessment");
-            if (response != null)
+            try
             {
-                return response;
-            }
+                ContractsModel model = new ContractsModel { Summary = new Summary() };
 
-            return model;
+                var portfolio = await _httpService.Get<Portfolio>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio/" + _portfolioId);
+                if (portfolio != null)
+                {
+                    return new ContractsModel
+                    {
+                        ResponseCode = (int)HttpStatusCode.OK,
+                        Summary = new Summary
+                        {
+                            Contracts = portfolio.ContractsNavigation.Count(),
+                            Debtors = portfolio.ContractsNavigation.Sum(x => x.NumParticipants ?? 0),
+                            Guarantors = portfolio.ContractsNavigation.Sum(x => x.NumGuarantors ?? 0),
+                            SecuredOB = 0,
+                            SecuredPrice = 0,
+                            TotalOB = portfolio.ContractsNavigation.Sum(x => x.TotalAmountOb ?? 0),
+                            UnsecuredOB = 0,
+                            UnsecuredPrice = 0
+                        }
+                    };
+                }
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                return new ContractsModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message, Summary = new Summary() };
+            }
         }
 
         public async Task<ContractsModel> Contracts()
         {
-            return await _httpService.Get<ContractsModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/contract/portfolio/" + _portfolioId) ?? new ContractsModel();
+            try
+            {
+                var portfolio = await _httpService.Get<Portfolio>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio/" + _portfolioId)
+                    ?? new Portfolio
+                    {
+                        ContractsNavigation = new List<Contract>(),
+                        Investors = new List<Investor>(),
+                        Participants = new List<Participant>(),
+                        Procedures = new List<Procedure>()
+                    };
+
+                var contracts = portfolio.ContractsNavigation?.ToList();
+
+                var investors = new List<Investor>();
+                var participants = new List<Participant>();
+                var procedures = new List<Procedure>();
+
+                foreach (var contract in contracts)
+                {
+                    investors.AddRange(contract.Investors);
+                    participants.AddRange(contract.Participants);
+                    procedures.AddRange(contract.Procedures);
+                }
+
+                return new ContractsModel
+                {
+                    ResponseCode = (int)HttpStatusCode.OK,
+                    Contracts = contracts,
+                    Investors = investors,
+                    Participants = participants,
+                    Procedures = procedures
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ContractsModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
 
         //public async Task<ParticipantsModel> Participants()
@@ -180,7 +256,36 @@ namespace PMaP.Data
 
         public async Task<ContractsModel> SearchContract(int id)
         {
-            return await _httpService.Get<ContractsModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/contract/" + id + "/portfolio/" + _portfolioId) ?? new ContractsModel();
+            try
+            {
+                var portfolio = await _httpService.Get<Portfolio>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio/" + _portfolioId);
+                
+                var contracts = portfolio.ContractsNavigation?.ToList();
+
+                var investors = new List<Investor>();
+                var participants = new List<Participant>();
+                var procedures = new List<Procedure>();
+
+                foreach (var contract in contracts)
+                {
+                    investors.AddRange(contract.Investors);
+                    participants.AddRange(contract.Participants);
+                    procedures.AddRange(contract.Procedures);
+                }
+
+                return new ContractsModel
+                {
+                    ResponseCode = (int)HttpStatusCode.OK,
+                    Contracts = contracts,
+                    Investors = investors,
+                    Participants = participants,
+                    Procedures = procedures
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ContractsModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
     }
 }

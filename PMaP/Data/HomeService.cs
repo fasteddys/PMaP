@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PMaP.Models;
+using PMaP.Models.DBModels;
+using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
@@ -22,7 +26,15 @@ namespace PMaP.Data
 
         public async Task<HomeModel> PortfolioComposition()
         {
-            return await _httpService.Get<HomeModel>(_configuration.GetConnectionString("pmapApiUrl") + "/api/home") ?? new HomeModel();
+            try
+            {
+                var httpResponse = await _httpService.Get<IEnumerable<Home>>(_configuration.GetConnectionString("pmapApiUrl") + "/api/Home");
+                return new HomeModel { Documents = httpResponse };
+            }
+            catch (Exception ex)
+            {
+                return new HomeModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
     }
 }

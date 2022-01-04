@@ -5,6 +5,7 @@ using PMaP.Models;
 using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.PortfolioValuation;
 using PMaP.Pages.PortfolioEvaluation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -35,25 +36,35 @@ namespace PMaP.Data
         public async Task<PortfolioValuationModel> Index(string portfolio, string subportfolio, string isAdd = "0")
         {
             PortfolioValuationModel model = new PortfolioValuationModel { ViewModel = new ViewModel { ExcludedContractIds = new List<int>() } };
-            PrepareDropDownLists(ref model);
-
-            var portfolioModel = await _httpService.Get<PortfolioModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolio?portfolio=" + portfolio + "&subportfolio=" + subportfolio);
-
-            model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd { Portfolio = new Portfolio() };
-
-            if (portfolioModel != null && portfolioModel.ResponseCode == 200 && portfolioModel.Portfolios != null && portfolioModel.Portfolios.Count() > 0)
+            try
             {
-                var portfolioContext = portfolioModel.Portfolios.First();
-                portfolioContext.Id = isAdd == "1" ? portfolioContext.Id : 0;
-                model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd
-                {
-                    Portfolio = portfolioContext,
-                    NoContracts = portfolioContext.ContractsNavigation.Count()
-                };
-            }
+                PrepareDropDownLists(ref model);
 
-            model.ViewModel.IsAdd = isAdd;
-            return model;
+                var portfolios = await _httpService.Get<IEnumerable<Portfolio>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio/GetAllQuery?portfolio=" + portfolio + "&subportfolio=" + subportfolio);
+
+                model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd { Portfolio = new Portfolio() };
+
+                if (portfolios != null && portfolios.Count() > 0)
+                {
+                    var portfolioContext = portfolios.First();
+                    portfolioContext.Id = isAdd == "1" ? portfolioContext.Id : 0;
+                    model.ViewModel.PortfolioValuationAdd = new PortfolioValuationAdd
+                    {
+                        Portfolio = portfolioContext,
+                        NoContracts = portfolioContext.ContractsNavigation.Count()
+                    };
+                }
+
+                model.ViewModel.IsAdd = isAdd;
+                model.ResponseCode = (int)HttpStatusCode.OK;
+                return model;
+            }
+            catch (Exception ex)
+            {
+                model.ResponseCode = (int)HttpStatusCode.InternalServerError;
+                model.Message = ex.Message;
+                return model;
+            }
         }
 
         public async Task<PortfolioValuationModel> Summary(PortfolioValuationModel model)
@@ -72,7 +83,7 @@ namespace PMaP.Data
             model.ViewModel.PerformingStatus = model.ViewModel.PerformingStatus != "Select" ? model.ViewModel.PerformingStatus : model.ViewModel.PerformingStatusList.Find(x => x.Text == model.ViewModel.PerformingStatus)?.Value;
             model.ViewModel.Region = model.ViewModel.Region != "Select" ? model.ViewModel.Region : model.ViewModel.RegionList.Find(x => x.Text == model.ViewModel.Region)?.Value;
 
-            var response = await _httpService.Post<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/summary", model.ViewModel);
+            var contracts = await _httpService.Post<IEnumerable<Contract>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Contract/GetAllQuery", model.ViewModel);
             
             viewModel.DebtOB = debtOB;
             viewModel.DebtorType = debtorType;
@@ -83,10 +94,39 @@ namespace PMaP.Data
             viewModel.Region = region;
             model.ViewModel = viewModel;
 
-            if (response != null)
+            if (contracts != null)
             {
-                response.ViewModel = model.ViewModel;
-                return response;
+                var investors = new List<Investor>();
+                var participants = new List<Participant>();
+                var procedures = new List<Procedure>();
+
+                foreach (var contract in contracts)
+                {
+                    investors.AddRange(contract.Investors);
+                    participants.AddRange(contract.Participants);
+                    procedures.AddRange(contract.Procedures);
+                }
+
+                return new PortfolioValuationModel
+                {
+                    ResponseCode = (int)HttpStatusCode.OK,
+                    Contracts = contracts.ToList(),
+                    Investors = investors,
+                    Participants = participants,
+                    Procedures = procedures,
+                    ViewModel = viewModel,
+                    Summary = new Summary
+                    {
+                        Contracts = contracts.Count(),
+                        Debtors = contracts.Sum(x => x.NumParticipants ?? 0),
+                        Guarantors = contracts.Sum(x => x.NumGuarantors ?? 0),
+                        SecuredOB = 0,
+                        SecuredPrice = 0,
+                        TotalOB = contracts.Sum(x => x.TotalAmountOb ?? 0),
+                        UnsecuredOB = 0,
+                        UnsecuredPrice = 0
+                    }
+                };
             }
 
             return model;
@@ -97,32 +137,41 @@ namespace PMaP.Data
             ViewModel viewModel = model.ViewModel;
             Summary summary = model.Summary;
 
-            model = await _httpService.Post<PortfolioValuationModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfolioEvaluation/details/contracts", model.ViewModel) ?? new PortfolioValuationModel();
+            var contracts = await _httpService.Post<IEnumerable<Contract>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Contract/GetAllQuery", model.ViewModel);
 
-            if (model.ResponseCode == (int)HttpStatusCode.OK)
+            if (contracts != null && contracts.Count() > 0)
             {
-                model.Contracts.ForEach(x => x.Portfolio = null);
-                if (viewModel.AddedInPortfolio == "1")
+                var investors = new List<Investor>();
+                var participants = new List<Participant>();
+                var procedures = new List<Procedure>();
+
+                foreach (var contract in contracts)
                 {
-                    model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
+                    investors.AddRange(contract.Investors);
+                    participants.AddRange(contract.Participants);
+                    procedures.AddRange(contract.Procedures);
                 }
-                else if (string.IsNullOrEmpty(viewModel.AddedInPortfolio) || viewModel.AddedInPortfolio == "Select")
+
+                return new PortfolioValuationModel
                 {
-                    foreach (var item in model.Contracts)
+                    ResponseCode = (int)HttpStatusCode.OK,
+                    Contracts = contracts.ToList(),
+                    Investors = investors,
+                    Participants = participants,
+                    Procedures = procedures,
+                    ViewModel = viewModel,
+                    Summary = new Summary
                     {
-                        string portfolio = "";
-                        portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "SALE").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
-                        if (string.IsNullOrEmpty(portfolio))
-                        {
-                            portfolio = item.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1;
-                        }
-                        item.Portfolio = portfolio;
+                        Contracts = contracts.Count(),
+                        Debtors = contracts.Sum(x => x.NumParticipants ?? 0),
+                        Guarantors = contracts.Sum(x => x.NumGuarantors ?? 0),
+                        SecuredOB = 0,
+                        SecuredPrice = 0,
+                        TotalOB = contracts.Sum(x => x.TotalAmountOb ?? 0),
+                        UnsecuredOB = 0,
+                        UnsecuredPrice = 0
                     }
-                }
-                else
-                {
-                    model.Contracts.ForEach(x => x.Portfolio = x.PortfolioContracts?.Where(x => x.Portfolio.OperationType == "DISCARD").OrderByDescending(x => x.Id).FirstOrDefault()?.Portfolio?.Portfolio1);
-                }
+                };
             }
 
             model.ViewModel = viewModel;

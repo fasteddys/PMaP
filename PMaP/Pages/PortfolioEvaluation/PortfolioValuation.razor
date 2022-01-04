@@ -373,7 +373,7 @@ else
     private async void AddPortfolio()
     {
         loading = true;
-        var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
+        var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioNavigation != null && x.PortfolioNavigation.OperationType == "SALE");
         if (inPortfolio != null)
         {
             Caption = localizer["Warning"];
@@ -403,7 +403,7 @@ else
     private async void UpdatePortfolio()
     {
         loading = true;
-        var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioContracts.Any(x => x.Portfolio.OperationType == "SALE"));
+        var inPortfolio = portfolioValuationModel.Contracts.FirstOrDefault(x => x.PortfolioNavigation.OperationType == "SALE");
         if (inPortfolio != null)
         {
             Caption = localizer["Warning"];

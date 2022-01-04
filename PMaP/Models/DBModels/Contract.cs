@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace PMaP.Models.DBModels
 {
     public partial class Contract
     {
+        public Contract()
+        {
+            Investors = new HashSet<Investor>();
+            Participants = new HashSet<Participant>();
+            Procedures = new HashSet<Procedure>();
+        }
+
         public int Id { get; set; }
         public string ContractId { get; set; }
         public int? PortfolioId { get; set; }
         public string Portfolio { get; set; }
         public string Subportfolio { get; set; }
         public DateTime? ProcessDate { get; set; }
+        public int? ContractTypeId { get; set; }
         public string ContractType { get; set; }
         public string PerformingStatus { get; set; }
         public string DebtType { get; set; }
@@ -52,7 +60,6 @@ namespace PMaP.Models.DBModels
         public virtual Portfolio PortfolioNavigation { get; set; }
         public virtual ICollection<Investor> Investors { get; set; }
         public virtual ICollection<Participant> Participants { get; set; }
-        public virtual ICollection<PortfolioContract> PortfolioContracts { get; set; }
         public virtual ICollection<Procedure> Procedures { get; set; }
     }
 }

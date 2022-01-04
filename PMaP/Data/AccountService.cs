@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PMaP.Models.Authenticate;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -25,12 +26,16 @@ namespace PMaP.Data
 
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest request)
         {
-            AuthenticateResponse authenticateResponse = await _httpService.Post<AuthenticateResponse>(_configuration.GetConnectionString("pmapApiUrl") + "/api/users/authenticate", request);
-            if (authenticateResponse.RespCode == (int)HttpStatusCode.OK)
+            try
             {
-                await _localStorageService.SetItem("user", authenticateResponse);
+                string authenticateResponse = await _httpService.Get<string>(_configuration.GetConnectionString("pmapApiUrl") + "/api/Login/" + request.Username + "/" + request.Password);
+                await _localStorageService.SetItem("user", new AuthenticateResponse { Token = authenticateResponse, Username = request.Username });
+                return new AuthenticateResponse { RespCode = (int)HttpStatusCode.OK };
             }
-            return authenticateResponse;
+            catch (Exception ex)
+            {
+                return new AuthenticateResponse { RespCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
     }
 }

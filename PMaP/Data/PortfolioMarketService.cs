@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using PMaP.Models;
+using PMaP.Models.DBModels;
 using PMaP.Models.ViewModels.Portfolio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace PMaP.Data
@@ -27,33 +30,38 @@ namespace PMaP.Data
 
         public async Task<PortfolioMarketModel> Portfolios(string queryStrings)
         {
-            PortfolioMarketModel model = new PortfolioMarketModel();
-
-            model = await _httpService.Get<PortfolioMarketModel>(Configuration.GetConnectionString("pmapApiUrl") + "/api/portfoliosMarket" + queryStrings) ?? new PortfolioMarketModel();
-            
-            List<SelectListItem> portfolioList = new List<SelectListItem>();
-            portfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
-            List<SelectListItem> subportfolioList = new List<SelectListItem>();
-            subportfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
-            if (model.ResponseCode == 200 && model.PortfolioMarkets != null && model.PortfolioMarkets.Count() > 0)
+            try
             {
-                var portfolios = model.PortfolioMarkets.GroupBy(x => x.Project).Select(x => x.First()).OrderBy(x => x.Project).ToList();
-                foreach (var item in portfolios)
+                var model = await _httpService.Get<IEnumerable<PortfolioMarket>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/PortfolioMarket/GetAllQuery" + queryStrings) ?? new List<PortfolioMarket>();
+
+                List<SelectListItem> portfolioList = new List<SelectListItem>();
+                portfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
+                List<SelectListItem> subportfolioList = new List<SelectListItem>();
+                subportfolioList.Add(new SelectListItem() { Text = "Select", Value = "" });
+                if (model != null && model.Count() > 0)
                 {
-                    portfolioList.Add(new SelectListItem() { Text = item.Project, Value = item.Project });
+                    var portfolios = model.GroupBy(x => x.Project).Select(x => x.First()).OrderBy(x => x.Project).ToList();
+                    foreach (var item in portfolios)
+                    {
+                        portfolioList.Add(new SelectListItem() { Text = item.Project, Value = item.Project });
+                    }
                 }
-            }
 
-            return new PortfolioMarketModel
-            {
-                ResponseCode = model.ResponseCode,
-                ViewModel = new ViewModel
+                return new PortfolioMarketModel
                 {
-                    PortfolioList = portfolioList,
-                    SubportfolioList = subportfolioList
-                },
-                PortfolioMarkets = model.PortfolioMarkets
-            };
+                    ResponseCode = (int)HttpStatusCode.OK,
+                    ViewModel = new ViewModel
+                    {
+                        PortfolioList = portfolioList,
+                        SubportfolioList = subportfolioList
+                    },
+                    PortfolioMarkets = model.ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                return new PortfolioMarketModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
 
         //public async Task<PortfolioModel> Characteristics(PortfolioModel model)

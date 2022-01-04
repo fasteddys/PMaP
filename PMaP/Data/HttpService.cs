@@ -120,7 +120,7 @@ namespace PMaP.Data
                 return default;
             }
 
-            //await handleErrors(response);
+            await handleErrors(response);
 
             var options = new JsonSerializerOptions();
             options.PropertyNameCaseInsensitive = true;

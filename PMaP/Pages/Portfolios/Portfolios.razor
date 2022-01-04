@@ -349,7 +349,7 @@ else
         Procedures = new List<Procedure>()
     };
     private List<Portfolio> portfolios = new List<Portfolio>();
-    
+
     private bool isDisabled { get; set; }
     private bool isDateInputDisabled { get; set; }
     private bool isSearchButtonDisabled { get; set; }
@@ -405,10 +405,13 @@ else
                 isAddButtonDisabled = true;
 
                 var portfolioValuationViewModel = await LocalStorageService.GetItem<PMaP.Models.ViewModels.PortfolioValuation.ViewModel>("portfolioValuationViewModel");
-                portfolioValuationViewModel.IsAdd = isAdd;
-                portfolioValuationViewModel.ReflectExcludedContractIds = true;
-                portfolioValuationViewModel.ExcludePossitiveOB = true;
-
+                if (portfolioValuationViewModel != null)
+                {
+                    portfolioValuationViewModel.IsAdd = isAdd;
+                    portfolioValuationViewModel.ReflectExcludedContractIds = true;
+                    portfolioValuationViewModel.ExcludePossitiveOB = true;
+                }
+                
                 portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel);
                 if (portfolioModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
                 {

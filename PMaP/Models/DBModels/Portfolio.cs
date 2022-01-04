@@ -31,7 +31,6 @@ namespace PMaP.Models.DBModels
         public virtual ICollection<Home> Homes { get; set; }
         public virtual ICollection<Investor> Investors { get; set; }
         public virtual ICollection<Participant> Participants { get; set; }
-        public virtual ICollection<PortfolioContract> PortfolioContracts { get; set; }
         public virtual ICollection<Procedure> Procedures { get; set; }
     }
 }
