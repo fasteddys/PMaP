@@ -126,7 +126,7 @@
                                         <td>@item.MaturityDate</td>
                                         <td>@item.FirstUnpaidInstalmentDate</td>
                                         <td>@(item.JudicialProcess != null && (sbyte)item.JudicialProcess == 1 ? "Yes" : "No")</td>
-                                        <td>@item.Portfolio</td>
+                                        <td>@(item.PortfolioNavigation == null ? item.Portfolio : item.PortfolioNavigation.Portfolio1)</td>
                                         <td></td>
                                         <td>@item.OriginalEntity</td>
                                         <td></td>
