@@ -108,22 +108,89 @@ namespace PMaP.Data
 
         public async Task<PortfolioValuationModel> AddPortfolio(PortfolioModel model)
         {
-            return await _httpService.Post<PortfolioValuationModel>(Configuration.GetConnectionString("pmapMicroUrl") + "/api/portfolioEvaluation/portfolio", model) ?? new PortfolioValuationModel();
+            try
+            {
+                Portfolio portfolio = new Portfolio
+                {
+                    Portfolio1 = model.ViewModel.Portfolio,
+                    Subportfolio = model.ViewModel.Subportfolio,
+                    OperationType = "SALE",
+                    ClosingDate = model.ViewModel.DateClosing,
+                    CreationDate = model.ViewModel.DateAdded,
+                    CutOffDate = model.ViewModel.DateCutOff,
+                    SigningDate = model.ViewModel.DateSigning
+                };
+                var portfolioResp = await _httpService.Post<Portfolio>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio", portfolio);
+
+                model.Contracts.ForEach(x =>
+                {
+                    x.Investors = null;
+                    x.Participants = null;
+                    x.PortfolioNavigation = null;
+                    x.Procedures = null;
+                });
+                portfolioResp.ContractsNavigation = model.Contracts;
+                await _httpService.Put<Portfolio>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio", portfolioResp);
+
+                return new PortfolioValuationModel { ResponseCode = (int)HttpStatusCode.OK };
+            }
+            catch (Exception ex)
+            {
+                return new PortfolioValuationModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
 
         public async Task<PortfolioValuationModel> UpdatePortfolio(PortfolioValuationModel model)
         {
-            return await _httpService.Put<PortfolioValuationModel>(Configuration.GetConnectionString("pmapMicroUrl") + "/api/portfolioEvaluation/portfolio", model) ?? new PortfolioValuationModel() ?? new PortfolioValuationModel();
+            try
+            {
+                Portfolio portfolio = model.ViewModel.PortfolioValuationAdd.Portfolio;
+                model.Contracts.ForEach(x =>
+                {
+                    x.Investors = null;
+                    x.Participants = null;
+                    x.PortfolioNavigation = null;
+                    x.Procedures = null;
+                });
+                portfolio.ContractsNavigation = model.Contracts;
+                await _httpService.Put<Portfolio>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio", portfolio);
+                return new PortfolioValuationModel { ResponseCode = (int)HttpStatusCode.OK };
+            }
+            catch (Exception ex)
+            {
+                return new PortfolioValuationModel { ResponseCode= (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
 
         public async Task<PortfolioValuationModel> DiscardPortfolio(Portfolio portfolio)
         {
-            return await _httpService.Delete<PortfolioValuationModel>(Configuration.GetConnectionString("pmapMicroUrl") + "/api/portfolioEvaluation/portfolio/" + portfolio.Id) ?? new PortfolioValuationModel();
+            try
+            {
+                portfolio.OperationType = "DISCARD";
+                await _httpService.Put<Portfolio>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Portfolio", portfolio);
+                return new PortfolioValuationModel { ResponseCode = (int)HttpStatusCode.OK };
+            }
+            catch (Exception ex)
+            {
+                return new PortfolioValuationModel { ResponseCode= (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
 
         public async Task<PortfolioValuationModel> DeletePortfolioContracts(int portfolioId, List<Contract> contracts)
         {
-            return await _httpService.Put<PortfolioValuationModel>(Configuration.GetConnectionString("pmapMicroUrl") + "/api/portfolioEvaluation/portfolio/" + portfolioId + "/contracts", contracts) ?? new PortfolioValuationModel();
+            try
+            {
+                foreach (var contract in contracts)
+                {
+                    contract.PortfolioId = null;
+                    await _httpService.Put<Contract>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Contract", contract);
+                }
+                return new PortfolioValuationModel { ResponseCode = (int)HttpStatusCode.OK };
+            }
+            catch (Exception ex)
+            {
+                return new PortfolioValuationModel { ResponseCode= (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
         }
     }
 }

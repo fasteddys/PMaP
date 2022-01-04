@@ -83,7 +83,16 @@ namespace PMaP.Data
             model.ViewModel.PerformingStatus = model.ViewModel.PerformingStatus != "Select" ? model.ViewModel.PerformingStatus : model.ViewModel.PerformingStatusList.Find(x => x.Text == model.ViewModel.PerformingStatus)?.Value;
             model.ViewModel.Region = model.ViewModel.Region != "Select" ? model.ViewModel.Region : model.ViewModel.RegionList.Find(x => x.Text == model.ViewModel.Region)?.Value;
 
-            var contracts = await _httpService.Post<IEnumerable<Contract>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Contract/GetAllQuery", model.ViewModel);
+            List<Contract> contracts = new List<Contract>();
+            try
+            {
+                var contractsResp = await _httpService.Post<IEnumerable<Contract>>(Configuration.GetConnectionString("pmapApiUrl") + "/api/Contract/GetAllQuery", model.ViewModel);
+                contracts = contractsResp.ToList();
+            }
+            catch (Exception ex)
+            {
+                return new PortfolioValuationModel { ResponseCode = (int)HttpStatusCode.InternalServerError, Message = ex.Message };
+            }
             
             viewModel.DebtOB = debtOB;
             viewModel.DebtorType = debtorType;
