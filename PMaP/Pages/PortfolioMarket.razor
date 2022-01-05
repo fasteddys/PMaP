@@ -167,7 +167,19 @@ else
                                             }
                                             <span class="text-white @debtTypeClass" style="border-radius: 5px; padding: 5px;">@item.DebtType</span>
                                         </td>
-                                        <td>@(item.Value?.ToString("c", CultureInfo.CreateSpecificCulture("es-ES")))</td>
+                                        <td>
+                                            @{
+                                                CultureInfo cultureInfo = new CultureInfo("es-ES");
+                                                string value = item.Value?.ToString("c", cultureInfo);
+                                                var shortValue = item.Value / 1000000;
+                                                if (shortValue != null)
+                                                {
+                                                    string format = item.Value % 1000000 == 0 ? "#,##0" : "#,##0.00";
+                                                    value = shortValue?.ToString(format, cultureInfo) + "M €";
+                                                }
+                                            }
+                                            @value
+                                        </td>
                                     </tr>
                                 }
                             }
