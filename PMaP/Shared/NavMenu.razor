@@ -3,42 +3,49 @@
 @inject IStringLocalizer<NavMenu> localizer
 @inject NavigationManager NavigationManager
 
+<style>
+    .sidebar-footer {
+        bottom: 0%;
+        position: fixed;
+    }
+</style>
+
 <div class="page-sidebar-wrapper" >
-    <div class="page-sidebar navbar-collapse collapse" style="background-color:#e6f0ff">
+    <div class="page-sidebar navbar-collapse collapse" style="background-color:#30557f">
         <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li class="@(GetMenuStyle(""))">
                 <a href="" title="Home">
-                    <i class="fa fa-home" aria-hidden="true" style="color:#336699;"></i>
+                    <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="title">@localizer["Home"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolioMarket"))">
                 <a href="portfolioMarket" title="Portfolio market">
-                    <i class="fa fa-bar-chart" aria-hidden="true" style="color:#336699;"></i>
+                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
                     <span class="title">@localizer["PortfolioMarket"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolioValuation"))">
                 <a href="portfolioValuation/0/_/_" title="Portfolio evaluation">
-                    <i class="fa fa-cog" style="color:#336699;"></i>
+                    <i class="fa fa-cog"></i>
                     <span class="title">@localizer["PortfolioEvaluation"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolios"))">
                 <a href="portfolios/0" title="Portfolios">
-                    <i class="fa fa-suitcase" aria-hidden="true" style="color:#336699;"></i>
+                    <i class="fa fa-suitcase" aria-hidden="true"></i>
                     <span class="title">@localizer["Portfolios"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("PortfolioProgress"))">
                 <a href="PortfolioProgress" title="Portfolio progress">
-                    <i class="fa fa-tasks" style="color:#336699;"></i>
+                    <i class="fa fa-tasks"></i>
                     <span class="title">@localizer["PortfolioProgress"]</span>
                 </a>
             </li>
             <li class="dropdown">
                 <a href="" title="Actualization">
-                    <i class="fa fa-handshake-o" style="color:#336699;"></i>
+                    <i class="fa fa-handshake-o"></i>
                     <span class="title">@localizer["Actualization"]</span><span class="caret"></span>
                 </a>
                 <div class="dropdown-content">
@@ -50,7 +57,7 @@
             </li>
             <li class="dropdown @(GetMenuStyle("certificates"))">
                 <a href="" title="Certificates">
-                    <i class="fa fa-file-pdf-o" style="color:#336699;"></i>
+                    <i class="fa fa-file-pdf-o"></i>
                     <span class="title">@localizer["Certificates"]</span>
                     <span class="caret"></span>
                 </a>
@@ -62,19 +69,19 @@
             </li>
             <li class="">
                 <a href="" title="Notifications">
-                    <i class="fa fa-envelope-open-o" style="color:#336699;"></i>
+                    <i class="fa fa-envelope-open-o"></i>
                     <span class="title">@localizer["Notifications"]</span>
                 </a>
             </li>
             <li class="@(GetMenuStyle("portfolioRegistration"))">
                 <a href="portfolioRegistration" title="Portfolio registration">
-                    <i class="fa fa-upload" style="color:#336699;"></i>
+                    <i class="fa fa-upload"></i>
                     <span class="title">@localizer["PortfolioRegistration"]</span>
                 </a>
             </li>
             <li class="dropdown">
                 <a href="" tille="DataTapes">
-                    <i class="fa fa-upload" style="color:#336699;"></i>
+                    <i class="fa fa-upload"></i>
                     <span class="title">@localizer["DataTapes"]</span><span class="caret"></span>
                 </a>
                 <div class="dropdown-content">
@@ -90,15 +97,28 @@
             </li>
             <li class="">
                 <a href="" title="Generation of datatapes">
-                    <i class="fa fa-download" style="color:#336699;"></i>
+                    <i class="fa fa-download"></i>
                     <span class="title">@localizer["GenerationOfDatatapes"]</span>
                 </a>
             </li>
         </ul>
     </div>
 </div>
+<div class="sidebar-footer" style="z-index: 1; padding-left: 20px;">
+    <ul class="nav navbar-nav pull-right">
+        <Languages />
+    </ul>
+</div>
+<div class="sidebar-footer" style="padding-left: 90px;">
+    <ul class="nav navbar-nav pull-right">
+        <UserMenu UserName="@UserName" />
+    </ul>
+</div>
 
 @code {
+    [Parameter]
+    public string UserName { get; set; }
+
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;

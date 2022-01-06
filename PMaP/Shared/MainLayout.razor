@@ -43,7 +43,7 @@
     }
 
     .dropdown-content a {
-        color: black;
+        color: #ffffff;
         padding: 12px 16px;
         text-decoration: none;
         text-align: left;
@@ -54,7 +54,7 @@
     }
 
     .dropdown-content a:hover {
-        background-color: #f1f1f1;
+        background-color: #4e6e94;
         filter: alpha(opacity=100);
         opacity: 1
     }
@@ -147,40 +147,42 @@
     }
 </style>
 
+@if (showNavMenu)
+{
+    <div class="sidebar" style="height: 100%; width: 216px; position: fixed; z-index: 2; top: 0; left: 0; overflow-x: hidden; background-color: #30557f;">
+        <div class="container clearfix et_menu_container">
+            <span style="font-size: 15px; font-weight: bold; text-align: center;">
+                <br />
+            </span>
+        </div>
+        <NavMenu UserName="@userName" />
+    </div>
+
+    <div class="main" style="margin-left: 200px; padding-left: 20px;">
+        <div class="content page-content-wrapper" style="margin-top: 15px;">
+            <div class="container clearfix et_menu_container" style="text-align: center;">
+                <span style="font-size: 15px; font-weight: bold;">
+                    Portfolio Management Platform - PMaP
+                </span>
+            </div>
+        </div>
+        @Body
+    </div>
+}
 
 @if (!showNavMenu)
 {
-    <div class="sidebar" style="width: 216px; position: fixed; z-index: 2; top: 0; left: 0; overflow-x: hidden; background-color: #e6f0ff;">
-        <div class="page-header navbar">
-            <div class="container clearfix et_menu_container">
-                <span style="font-size: 15px; font-weight: bold; text-align: center;">
-                    Portfolio Management Platform - PMaP
-                </span>
-            </div>
-        </div>
-    </div>
-}
-@if (showNavMenu)
-{
-    <div class="sidebar" style="height: 100%; width: 216px; position: fixed; z-index: 2; top: 0; left: 0; overflow-x: hidden; background-color: #e6f0ff;">
-        <div class="page-header navbar">
-            <div class="container clearfix et_menu_container">
-                <span style="font-size: 15px; font-weight: bold; text-align: center;">
-                    Portfolio Management Platform - PMaP
-                </span>
-            </div>
-        </div>
-        <NavMenu />
-    </div>
-}
-
-<div class="main" style="margin-left: 200px; padding-left: 20px;">
     <Header UserName="@userName" />
-    <br />
-    <div class="content page-content-wrapper" style="margin-top: 75px;">
-        @Body
+    <div style="margin-top: 75px;">
+        <div style="text-align: center;">
+            <span style="font-size: 15px; font-weight: bold;">
+                Portfolio Management Platform - PMaP
+            </span>
+        </div>
     </div>
-</div>
+    <br />
+    @Body
+}
 
 @code {
     private bool showNavMenu = false;
