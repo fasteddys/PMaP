@@ -1,0 +1,262 @@
+﻿@using PMaP.Models.DBModels
+@inject IJSRuntime JSRuntime
+@inject IStringLocalizer<InsolvenciesTable> localizer
+
+<div class="row">
+    <div class="col-md-12 mts">
+        <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+            <div id="scrollTop" style="overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+        </div>
+        <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+            <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
+                <table id="tableId" class="table table-striped table-bordered table-responsive" style="background-color:#e6e6e6;">
+                    <thead>
+                        <tr class="heading" style="color:#336699;">
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("Portfolio"))">@localizer["Portfolio"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("Portfolio"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("Subportfolio"))">@localizer["Subportfolio"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("Subportfolio"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("ProcessDate"))">@localizer["ProcessDate"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("ProcessDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("Id"))">@localizer["InsolvencyID"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("Id"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("ParticipantId"))">@localizer["ParticipantID"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("ParticipantId"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyType"))">@localizer["InsolvencyType"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyType"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyDate"))">@localizer["InsolvencyDate"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyPhase"))">@localizer["InsolvencyPhase"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyPhase"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("LastInsolvencyActionDate"))">@localizer["LastInsolvencyActionDate"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("LastInsolvencyActionDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyAutoAdjudicationDate"))">@localizer["InsolvencyAutoAdjudicationDate"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyAutoAdjudicationDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("RecognizedInclusionAmount"))">@localizer["RecognizedInclusionAmount"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("RecognizedInclusionAmount"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("RecognizedInclusionUnderAmount"))">@localizer["RecognizedInclusionUnderAmount"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("RecognizedInclusionUnderAmount"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("CourtInsolvencyName"))">@localizer["CourtInsolvencyName"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("CourtInsolvencyName"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("CourtInsolvencyNumber"))">@localizer["CourtInsolvencyNumber"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("CourtInsolvencyNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("CourtInsolvencyAddress"))">@localizer["CourtInsolvencyAddress"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("CourtInsolvencyAddress"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("CourtInsolvencyCity"))">@localizer["CourtInsolvencyCity"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("CourtInsolvencyCity"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("CourtInsolvencyProvince"))">@localizer["CourtInsolvencyProvince"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("CourtInsolvencyProvince"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("CourtInsolvencyZipCode"))">@localizer["CourtInsolvencyZipCode"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("CourtInsolvencyZipCode"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("CourtProcedureNumber"))">@localizer["CourtProcedureNumber"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("CourtProcedureNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyManagerName"))">@localizer["InsolvencyManagerName"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyManagerName"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyManagerEmail"))">@localizer["InsolvencyManagerEmail"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyManagerEmail"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyManagerPhoneNumber"))">@localizer["InsolvencyManagerPhoneNumber"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyManagerPhoneNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("StartLiquidationDate"))">@localizer["StartLiquidationDate"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("StartLiquidationDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("LiquidationPlanDate"))">@localizer["LiquidationPlanDate"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("LiquidationPlanDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("LiquidationPlanApprovalDate"))">@localizer["LiquidationPlanApprovalDate"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("LiquidationPlanApprovalDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("AuctionDate"))">@localizer["AuctionData"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("AuctionDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyLaywerName"))">@localizer["InsolvencyLaywerName"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyLaywerName"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencySolicitorName"))">@localizer["InsolvencySolicitorName"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencySolicitorName"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyLaywerMail"))">@localizer["InsolvencyLaywerMail"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyLaywerMail"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencySolicitorMail"))">@localizer["InsolvencySolicitorMail"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencySolicitorMail"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencyLaywerPhoneNumber"))">@localizer["InsolvencyLaywerPhoneNumber"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencyLaywerPhoneNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortInsolvenciesTable("InsolvencySolicitorPhoneNumber"))">@localizer["InsolvencySolicitorPhoneNumber"]</span>
+                                <span class="fa @(GetInsolvenciesSortStyle("InsolvencySolicitorPhoneNumber"))"></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Insolvencies != null && Insolvencies.Count() > 0)
+                        {
+                            foreach (var item in Insolvencies)
+                            {
+                                <tr>
+                                    <td>@item.Portfolio</td>
+                                    <td>@item.Subportfolio</td>
+                                    <td>@item.ProcessDate</td>
+                                    <td>@item.InsolvencyId</td>
+                                    <td>@item.ParticipantId</td>
+                                    <td>@item.InsolvencyType</td>
+                                    <td>@item.InsolvencyDate</td>
+                                    <td>@item.InsolvencyPhase</td>
+                                    <td>@item.LastInsolvencyActionDate</td>
+                                    <td>@item.InsolvencyAutoAdjudicationDate</td>
+                                    <td>@item.RecognizedInclusionAmount</td>
+                                    <td>@item.RecognizedInclusionUnderAmount</td>
+                                    <td>@item.CourtInsolvencyName</td>
+                                    <td>@item.CourtInsolvencyNumber</td>
+                                    <td>@item.CourtInsolvencyAddress</td>
+                                    <td>@item.CourtInsolvencyCity</td>
+                                    <td>@item.CourtInsolvencyProvince</td>
+                                    <td>@item.CourtInsolvencyZipCode</td>
+                                    <td>@item.CourtProcedureNumber</td>
+                                    <td>@item.InsolvencyManagerName</td>
+                                    <td>@item.InsolvencyManagerEmail</td>
+                                    <td>@item.InsolvencyManagerPhoneNumber</td>
+                                    <td>@item.StartLiquidationDate</td>
+                                    <td>@item.LiquidationPlanDate</td>
+                                    <td>@item.LiquidationPlanApprovalDate</td>
+                                    <td>@item.AuctionDate</td>
+                                    <td>@item.InsolvencyLaywerName</td>
+                                    <td>@item.InsolvencySolicitorName</td>
+                                    <td>@item.InsolvencyLaywerMail</td>
+                                    <td>@item.InsolvencySolicitorMail</td>
+                                    <td>@item.InsolvencyLaywerPhoneNumber</td>
+                                    <td>@item.InsolvencySolicitorPhoneNumber</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Insolvency> Insolvencies { get; set; }
+
+    private string currentInsolvenciesSortColumn;
+    private bool isInsolvenciesSortedAscending;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("setScrollTopWidth");
+        }
+    }
+
+    private async void OnScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onScroll");
+    }
+    
+    private async void OnTopScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onTopScroll");
+    }
+
+    private string GetInsolvenciesSortStyle(string columnName)
+    {
+        if (currentInsolvenciesSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isInsolvenciesSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+
+    private void SortInsolvenciesTable(string columnName)
+    {
+        var items = Insolvencies;
+
+        if (columnName != currentInsolvenciesSortColumn)
+        {
+            items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            currentInsolvenciesSortColumn = columnName;
+            isInsolvenciesSortedAscending = true;
+        }
+        else
+        {
+            if (isInsolvenciesSortedAscending)
+            {
+                items = items.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+
+            isInsolvenciesSortedAscending = !isInsolvenciesSortedAscending;
+        }
+
+        Insolvencies = items;
+
+        StateHasChanged();
+    }
+}

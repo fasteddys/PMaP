@@ -9,6 +9,7 @@ namespace PMaP.Models.DBModels
     {
         public Contract()
         {
+            Collaterals = new HashSet<Collateral>();
             Investors = new HashSet<Investor>();
             Participants = new HashSet<Participant>();
             Procedures = new HashSet<Procedure>();
@@ -58,6 +59,7 @@ namespace PMaP.Models.DBModels
         public decimal? ReoAmount { get; set; }
 
         public virtual Portfolio PortfolioNavigation { get; set; }
+        public virtual ICollection<Collateral> Collaterals { get; set; }
         public virtual ICollection<Investor> Investors { get; set; }
         public virtual ICollection<Participant> Participants { get; set; }
         public virtual ICollection<Procedure> Procedures { get; set; }

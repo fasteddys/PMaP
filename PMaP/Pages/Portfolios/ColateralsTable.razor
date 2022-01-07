@@ -1,0 +1,232 @@
+﻿@using PMaP.Models.DBModels
+@inject IJSRuntime JSRuntime
+@inject IStringLocalizer<ColateralsTable> localizer
+
+<div class="row">
+    <div class="col-md-12 mts">
+        <div id="tableTopScroll" style="overflow-x: auto; overflow-y: hidden; border: none 0px RED;" @onscroll="OnTopScroll">
+            <div id="scrollTop" style="overflow-x: hidden; overflow-y: hidden; height:20px;"></div>
+        </div>
+        <div style="overflow-x: hidden; overflow-y: hidden; border: none 0px RED;">
+            <div id="tableView" style="overflow-y: auto;" @onscroll="OnScroll">
+                <table id="tableId" class="table table-striped table-bordered table-responsive" style="background-color:#e6e6e6;">
+                    <thead>
+                        <tr class="heading" style="color:#336699;">
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Portfolio"))">@localizer["Portfolio"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Portfolio"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Subportfolio"))">@localizer["Subportfolio"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Subportfolio"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("ProcessDate"))">@localizer["ProcessDate"]</span>
+                                <span class="fa @(GetColateralsSortStyle("ProcessDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("ContractId"))">@localizer["ContractID"]</span>
+                                <span class="fa @(GetColateralsSortStyle("ContractId"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Id"))">@localizer["CollateralID"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Id"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("CollateralType"))">@localizer["CollateralType"]</span>
+                                <span class="fa @(GetColateralsSortStyle("CollateralType"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("CollateralSubtype"))">@localizer["CollateralSubtype"]</span>
+                                <span class="fa @(GetColateralsSortStyle("CollateralSubtype"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("CollateralUsage"))">@localizer["CollateralUsage"]</span>
+                                <span class="fa @(GetColateralsSortStyle("CollateralUsage"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Status"))">@localizer["Status"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Status"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("ConstuctionYear"))">@localizer["ConstuctionYear"]</span>
+                                <span class="fa @(GetColateralsSortStyle("ConstuctionYear"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("SurfaceM2"))">@localizer["SurfaceM2"]</span>
+                                <span class="fa @(GetColateralsSortStyle("SurfaceM2"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("City"))">@localizer["City"]</span>
+                                <span class="fa @(GetColateralsSortStyle("City"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Province"))">@localizer["Province"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Province"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Region"))">@localizer["Region"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Region"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Country"))">@localizer["Country"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Country"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("ZipCode"))">@localizer["ZipCode"]</span>
+                                <span class="fa @(GetColateralsSortStyle("ZipCode"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("InitialAppraisalDate"))">@localizer["InitialAppraisalDate"]</span>
+                                <span class="fa @(GetColateralsSortStyle("InitialAppraisalDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("InitialAppraisalValue"))">@localizer["InitialAppraisalValue"]</span>
+                                <span class="fa @(GetColateralsSortStyle("InitialAppraisalValue"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("LastAppraisalDate"))">@localizer["LastAppraisalDate"]</span>
+                                <span class="fa @(GetColateralsSortStyle("LastAppraisalDate"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("LastAppraisalValue"))">@localizer["LastAppraisalValue"]</span>
+                                <span class="fa @(GetColateralsSortStyle("LastAppraisalValue"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("RegistryAssetId"))">@localizer["RegistryAssetID"]</span>
+                                <span class="fa @(GetColateralsSortStyle("RegistryAssetId"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("LandRegistryTown"))">@localizer["LandRegistryTown"]</span>
+                                <span class="fa @(GetColateralsSortStyle("LandRegistryTown"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("LandRegistryNumber"))">@localizer["LandRegistryNumber"]</span>
+                                <span class="fa @(GetColateralsSortStyle("LandRegistryNumber"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("CadastralReference"))">@localizer["CadastralReference"]</span>
+                                <span class="fa @(GetColateralsSortStyle("CadastralReference"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Idufir"))">@localizer["IDUFIR"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Idufir"))"></span>
+                            </th>
+                            <th>
+                                <span class="sort-link" @onclick="@(() => SortColateralsTable("Liens"))">@localizer["Liens"]</span>
+                                <span class="fa @(GetColateralsSortStyle("Liens"))"></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Colaterals != null && Colaterals.Count() > 0)
+                        {
+                            foreach (var item in Colaterals)
+                            {
+                                <tr>
+                                    <td>@item.Portfolio</td>
+                                    <td>@item.Subportfolio</td>
+                                    <td>@item.ProcessDate</td>
+                                    <td>@item.ContractId</td>
+                                    <td>@item.Id</td>
+                                    <td>@item.CollateralType</td>
+                                    <td>@item.CollateralSubtype</td>
+                                    <td>@item.CollateralUsage</td>
+                                    <td>@item.Status</td>
+                                    <td>@item.ConstuctionYear</td>
+                                    <td>@item.SurfaceM2</td>
+                                    <td>@item.City</td>
+                                    <td>@item.Province</td>
+                                    <td>@item.Region</td>
+                                    <td>@item.Country</td>
+                                    <td>@item.ZipCode</td>
+                                    <td>@item.InitialAppraisalDate</td>
+                                    <td>@item.InitialAppraisalValue</td>
+                                    <td>@item.LastAppraisalDate</td>
+                                    <td>@item.LastAppraisalValue</td>
+                                    <td>@item.RegistryAssetId</td>
+                                    <td>@item.LandRegistryTown</td>
+                                    <td>@item.LandRegistryNumber</td>
+                                    <td>@item.CadastralReference</td>
+                                    <td>@item.Idufir</td>
+                                    <td>@item.Liens</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Collateral> Colaterals { get; set; }
+
+    private string currentColateralsSortColumn;
+    private bool isColateralsSortedAscending;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("setScrollTopWidth");
+        }
+    }
+
+    private async void OnScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onScroll");
+    }
+    
+    private async void OnTopScroll(EventArgs e)
+    {
+        await JSRuntime.InvokeVoidAsync("onTopScroll");
+    }
+
+    private string GetColateralsSortStyle(string columnName)
+    {
+        if (currentColateralsSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isColateralsSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+
+    private void SortColateralsTable(string columnName)
+    {
+        var items = Colaterals;
+
+        if (columnName != currentColateralsSortColumn)
+        {
+            items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            currentColateralsSortColumn = columnName;
+            isColateralsSortedAscending = true;
+        }
+        else
+        {
+            if (isColateralsSortedAscending)
+            {
+                items = items.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                items = items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+
+            isColateralsSortedAscending = !isColateralsSortedAscending;
+        }
+
+        Colaterals = items;
+
+        StateHasChanged();
+    }
+}

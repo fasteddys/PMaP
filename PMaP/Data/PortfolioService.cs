@@ -185,12 +185,14 @@ namespace PMaP.Data
                 var investors = new List<Investor>();
                 var participants = new List<Participant>();
                 var procedures = new List<Procedure>();
+                var collaterals = new List<Collateral>();
 
                 foreach (var contract in contracts)
                 {
                     investors.AddRange(contract.Investors);
                     participants.AddRange(contract.Participants);
                     procedures.AddRange(contract.Procedures);
+                    collaterals.AddRange(contract.Collaterals);
                 }
 
                 return new ContractsModel
@@ -199,7 +201,8 @@ namespace PMaP.Data
                     Contracts = contracts,
                     Investors = investors,
                     Participants = participants,
-                    Procedures = procedures
+                    Procedures = procedures,
+                    Collaterals = collaterals
                 };
             }
             catch (Exception ex)
@@ -265,12 +268,14 @@ namespace PMaP.Data
                 var investors = new List<Investor>();
                 var participants = new List<Participant>();
                 var procedures = new List<Procedure>();
+                var collaterals = new List<Collateral>();
 
                 foreach (var contract in contracts)
                 {
                     investors.AddRange(contract.Investors);
                     participants.AddRange(contract.Participants);
                     procedures.AddRange(contract.Procedures);
+                    collaterals.AddRange(contract.Collaterals);
                 }
 
                 return new ContractsModel
@@ -279,7 +284,8 @@ namespace PMaP.Data
                     Contracts = contracts,
                     Investors = investors,
                     Participants = participants,
-                    Procedures = procedures
+                    Procedures = procedures,
+                    Collaterals = collaterals
                 };
             }
             catch (Exception ex)

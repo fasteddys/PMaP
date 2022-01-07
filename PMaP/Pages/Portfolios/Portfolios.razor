@@ -250,6 +250,19 @@ else
                         {
                             <InvestorTable isAdd="@isAdd" Investors="@portfolioModel.Investors" />
                         }
+                        @if (@portfolioModel.ActiveTab == "collaterals")
+                        {
+                            <ColateralsTable Colaterals="@portfolioModel.Collaterals" />
+                        }
+                        @if (@portfolioModel.ActiveTab == "insolvencies")
+                        {
+                            var insolvencies = new List<Insolvency>();
+                            foreach (var participant in portfolioModel.Participants)
+                            {
+                                insolvencies.AddRange(participant.Insolvencies);
+                            }
+                            <InsolvenciesTable Insolvencies="@insolvencies" />
+                        }
                     </div>
                 </div>
             </div>
@@ -411,7 +424,7 @@ else
                     portfolioValuationViewModel.ReflectExcludedContractIds = true;
                     portfolioValuationViewModel.ExcludePossitiveOB = true;
                 }
-                
+
                 portfolioModel = await PortfolioRegistrationService.Index(portfolioValuationViewModel);
                 if (portfolioModel.ResponseCode == (int)HttpStatusCode.Unauthorized)
                 {
@@ -530,6 +543,7 @@ else
             portfolioModel.Investors = contractList.Investors;
             portfolioModel.Participants = contractList.Participants;
             portfolioModel.Procedures = contractList.Procedures;
+            portfolioModel.Collaterals = contractList.Collaterals;
         }
 
         classContracts = "active";
@@ -759,6 +773,8 @@ else
             portfolioModel.Contracts = contract.Contracts;
             portfolioModel.Investors = contract.Investors;
             portfolioModel.Participants = contract.Participants;
+            portfolioModel.Procedures = contract.Procedures;
+            portfolioModel.Collaterals = contract.Collaterals;
         }
 
         StateHasChanged();

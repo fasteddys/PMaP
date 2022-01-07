@@ -7,6 +7,11 @@ namespace PMaP.Models.DBModels
 {
     public partial class Participant
     {
+        public Participant()
+        {
+            Insolvencies = new HashSet<Insolvency>();
+        }
+
         public int Id { get; set; }
         public int? PortfolioId { get; set; }
         public string Portfolio { get; set; }
@@ -37,5 +42,6 @@ namespace PMaP.Models.DBModels
 
         public virtual Contract ContractNavigation { get; set; }
         public virtual Portfolio PortfolioNavigation { get; set; }
+        public virtual ICollection<Insolvency> Insolvencies { get; set; }
     }
 }
