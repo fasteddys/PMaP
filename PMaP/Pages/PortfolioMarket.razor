@@ -348,19 +348,6 @@ else
 
     private void InitializeGraph()
     {
-        IList<CartesianAxis> cartesianAxes = new List<CartesianAxis>();
-        cartesianAxes.Add(new LinearCartesianAxis
-            {
-                ScaleLabel = new ScaleLabel
-                {
-                    Display = true,
-                    LabelString = "M €",
-                    FontSize = 14,
-                    FontColor = "black"
-                },
-                Position = ChartJs.Blazor.Common.Enums.Position.Top
-            });
-
         _config = new LineConfig
         {
             Options = new LineOptions
@@ -382,10 +369,6 @@ else
                 Animation = new Animation
                 {
                     Easing = ChartJs.Blazor.Common.Enums.Easing.Linear
-                },
-                Scales = new Scales
-                {
-                    YAxes = cartesianAxes
                 }
             }
         };
@@ -414,7 +397,7 @@ else
                 {
                     x.Key.Holder,
                     x.Key.YearFrom,
-                    Value = x.Sum(x => x.Value)
+                    Value = x.Count()
                 })
                 .ToList();
 
@@ -422,11 +405,11 @@ else
             var holders = portfolioMarkets.OrderBy(x => x.Holder).GroupBy(x => new { x.Holder }).Select(x => new { x.Key.Holder } ).ToList();
             foreach (var holder in holders)
             {
-                decimal[] data = new decimal[years.Count];
+                int[] data = new int[years.Count];
                 for (var i = 0; i < years.Count; i++)
                 {
                     var portfolioMarket = portfolioMarkets.Where(x => x.Holder == holder.Holder && x.YearFrom == years[i].YearFrom).FirstOrDefault();
-                    data[i] = portfolioMarket != null ? portfolioMarket.Value / 1000000 ?? 0 : 0;
+                    data[i] = portfolioMarket != null ? portfolioMarket.Value : 0;
                 }
 
                 Random rnd = new Random();
@@ -440,7 +423,7 @@ else
                     backgroundColors[i] = backgroundColor;
                 }
 
-                LineDataset<decimal> dataset = new LineDataset<decimal>(data)
+                LineDataset<int> dataset = new LineDataset<int>(data)
                 {
                     PointBackgroundColor = backgroundColors,
                     PointBorderColor = backgroundColors,
@@ -453,6 +436,28 @@ else
 
                 _config.Data.Datasets.Add(dataset);
             }
+
+            IList<CartesianAxis> cartesianAxes = new List<CartesianAxis>();
+            cartesianAxes.Add(new LinearCartesianAxis
+                {
+                    //ScaleLabel = new ScaleLabel
+                    //{
+                    //    Display = true,
+                    //    LabelString = "M €",
+                    //    FontSize = 14,
+                    //    FontColor = "black"
+                    //},
+                    //Position = ChartJs.Blazor.Common.Enums.Position.Top,
+                    Ticks = new ChartJs.Blazor.Common.Axes.Ticks.LinearCartesianTicks
+                    {
+                        Max = portfolioMarkets.Max(x => x.Value)
+                    }
+                });
+
+            _config.Options.Scales = new Scales
+                {
+                    YAxes = cartesianAxes
+                };
         }
     }
 }
