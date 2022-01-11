@@ -1,4 +1,5 @@
 ﻿@page "/portfolioMarket"
+@using ChartJs.Blazor.Common.Axes
 @using ChartJs.Blazor.LineChart
 @using PMaP.Data
 @using PMaP.Models
@@ -9,13 +10,13 @@
 @inject IStringLocalizer<PortfolioMarket> localizer
 @inject NavigationManager NavigationManager
 
-@*<div class="col-md-12">
+<div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
             <p style="color:#336699;">@localizer["lblPortfolioMarket"]</p>
         </li>
     </ul>
-</div>*@
+</div>
 
 @if (portfolioMarketModel.PortfolioMarkets == null)
 {
@@ -24,6 +25,7 @@
 else
 {
     <Chart Config="_config" Width="40" Height="10"></Chart>
+    <br />
     <EditForm Model=@portfolioMarketModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
         <div class="row">
             <div class="col">
@@ -91,29 +93,6 @@ else
                             </tr>
                         </thead>
                         <tbody style="background-color: white;">
-                            @*<tr>
-                                <td>
-                                    <input @onchange="OnHolderChanged" />
-                                </td>
-                                <td>
-                                    <input @onchange="OnProjectChanged" />
-                                </td>
-                                <td>
-                                    <input @onchange="OninvestorChanged" />
-                                </td>
-                                <td>
-                                    <input @onchange="OnYearChanged" />
-                                </td>
-                                <td>
-                                    <input @onchange="OnTypologyChanged" />
-                                </td>
-                                <td>
-                                    <input @onchange="OnDebtTypeChanged" />
-                                </td>
-                                <td>
-                                    <input @onchange="OnValueChanged" />
-                                </td>
-                            </tr>*@
                             @if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count() > 0)
                             {
                                 foreach (var item in portfolioMarketModel.PortfolioMarkets)
@@ -369,6 +348,19 @@ else
 
     private void InitializeGraph()
     {
+        IList<CartesianAxis> cartesianAxes = new List<CartesianAxis>();
+        cartesianAxes.Add(new LinearCartesianAxis
+            {
+                ScaleLabel = new ScaleLabel
+                {
+                    Display = true,
+                    LabelString = "M €",
+                    FontSize = 14,
+                    FontColor = "black"
+                },
+                Position = ChartJs.Blazor.Common.Enums.Position.Top
+            });
+
         _config = new LineConfig
         {
             Options = new LineOptions
@@ -378,6 +370,22 @@ else
                 {
                     Display = true,
                     Position = ChartJs.Blazor.Common.Enums.Position.Right
+                },
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = localizer["ChartTitle"].ToString(),
+                    FontSize = 15,
+                    FontColor = "black"
+                },
+                ShowLines = true,
+                Animation = new Animation
+                {
+                    Easing = ChartJs.Blazor.Common.Enums.Easing.Linear
+                },
+                Scales = new Scales
+                {
+                    YAxes = cartesianAxes
                 }
             }
         };
@@ -418,7 +426,7 @@ else
                 for (var i = 0; i < years.Count; i++)
                 {
                     var portfolioMarket = portfolioMarkets.Where(x => x.Holder == holder.Holder && x.YearFrom == years[i].YearFrom).FirstOrDefault();
-                    data[i] = portfolioMarket != null ? portfolioMarket.Value ?? 0 : 0;
+                    data[i] = portfolioMarket != null ? portfolioMarket.Value / 1000000 ?? 0 : 0;
                 }
 
                 Random rnd = new Random();
@@ -436,9 +444,11 @@ else
                 {
                     PointBackgroundColor = backgroundColors,
                     PointBorderColor = backgroundColors,
-                    BackgroundColor = backgroundColor,
                     Label = holder.Holder,
-                    ShowLine = true
+                    LineTension = 0,
+                    Fill = ChartJs.Blazor.Common.Enums.FillingMode.Disabled,
+                    BorderColor = backgroundColor,
+                    BorderWidth = 1
                 };
 
                 _config.Data.Datasets.Add(dataset);
