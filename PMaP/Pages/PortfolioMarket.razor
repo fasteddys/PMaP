@@ -1,4 +1,5 @@
 ﻿@page "/portfolioMarket"
+@using ChartJs.Blazor.LineChart
 @using PMaP.Data
 @using PMaP.Models
 @using System.Globalization
@@ -8,13 +9,13 @@
 @inject IStringLocalizer<PortfolioMarket> localizer
 @inject NavigationManager NavigationManager
 
-<div class="col-md-12">
+@*<div class="col-md-12">
     <ul class="page-breadcrumb breadcrumb">
         <li>
             <p style="color:#336699;">@localizer["lblPortfolioMarket"]</p>
         </li>
     </ul>
-</div>
+</div>*@
 
 @if (portfolioMarketModel.PortfolioMarkets == null)
 {
@@ -22,6 +23,7 @@
 }
 else
 {
+    <Chart Config="_config" Width="40" Height="10"></Chart>
     <EditForm Model=@portfolioMarketModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
         <div class="row">
             <div class="col">
@@ -198,11 +200,15 @@ else
     private string currentSortColumn;
     private string Holder, Project, investor, year, Typology, DebtType, Value;
 
+    private LineConfig _config;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             portfolioMarketModel = await PortfolioMarketService.Portfolios("");
+            InitializeGraph();
+            LoadDataToGraph();
             StateHasChanged();
         }
     }
@@ -324,6 +330,7 @@ else
 
         var viewModel = portfolioMarketModel.ViewModel;
         portfolioMarketModel = await PortfolioMarketService.Portfolios(queryStrings);
+        LoadDataToGraph();
         portfolioMarketModel.ViewModel = viewModel;
 
         currentSortColumn = null;
@@ -348,7 +355,7 @@ else
 
     private void InvalidFormSubmitted(EditContext editContext)
     {
-        
+
     }
 
     private void Clear()
@@ -358,5 +365,84 @@ else
         portfolioMarketModel.ViewModel.ValueFrom = null;
         portfolioMarketModel.ViewModel.ValueTo = null;
         StateHasChanged();
+    }
+
+    private void InitializeGraph()
+    {
+        _config = new LineConfig
+        {
+            Options = new LineOptions
+            {
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = true,
+                    Position = ChartJs.Blazor.Common.Enums.Position.Right
+                }
+            }
+        };
+    }
+
+    private void LoadDataToGraph()
+    {
+        if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count > 0)
+        {
+            _config.Data.Labels.Clear();
+            var years = portfolioMarketModel.PortfolioMarkets
+                .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom != null)
+                .OrderBy(x => x.YearFrom)
+                .GroupBy(x => x.YearFrom)
+                .Select(x => new { YearFrom = x.Key.Value })
+                .ToList();
+            foreach (var year in years)
+            {
+                _config.Data.Labels.Add(year.YearFrom.ToString());
+            }
+
+            var portfolioMarkets = portfolioMarketModel.PortfolioMarkets
+                .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom != null)
+                .GroupBy(x => new { x.Holder, x.YearFrom })
+                .Select(x => new
+                {
+                    x.Key.Holder,
+                    x.Key.YearFrom,
+                    Value = x.Sum(x => x.Value)
+                })
+                .ToList();
+
+            _config.Data.Datasets.Clear();
+            var holders = portfolioMarkets.OrderBy(x => x.Holder).GroupBy(x => new { x.Holder }).Select(x => new { x.Key.Holder } ).ToList();
+            foreach (var holder in holders)
+            {
+                decimal[] data = new decimal[years.Count];
+                for (var i = 0; i < years.Count; i++)
+                {
+                    var portfolioMarket = portfolioMarkets.Where(x => x.Holder == holder.Holder && x.YearFrom == years[i].YearFrom).FirstOrDefault();
+                    data[i] = portfolioMarket != null ? portfolioMarket.Value ?? 0 : 0;
+                }
+
+                Random rnd = new Random();
+                var r = rnd.Next(0, 255);
+                var g = rnd.Next(0, 255);
+                var b = rnd.Next(0, 255);
+                string backgroundColor = ColorUtil.ColorHexString((byte)r, (byte)g, (byte)b);
+                string[] backgroundColors = new string[years.Count];
+                for (var i = 0; i < backgroundColors.Count(); i++)
+                {
+                    backgroundColors[i] = backgroundColor;
+                }
+
+                LineDataset<decimal> dataset = new LineDataset<decimal>(data)
+                {
+                    PointBackgroundColor = backgroundColors,
+                    PointBorderColor = backgroundColors,
+                    BackgroundColor = backgroundColor,
+                    Label = holder.Holder,
+                    ShowLine = true
+                };
+
+                _config.Data.Datasets.Add(dataset);
+            }
+        }
     }
 }
