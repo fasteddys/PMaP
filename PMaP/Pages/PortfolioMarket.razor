@@ -133,17 +133,20 @@ else
                                         <td>
                                             @{
                                                 string debtTypeClass = "";
-                                                if (item.DebtType.ToLower() == "secured")
+                                                if (item.DebtType != null)
                                                 {
-                                                    debtTypeClass = "bg-success";
-                                                }
-                                                if (item.DebtType.ToLower() == "unsecured")
-                                                {
-                                                    debtTypeClass = "bg-danger";
-                                                }
-                                                if (item.DebtType.ToLower() == "secured & unsecured")
-                                                {
-                                                    debtTypeClass = "bg-warning";
+                                                    if (item.DebtType.ToLower() == "secured")
+                                                    {
+                                                        debtTypeClass = "bg-success";
+                                                    }
+                                                    if (item.DebtType.ToLower() == "unsecured")
+                                                    {
+                                                        debtTypeClass = "bg-danger";
+                                                    }
+                                                    if (item.DebtType.ToLower() == "secured & unsecured")
+                                                    {
+                                                        debtTypeClass = "bg-warning";
+                                                    }
                                                 }
                                             }
                                             <span class="text-white @debtTypeClass" style="border-radius: 5px; padding: 5px;">@item.DebtType</span>
