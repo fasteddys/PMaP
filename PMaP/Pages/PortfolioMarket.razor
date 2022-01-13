@@ -1,6 +1,5 @@
 ﻿@page "/portfolioMarket"
-@using ChartJs.Blazor.Common.Axes
-@using ChartJs.Blazor.LineChart
+@using ChartJs.Blazor.PieChart
 @using PMaP.Data
 @using PMaP.Models
 @using System.Globalization
@@ -24,7 +23,62 @@
 }
 else
 {
-    <Chart Config="_config" Width="40" Height="10"></Chart>
+    <div class="row">
+        <div class="col-md-12">
+            @for (var i = 0; i < _configs.Count; i++)
+            {
+                string hideClass = i >= years.Count ? "d-none" : "";
+                <div class="col-md-4 border border-secondary @hideClass">
+                    @if (string.IsNullOrEmpty(hideClass))
+                    {
+                        <p class="h4 text-center">@years[i]</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Total Value</th>
+                                    <th scope="col">Unsecured</th>
+                                    <th scope="col">Secured</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @{
+                                            CultureInfo cultureInfo = new CultureInfo("es-ES");
+                                            string value = totalValues[i].ToString("c", cultureInfo);
+                                            string format = totalValues[i] % 1000000 == 0 ? "#,##0" : "#,##0.00";
+                                            var shortValue = totalValues[i] / 1000000;
+                                            value = shortValue.ToString(format, cultureInfo) + "M €";
+                                        }
+                                        @value
+                                    </td>
+                                    <td>
+                                        @{
+                                            value = totalUnsecureds[i].ToString("c", cultureInfo);
+                                            format = totalUnsecureds[i] % 1000000 == 0 ? "#,##0" : "#,##0.00";
+                                            shortValue = totalUnsecureds[i] / 1000000;
+                                            value = shortValue.ToString(format, cultureInfo) + "M €";
+                                        }
+                                        @value
+                                    </td>
+                                    <td>
+                                        @{
+                                            value = totalSecureds[i].ToString("c", cultureInfo);
+                                            format = totalSecureds[i] % 1000000 == 0 ? "#,##0" : "#,##0.00";
+                                            shortValue = totalSecureds[i] / 1000000;
+                                            value = shortValue.ToString(format, cultureInfo) + "M €";
+                                        }
+                                        @value
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                    <Chart Config="_configs[i]"></Chart>
+                </div>
+            }
+        </div>
+    </div>
     <br />
     <EditForm Model=@portfolioMarketModel OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
         <div class="row">
@@ -182,7 +236,11 @@ else
     private string currentSortColumn;
     private string Holder, Project, investor, year, Typology, DebtType, Value;
 
-    private LineConfig _config;
+    private List<int> years = new List<int>();
+    private List<decimal> totalValues = new List<decimal>();
+    private List<decimal> totalUnsecureds = new List<decimal>();
+    private List<decimal> totalSecureds = new List<decimal>();
+    private List<PieConfig> _configs = new List<PieConfig>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -276,7 +334,6 @@ else
         await PortfolioFilteringList();
     }
 
-
     private async void OnValueChanged(ChangeEventArgs e)
     {
         Value = e.Value.ToString();
@@ -351,116 +408,134 @@ else
 
     private void InitializeGraph()
     {
-        _config = new LineConfig
-        {
-            Options = new LineOptions
-            {
-                Responsive = true,
-                Legend = new Legend
-                {
-                    Display = true,
-                    Position = ChartJs.Blazor.Common.Enums.Position.Right
-                },
-                Title = new OptionsTitle
-                {
-                    Display = true,
-                    Text = localizer["ChartTitle"].ToString(),
-                    FontSize = 15,
-                    FontColor = "black"
-                },
-                ShowLines = true,
-                Animation = new Animation
-                {
-                    Easing = ChartJs.Blazor.Common.Enums.Easing.Linear
-                }
-            }
-        };
+        _configs = new List<PieConfig>();
     }
 
     private void LoadDataToGraph()
     {
         if (portfolioMarketModel.PortfolioMarkets != null && portfolioMarketModel.PortfolioMarkets.Count > 0)
         {
-            _config.Data.Labels.Clear();
-            var years = portfolioMarketModel.PortfolioMarkets
-                .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom != null)
+            totalValues = new List<decimal>();
+            totalUnsecureds = new List<decimal>();
+            totalSecureds = new List<decimal>();
+
+            years = portfolioMarketModel.PortfolioMarkets
+                .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom != null && x.Holder.ToLower() != "sareb")
                 .OrderBy(x => x.YearFrom)
                 .GroupBy(x => x.YearFrom)
-                .Select(x => new { YearFrom = x.Key.Value })
+                .Select(x => x.Key.Value)
                 .ToList();
-            foreach (var year in years)
+            for (var i = 0; i < years.Count; i++)
             {
-                _config.Data.Labels.Add(year.YearFrom.ToString());
-            }
-
-            var portfolioMarkets = portfolioMarketModel.PortfolioMarkets
-                .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom != null)
-                .GroupBy(x => new { x.Holder, x.YearFrom })
-                .Select(x => new
-                {
-                    x.Key.Holder,
-                    x.Key.YearFrom,
-                    Value = x.Count()
-                })
-                .ToList();
-
-            _config.Data.Datasets.Clear();
-            var holders = portfolioMarkets.OrderBy(x => x.Holder).GroupBy(x => new { x.Holder }).Select(x => new { x.Key.Holder } ).ToList();
-            foreach (var holder in holders)
-            {
-                int[] data = new int[years.Count];
-                for (var i = 0; i < years.Count; i++)
-                {
-                    var portfolioMarket = portfolioMarkets.Where(x => x.Holder == holder.Holder && x.YearFrom == years[i].YearFrom).FirstOrDefault();
-                    data[i] = portfolioMarket != null ? portfolioMarket.Value : 0;
-                }
-
-                Random rnd = new Random();
-                var r = rnd.Next(0, 255);
-                var g = rnd.Next(0, 255);
-                var b = rnd.Next(0, 255);
-                string backgroundColor = ColorUtil.ColorHexString((byte)r, (byte)g, (byte)b);
-                string[] backgroundColors = new string[years.Count];
-                for (var i = 0; i < backgroundColors.Count(); i++)
-                {
-                    backgroundColors[i] = backgroundColor;
-                }
-
-                LineDataset<int> dataset = new LineDataset<int>(data)
-                {
-                    PointBackgroundColor = backgroundColors,
-                    PointBorderColor = backgroundColors,
-                    Label = holder.Holder,
-                    LineTension = 0,
-                    Fill = ChartJs.Blazor.Common.Enums.FillingMode.Disabled,
-                    BorderColor = backgroundColor,
-                    BorderWidth = 1
-                };
-
-                _config.Data.Datasets.Add(dataset);
-            }
-
-            IList<CartesianAxis> cartesianAxes = new List<CartesianAxis>();
-            cartesianAxes.Add(new LinearCartesianAxis
-                {
-                    //ScaleLabel = new ScaleLabel
-                    //{
-                    //    Display = true,
-                    //    LabelString = "M €",
-                    //    FontSize = 14,
-                    //    FontColor = "black"
-                    //},
-                    //Position = ChartJs.Blazor.Common.Enums.Position.Top,
-                    Ticks = new ChartJs.Blazor.Common.Axes.Ticks.LinearCartesianTicks
+                PieConfig config;
+                PieOptions pieOptions = new PieOptions
                     {
-                        Max = portfolioMarkets.Max(x => x.Value)
-                    }
-                });
+                        Responsive = true,
+                        Legend = new Legend
+                        {
+                            Display = true,
+                            Position = ChartJs.Blazor.Common.Enums.Position.Right
+                        },
+                        Title = new OptionsTitle
+                        {
+                            Display = true,
+                            Text = localizer["ChartTitle"].ToString(),
+                            FontSize = 15,
+                            FontColor = "black"
+                        }
+                    };
 
-            _config.Options.Scales = new Scales
+                if (_configs.Count > i)
                 {
-                    YAxes = cartesianAxes
+                    config = _configs[i];
+                    config.Options = pieOptions;
+                    config.Data.Labels.Clear();
+                    config.Data.Datasets.Clear();
+                }
+                else
+                {
+                    config = new PieConfig
+                    {
+                        Options = pieOptions
+                    };
+                }
+
+                var totalValue = portfolioMarketModel.PortfolioMarkets
+                    .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom == years[i] && x.Holder.ToLower() != "sareb")
+                    .GroupBy(x => new { x.YearFrom })
+                    .Select(x => new
+                    {
+                        x.Key.YearFrom,
+                        Value = x.Sum(x => x.Value)
+                    }).FirstOrDefault();
+                totalValues.Add(totalValue != null ? totalValue.Value ?? 0 : 0);
+
+                var totalSecured = portfolioMarketModel.PortfolioMarkets
+                    .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom == years[i] && x.Holder.ToLower() != "sareb" && x.DebtType.ToLower().Contains("secured") && x.DebtType.ToLower() != "unsecured")
+                    .GroupBy(x => new { x.YearFrom })
+                    .Select(x => new
+                    {
+                        x.Key.YearFrom,
+                        Value = x.Sum(x => x.Value)
+                    }).FirstOrDefault();
+                totalSecureds.Add(totalSecured != null ? totalSecured.Value ?? 0 : 0);
+
+                var totalUnsecured = portfolioMarketModel.PortfolioMarkets
+                    .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom == years[i] && x.Holder.ToLower() != "sareb" && x.DebtType.ToLower().Contains("unsecured"))
+                    .GroupBy(x => new { x.YearFrom })
+                    .Select(x => new
+                    {
+                        x.Key.YearFrom,
+                        Value = x.Sum(x => x.Value)
+                    }).FirstOrDefault();
+                totalUnsecureds.Add(totalUnsecured != null ? totalUnsecured.Value ?? 0 : 0);
+
+                var portfolioMarkets = portfolioMarketModel.PortfolioMarkets
+                    .Where(x => !string.IsNullOrEmpty(x.Investor) && x.Investor.ToLower() != "sacado a mercado" && x.YearFrom == years[i] && x.Holder.ToLower() != "sareb")
+                    .OrderBy(x => x.Holder)
+                    .GroupBy(x => new { x.Holder, x.YearFrom })
+                    .Select(x => new
+                    {
+                        x.Key.Holder,
+                        x.Key.YearFrom,
+                        Value = x.Sum(x => x.Value)
+                    })
+                    .ToList();
+
+                decimal[] data = new decimal[portfolioMarkets.Count];
+                for (var j = 0; j < portfolioMarkets.Count; j++)
+                {
+                    config.Data.Labels.Add(portfolioMarkets[j].Holder);
+                    data[j] = portfolioMarkets[j].Value ?? 0;
+                }
+
+                string[] backgroundColors = new string[portfolioMarkets.Count];
+                for (var j = 0; j < backgroundColors.Count(); j++)
+                {
+                    Random rnd = new Random();
+                    var r = rnd.Next(0, 255);
+                    var g = rnd.Next(0, 255);
+                    var b = rnd.Next(0, 255);
+
+                    backgroundColors[j] = ColorUtil.ColorHexString((byte)r, (byte)g, (byte)b);
+                }
+
+                PieDataset<decimal> dataset = new PieDataset<decimal>(data)
+                {
+                    BackgroundColor = backgroundColors
                 };
+
+                config.Data.Datasets.Add(dataset);
+
+                if (_configs.Count > i)
+                {
+                    _configs[i] = config;
+                }
+                else
+                {
+                    _configs.Add(config);
+                }
+            }
         }
     }
 }
